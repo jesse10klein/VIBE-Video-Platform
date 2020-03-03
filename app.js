@@ -17,9 +17,11 @@ const app = express();
 var bodyParser = require('body-parser');
 
 
-//Get User Routes
+//Get Routes
 const userRoutes = require('./routes/users');
 app.use('/users', userRoutes);
+const videoRoutes = require('./routes/video');
+app.use('/video', videoRoutes);
 
 
 

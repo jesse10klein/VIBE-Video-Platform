@@ -16,5 +16,7 @@ const db = {
 };
 
 db.models.UserInfo = require('./models/userInfo.js')(sequelize);
+db.models.Videos = require('./models/videos.js')(sequelize);
+db.models.Comments = require('./models/comments.js')(sequelize);
 
 module.exports = db;
