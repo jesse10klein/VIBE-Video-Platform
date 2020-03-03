@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  form(action="/users/process-signup" method="POST")
+    .form-element
+      p  Username: 
+      input(type='text' name='username')
+    .form-element
+      p  Email: 
+      input(type='text' name='email')
+    .form-element
+      p  Password: 
+      input(name='password')
+    input(type='submit')
+    a#signup(href='/singup') Sign Up

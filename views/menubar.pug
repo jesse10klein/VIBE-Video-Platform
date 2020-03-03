@@ -1,0 +1,13 @@
+ul#menu-bar
+  li
+    img(src='/images/metube.png' href="/") 
+  li
+    a(href='/today')  Comments
+  if username
+    li 
+      a(href='/users/account') My Account
+    li
+      a(href='/users/logout') Log Out
+  else
+    li
+      a(href='/users/login') Login/Register

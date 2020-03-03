@@ -1,0 +1,14 @@
+
+extends ../layout
+
+
+block content
+  form(action="/users/login-check" method="POST")
+    .form-element
+      p  Username: 
+      input#username(type='text' name='username')
+    .form-element
+      p  Password: 
+      input#password(name='password')
+    input(type='submit')
+  a#signup(href='/users/signup') Sign Up
