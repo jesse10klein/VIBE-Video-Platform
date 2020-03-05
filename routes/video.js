@@ -5,6 +5,7 @@ const db = require('../db');
 const { Video } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
+const { Subscriptions } = db.models;
 
 //Require and use modules
 var bodyParser = require('body-parser');
@@ -82,18 +83,63 @@ router.post('/process-upload', asyncHandler(async (req, res) => {
 router.get('/:id', asyncHandler(async (req, res) => {
 
     const video = await Video.findByPk(req.params.id);
-
+    const {username} = req.cookies;
     const comments = await Comments.findAll({ 
         order: [["createdAt", "DESC"]],
         where: { videoID: req.params.id }
     });
-
-    let uploader = await UserInfo.findOne({
+    const uploader = await UserInfo.findOne({
       where: {username: video.uploader}
     })
+    //Check if user is subscribed to the uploader
+    const subscription = await Subscriptions.findOne({
+      where: {user: uploader.username, subscriber: username}
+    })
+    const subscribed = !(subscription == null);
+    res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed});
+}));
 
-    const username = req.cookies.username;
-    res.render("videoViews/video-specific", {video, comments, uploader, username});
+//Subscribe to a user
+router.get('/:videoID/subscribe', asyncHandler(async (req, res) => {
+  const video = await Video.findByPk(req.params.videoID);
+  const user = video.uploader;
+
+  const uploader = await UserInfo.findOne({where: { username: user }})
+  const newSubCount = uploader.subscriberCount + 1;
+  await uploader.update({ subscriberCount: newSubCount });
+
+  //Make sure user is logged in
+  if (req.cookies.username == null) {
+      res.send("You must login before you can subscribe to someone");
+  }
+
+  const subscriber = req.cookies.username;
+  await Subscriptions.create({ user, subscriber });
+  res.redirect(`/video/${req.params.videoID}`);
+}));
+
+//Unsubscribe from a user
+router.get('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
+  const video = await Video.findByPk(req.params.videoID);
+  const user = video.uploader;
+
+  const uploader = await UserInfo.findOne({where: { username: user }})
+  const newSubCount = uploader.subscriberCount - 1;
+  await uploader.update({ subscriberCount: newSubCount });
+
+  //Make sure user is logged in
+  if (req.cookies.username == null) {
+      res.send("You must login before you can unsubscribe to someone");
+  }
+  const subscriber = req.cookies.username;
+
+  const subscription = await Subscriptions.findOne({
+    where: { user, subscriber }
+  })
+  if (!(subscription == null)) {
+    await subscription.destroy();
+  }
+  res.redirect(`/video/${req.params.videoID}`);
 }));
 
 

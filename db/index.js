@@ -18,5 +18,6 @@ const db = {
 db.models.UserInfo = require('./models/userInfo.js')(sequelize);
 db.models.Video = require('./models/videos.js')(sequelize);
 db.models.Comments = require('./models/comments.js')(sequelize);
+db.models.Subscriptions = require('./models/subscriptions.js')(sequelize);
 
 module.exports = db;

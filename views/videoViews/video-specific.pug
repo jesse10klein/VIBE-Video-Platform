@@ -11,7 +11,11 @@ block content
     #userInfo
       h1= `${uploader.username}`
       p= `${uploader.subscriberCount} Subscribers`
-      button= `Subscribe`
+      if subscribed
+        a(href=`/video/${video.id}/unsubscribe`)= `You are subscribed`
+      else
+        a(href=`/video/${video.id}/subscribe`)= `Subscribe`
+     
 
     h1= video.uploadDate
     p= video.description
