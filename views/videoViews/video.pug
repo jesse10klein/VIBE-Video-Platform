@@ -1,0 +1,7 @@
+extends ../layout
+
+block content
+  each video in videos  
+    comment
+      h1= video.title
+      a(href=`/video/${video.id}`) View me!

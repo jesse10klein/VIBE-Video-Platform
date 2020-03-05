@@ -2,8 +2,9 @@ const express = require('express')
 const router = express.Router();
 
 const db = require('../db');
-const { Videos } = db.models;
+const { Video } = db.models;
 const { Comments } = db.models;
+const { UserInfo } = db.models;
 
 //Require and use modules
 var bodyParser = require('body-parser');
@@ -21,6 +22,18 @@ function asyncHandler(cb) {
     }
 }
 
+//Home VIDEO route
+router.get('/', asyncHandler(async (req, res) => {
+
+  const videos = await Video.findAll({ 
+    order: [["uploadDate", "DESC"]]
+  });
+
+  const username = req.cookies.username;
+  res.render("videoViews/video", {videos, username});
+}));
+
+
 //Create new comment
 router.post('/:id/add-comment', asyncHandler(async (req, res) => {
 
@@ -37,18 +50,50 @@ router.post('/:id/add-comment', asyncHandler(async (req, res) => {
     res.redirect('/video/' + req.params.id);
 }));
 
+//Form to upload a video
+router.get('/upload', (req, res) => {
+
+  if (req.cookies.username == null) {
+    res.redirect('/');
+  }
+
+  const username = req.cookies.username;
+  res.render('videoViews/upload', {username});
+})
+
+//Handle the uploading of a video/creating DB entry
+router.post('/process-upload', asyncHandler(async (req, res) => {
+
+  const now = new Date()
+
+  video = await Video.create({
+    uploader: req.cookies.username,
+    title: req.body.title,
+    tags: req.body.tags,
+    description: req.body.description,
+    videoURL: req.body.videoURL,
+    uploadDate: now.toISOString().slice(0, 10)
+  });
+
+  res.send("Video Uploaded to Database");
+}));
 
 //Sorting comments under video
 router.get('/:id', asyncHandler(async (req, res) => {
 
-    const video = await Videos.findByPk(req.params.id);
+    const video = await Video.findByPk(req.params.id);
 
     const comments = await Comments.findAll({ 
         order: [["createdAt", "DESC"]],
         where: { videoID: req.params.id }
     });
 
-    res.render("video", {video, comments, username: req.cookies.username});
+    let uploader = await UserInfo.findOne({
+      where: {username: video.uploader}
+    })
+
+    const username = req.cookies.username;
+    res.render("videoViews/video-specific", {video, comments, uploader, username});
 }));
 
 

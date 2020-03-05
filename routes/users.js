@@ -3,8 +3,10 @@ const router = express.Router();
 
 const db = require('../db');
 const { UserInfo } = db.models;
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
-
+const validator = require("email-validator");
 
 //Require and use modules
 var bodyParser = require('body-parser');
@@ -23,8 +25,7 @@ function asyncHandler(cb) {
 }
 
 router.get('/', (req, res) => {
-  res.cookie("username", "CrashingSwine05");
-  res.send("Cookie Set");
+  res.redirect('/');
 })
 
 //Login page
@@ -50,14 +51,14 @@ router.get('/account', (req, res) => {
 })
 
 //CHECK IF LOGIN MATCHES USER
-router.post('/login-check', asyncHandler(async (req, res) => {
+router.post('/login', asyncHandler(async (req, res) => {
 
   if (req.cookies.username) {
     console.log("Already signed in");
     res.redirect("/");
   }
 
-  const user = await UserInfo.findAll({ 
+  const match = await UserInfo.findOne({ 
 	where: {
     username: req.body.username,
     password: req.body.password
@@ -65,7 +66,6 @@ router.post('/login-check', asyncHandler(async (req, res) => {
   });
 
   //Check if user is in the system
-  const match = user[0];
   try {
     const username = match.toJSON().username
     res.cookie("username", username);
@@ -83,14 +83,42 @@ router.get('/logout', (req, res) => {
 
 
 //CREATE NEW USER BASED ON SIGN UP DATA
-router.post('/process-signup', asyncHandler(async (req, res) => {
-    user = await UserInfo.create({
-        username: req.body.username,
-        password: req.body.password,
+router.post('/signup', asyncHandler(async (req, res) => {
+  
+    let error = "";
+    let { username } = req.body;
+    let { email } = req.body;
+    let { password } = req.body;
+    const fill = { username, email }
+
+    if (!validator.validate(email)) {
+      error = "Your email is invalid";
+    }    
+
+    if (error != "") {
+      res.render('userViews/signup', {error, fill});
+    }
+
+    //Make sure that username and email aren't taken
+    _username = await UserInfo.findOne({
+      where: {
+        username: req.body.username
+      }
+    });
+
+    _email = await UserInfo.findOne({
+      where: {
         email: req.body.email
-        
-    })
-    res.send("USER CREATED");
+      }
+    });
+
+    if (_username == null || _email == null || _username.length == 0 || _email.length == 0) {
+      user = await UserInfo.create({ username, password, email });
+      res.render("userViews/newuser");
+    } else {
+      error =  "Username or Email already in use";
+    } 
+    res.render('userViews/signup', {error, fill});
 }));
 
 

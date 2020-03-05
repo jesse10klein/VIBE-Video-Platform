@@ -1,0 +1,17 @@
+
+
+
+form(action="/video/process-upload" method="POST")
+    .form-element
+      p= 'Video Title:'
+      input(type='text' name='title')
+    .form-element
+      p= 'Description: '
+      textarea(name='description')
+    .form-element
+      p= 'Tags: '
+      textarea(name='tags')
+    .form-element
+      p= 'Video Path: '
+      input(type='text' name='videoURL')
+    input(type='submit' value='Upload Video')

@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+
+  if video
+
+    h1= video.title
+    video(width='800' height='500' controls='')
+      source(src=`/videos/${video.videoURL}.mp4` type='video/mp4')
+    
+    #userInfo
+      h1= `${uploader.username}`
+      p= `${uploader.subscriberCount} Subscribers`
+      button= `Subscribe`
+
+    h1= video.uploadDate
+    p= video.description
+
+    form(action=`/video/${video.id}/add-comment` method="POST")
+      .form-element
+        p  Comment: 
+        textarea(name='comment')
+      input(type='submit')
+
+  each comment in comments  
+    comment
+      h1= comment.user
+      p= comment.comment

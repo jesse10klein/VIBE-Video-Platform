@@ -6,7 +6,7 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: 'INFS3202.db',
-  logging: true
+  logging: false
 });
 
 const db = {
@@ -16,7 +16,7 @@ const db = {
 };
 
 db.models.UserInfo = require('./models/userInfo.js')(sequelize);
-db.models.Videos = require('./models/videos.js')(sequelize);
+db.models.Video = require('./models/videos.js')(sequelize);
 db.models.Comments = require('./models/comments.js')(sequelize);
 
 module.exports = db;
