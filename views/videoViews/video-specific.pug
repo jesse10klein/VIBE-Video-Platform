@@ -11,7 +11,7 @@ block content
     #video-div
       h1= video.title
       video(width='700' height='400' controls='')
-        source(src=`/videos/${video.videoURL}.mp4` type='video/mp4')
+        source(src=`/videos/${video.videoURL}` type='video/mp4')
     
       #subinfo
         p= `${video.viewCount} Views`
@@ -25,8 +25,11 @@ block content
           button#myButton= `Log in to subscribe`
       h1#username= `${uploader.username}`
 
-    h1= formattedDate
-    p= video.description
+    #description-info
+      button#descButton(onClick="toggleDescription()")= "Show More"
+      h1#date= formattedDate
+      p#description= video.description
+      p#tags= video.tags
 
     form(action=`/video/${video.id}/add-comment` method="POST")
       .form-element

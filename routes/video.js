@@ -115,7 +115,7 @@ router.post('/process-upload', asyncHandler(async (req, res) => {
     uploadDate: now.toISOString().slice(0, 10)
   });
 
-  res.send("Video Uploaded to Database");
+  res.redirect("/video/" + video.id);
 }));
 
 //Sorting comments under video

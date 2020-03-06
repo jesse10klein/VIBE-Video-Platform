@@ -36,3 +36,15 @@
 #username {
     font-family: 'Oxanium', cursive;
 }
+
+#date {
+    visibility: hidden;
+}
+
+#description {
+    visibility: hidden;
+}
+
+#tags {
+    visibility: hidden;
+}

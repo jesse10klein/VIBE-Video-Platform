@@ -1,14 +1,18 @@
 
 extends ../layout
 
+block style
+  link(href="/style/login.css" rel="stylesheet")
 
 block content
-  form(action="/users/login" method="POST")
-    .form-element
-      p  Username: 
-      input#username(type='text' name='username')
-    .form-element
-      p  Password: 
-      input#password(name='password')
-    input(type='submit')
-  a#signup(href='/users/signup') Sign Up
+  #form-div
+    form(action="/users/login" method="POST")
+      .form-element
+        p  Username: 
+        input#username(type='text' name='username')
+      .form-element
+        p  Password: 
+        input#password(name='password')
+      input(type='submit')
+    p= "Not a user?"
+    a#signup(href='/users/signup') Sign Up
