@@ -61,6 +61,7 @@ router.get('/', asyncHandler(async (req, res) => {
   const videos = await Video.findAll({ 
     order: [["uploadDate", "DESC"]]
   });
+  console.log(videos);
 
   const username = req.cookies.username;
   res.render("videoViews/video", {videos, username});
@@ -69,6 +70,12 @@ router.get('/', asyncHandler(async (req, res) => {
 
 //Create new comment
 router.post('/:id/add-comment', asyncHandler(async (req, res) => {
+
+    //Check that the video exists
+    const video = await Video.findOne({where: {id: req.params.id}});
+    if (video == null) {
+      res.render("404", {message: "The video that you have requested does not exist"});
+    }
 
     if (req.cookies.username == null) {
         res.send("You must login to post a comment");
@@ -87,7 +94,7 @@ router.post('/:id/add-comment', asyncHandler(async (req, res) => {
 router.get('/upload', (req, res) => {
 
   if (req.cookies.username == null) {
-    res.redirect('/');
+    res.redirect('/login');
   }
 
   const username = req.cookies.username;
@@ -115,6 +122,16 @@ router.post('/process-upload', asyncHandler(async (req, res) => {
 router.get('/:id', asyncHandler(async (req, res) => {
     
   let video = await Video.findByPk(req.params.id);
+  if (video == null) {
+    res.render("404", {message: "The video you have requested does not exist"});
+  }
+
+  const uploader = await UserInfo.findOne({
+    where: {username: video.uploader}
+  })
+  if (uploader == null) {
+    res.send("DB Integrity Error: Uploader is not in the database");
+  }
 
   const newViewCount = video.viewCount + 1;
   await video.update({ viewCount: newViewCount });
@@ -125,9 +142,6 @@ router.get('/:id', asyncHandler(async (req, res) => {
       order: [["createdAt", "DESC"]],
       where: { videoID: req.params.id }
   });
-  const uploader = await UserInfo.findOne({
-    where: {username: video.uploader}
-  })
 
   //Check if user is subscribed to the uploader
   let subscribed = false;

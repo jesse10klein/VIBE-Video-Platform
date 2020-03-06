@@ -38,15 +38,10 @@ app.get('/', (req, res) => {
     res.render('index', {username: req.cookies.username});
 });
 
-function asyncHandler(cb) {
-    return async(req, res, next) => {
-      try {
-        await cb(req, res, next);
-      } catch(error) {
-        res.status(500).send(error);
-      }
-    }
-}
+app.get('*', (req, res) => {
+  console.log("Invalid Route");
+  res.render("404", {message: "You have requested an invalid route"});
+});
 
 app.listen(3000);
 console.log("Web server listening on port 3000");
