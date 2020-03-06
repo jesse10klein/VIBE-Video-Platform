@@ -1,23 +1,31 @@
 extends ../layout
 
+block style
+  link(href='/style/video-specific.css' rel='stylesheet')
+  link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")
+
+
 block content
 
   if video
-
-    h1= video.title
-    video(width='800' height='500' controls='')
-      source(src=`/videos/${video.videoURL}.mp4` type='video/mp4')
+    #video-div
+      h1= video.title
+      video(width='700' height='400' controls='')
+        source(src=`/videos/${video.videoURL}.mp4` type='video/mp4')
     
-    #userInfo
-      h1= `${uploader.username}`
-      p= `${uploader.subscriberCount} Subscribers`
-      if subscribed
-        a(href=`/video/${video.id}/unsubscribe`)= `You are subscribed`
-      else
-        a(href=`/video/${video.id}/subscribe`)= `Subscribe`
+      #subinfo
+        p= `${uploader.subscriberCount} Subscribers`
+        if username
+          if subscribed
+            a(href=`/video/${video.id}/unsubscribe`)= `Unsubscribe`
+          else
+            a(href=`/video/${video.id}/subscribe`)= `Subscribe`
+        else
+          a(href=`/video/${video.id}/subscribe`)= `Log in to subscribe`
+      h1#username= `${uploader.username}`
      
 
-    h1= video.uploadDate
+    h1= formattedDate
     p= video.description
 
     form(action=`/video/${video.id}/add-comment` method="POST")

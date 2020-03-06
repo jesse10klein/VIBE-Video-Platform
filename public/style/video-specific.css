@@ -1,0 +1,38 @@
+
+#body {
+    font-family: 'Roboto Slab', serif;
+    padding: 0;
+    margin: 0;
+}
+
+#video-div {
+   width: 100%;
+   text-align: center;
+   align-content: center;
+}
+
+#subinfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-family: 'Oxanium', cursive;
+}
+
+#subinfo p {
+    font-size: 2em;
+    margin: 0;
+}
+
+#subinfo a {
+    text-decoration: none;
+    color: white;
+    font-size: 2em;
+    margin: 0;
+    background-color: red;
+    border-radius: 5px;
+    border: 5px solid black;
+}
+
+#username {
+    font-family: 'Oxanium', cursive;
+}

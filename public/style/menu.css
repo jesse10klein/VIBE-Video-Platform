@@ -2,7 +2,7 @@ body {
     padding: 0;
     border: none;
     margin: 0;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto Slab', serif;
 }
 
 #menu-bar {
@@ -10,7 +10,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: row;
-    width: 100vw;
+    width: 100%;
     justify-content: space-evenly;
     background-color: aqua;
 }
