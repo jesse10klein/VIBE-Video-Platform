@@ -36,7 +36,6 @@ function formatDay(day) {
 function formatDate(entry) {
   let formattedDate = "";
   var contents = entry.split('-');
-  console.log(contents);
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const month = months[parseInt(contents[1]) - 1];
   const day = formatDay(parseInt(contents[2]));
@@ -44,7 +43,6 @@ function formatDate(entry) {
   formattedDate += day + " " + month + " " + year;
   return formattedDate;
 }
-
 
 function asyncHandler(cb) {
     return async(req, res, next) => {
@@ -115,36 +113,39 @@ router.post('/process-upload', asyncHandler(async (req, res) => {
 
 //Sorting comments under video
 router.get('/:id', asyncHandler(async (req, res) => {
-    console.log(res.locals.login);
+    
+  let video = await Video.findByPk(req.params.id);
 
-    let video = await Video.findByPk(req.params.id);
-    const formattedDate = formatDate(video.uploadDate);
-    const {username} = req.cookies;
-    const comments = await Comments.findAll({ 
-        order: [["createdAt", "DESC"]],
-        where: { videoID: req.params.id }
-    });
-    const uploader = await UserInfo.findOne({
-      where: {username: video.uploader}
+  const newViewCount = video.viewCount + 1;
+  await video.update({ viewCount: newViewCount });
+
+  const formattedDate = formatDate(video.uploadDate);
+  const {username} = req.cookies;
+  const comments = await Comments.findAll({ 
+      order: [["createdAt", "DESC"]],
+      where: { videoID: req.params.id }
+  });
+  const uploader = await UserInfo.findOne({
+    where: {username: video.uploader}
+  })
+
+  //Check if user is subscribed to the uploader
+  let subscribed = false;
+  if (req.cookies.username) {
+    const subscription = await Subscriptions.findOne({
+      where: {user: uploader.username, subscriber: username}
     })
-    //Check if user is subscribed to the uploader
-    let subscribed = false;
-    if (req.cookies.username) {
-      const subscription = await Subscriptions.findOne({
-        where: {user: uploader.username, subscriber: username}
-      })
-      subscribed = !(subscription == null);
-    }
-    res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed, formattedDate});
+    subscribed = !(subscription == null);
+  }
+  res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed, formattedDate});
 }));
 
 //Subscribe to a user
-router.get('/:videoID/subscribe', asyncHandler(async (req, res) => {
+router.post('/:videoID/subscribe', asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
   if (req.cookies.username == null) {
-    console.log("About to redirect");
-    return res.redirect(`/video/${req.params.videoID}`);
+    return;
   }
 
   const video = await Video.findByPk(req.params.videoID);
@@ -156,15 +157,17 @@ router.get('/:videoID/subscribe', asyncHandler(async (req, res) => {
 
   const subscriber = req.cookies.username;
   await Subscriptions.create({ user, subscriber });
-  res.redirect(`/video/${req.params.videoID}`);
+  return;
 }));
 
 //Unsubscribe from a user
-router.get('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
+router.post('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
+
+  console.log("Unsubscribe function");
 
   //Make sure user is logged in
   if (req.cookies.username == null) {
-    return res.redirect(`/video/${req.params.videoID}`);
+    return;
   }
 
   const video = await Video.findByPk(req.params.videoID);
@@ -181,7 +184,7 @@ router.get('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
   if (!(subscription == null)) {
     await subscription.destroy();
   }
-  res.redirect(`/video/${req.params.videoID}`);
+  return;
 }));
 
 

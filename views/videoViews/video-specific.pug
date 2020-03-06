@@ -14,16 +14,16 @@ block content
         source(src=`/videos/${video.videoURL}.mp4` type='video/mp4')
     
       #subinfo
-        p= `${uploader.subscriberCount} Subscribers`
+        p= `${video.viewCount} Views`
+        p#subCount= `Subscribers: ${uploader.subscriberCount}`
         if username
           if subscribed
-            a(href=`/video/${video.id}/unsubscribe`)= `Unsubscribe`
+            button#myButton= `Unsubscribe`
           else
-            a(href=`/video/${video.id}/subscribe`)= `Subscribe`
+            button#myButton= `Subscribe`
         else
-          a(href=`/video/${video.id}/subscribe`)= `Log in to subscribe`
+          button#myButton= `Log in to subscribe`
       h1#username= `${uploader.username}`
-     
 
     h1= formattedDate
     p= video.description
@@ -38,3 +38,6 @@ block content
     comment
       h1= comment.user
       p= comment.comment
+
+block script
+  script(src='/js/test.js')

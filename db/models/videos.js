@@ -23,6 +23,11 @@ module.exports = (sequelize) => {
       type: Sequelize.DATEONLY,
       allowNull: false
     },
+    viewCount: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
     tags: {
       type: Sequelize.STRING,
       allowNull: false

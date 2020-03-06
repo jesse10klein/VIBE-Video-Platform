@@ -33,7 +33,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-
 app.get('/', (req, res) => {
     console.log(req.cookies.username);
     res.render('index', {username: req.cookies.username});
