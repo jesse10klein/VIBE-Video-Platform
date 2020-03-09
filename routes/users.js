@@ -42,19 +42,10 @@ router.get('/signup', (req, res) => {
   res.render('userViews/signup');
 })
 
-router.get('/account', (req, res) => {
-  if (req.cookies.username != null) {
-    res.send("Welcome to your account " + req.cookies.username);
-  } else {
-    res.redirect("/login");
-  }
-})
-
 //CHECK IF LOGIN MATCHES USER
 router.post('/login', asyncHandler(async (req, res) => {
 
   if (req.cookies.username) {
-    console.log("Already signed in");
     res.redirect("/");
   }
 
@@ -100,19 +91,11 @@ router.post('/signup', asyncHandler(async (req, res) => {
     }
 
     //Make sure that username and email aren't taken
-    _username = await UserInfo.findOne({
-      where: {
-        username: req.body.username
-      }
-    });
+    _username = await UserInfo.findOne({ where: { username }});
 
-    _email = await UserInfo.findOne({
-      where: {
-        email: req.body.email
-      }
-    });
+    _email = await UserInfo.findOne({ where: { email }});
 
-    if (_username == null || _email == null || _username.length == 0 || _email.length == 0) {
+    if (_username == null && _email == null ) {
       user = await UserInfo.create({ username, password, email });
       res.render("userViews/newuser");
     } else {

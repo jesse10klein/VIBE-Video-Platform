@@ -61,7 +61,6 @@ router.get('/', asyncHandler(async (req, res) => {
   const videos = await Video.findAll({ 
     order: [["uploadDate", "DESC"]]
   });
-  console.log(videos);
 
   const username = req.cookies.username;
   res.render("videoViews/video", {videos, username});
@@ -78,7 +77,7 @@ router.post('/:id/add-comment', asyncHandler(async (req, res) => {
     }
 
     if (req.cookies.username == null) {
-        res.send("You must login to post a comment");
+        res.render("404", {message: "Resourcs not found"});
     }
 
     const comment = await Comments.create({
@@ -176,8 +175,6 @@ router.post('/:videoID/subscribe', asyncHandler(async (req, res) => {
 
 //Unsubscribe from a user
 router.post('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
-
-  console.log("Unsubscribe function");
 
   //Make sure user is logged in
   if (req.cookies.username == null) {

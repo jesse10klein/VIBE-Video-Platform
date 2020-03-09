@@ -22,6 +22,8 @@ const userRoutes = require('./routes/users');
 app.use('/users', userRoutes);
 const videoRoutes = require('./routes/video');
 app.use('/video', videoRoutes);
+const accountRoutes = require('./routes/account');
+app.use('/account', accountRoutes);
 
 
 
@@ -39,7 +41,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  console.log("Invalid Route");
   res.render("404", {message: "You have requested an invalid route"});
 });
 

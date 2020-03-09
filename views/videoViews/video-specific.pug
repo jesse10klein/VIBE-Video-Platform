@@ -31,16 +31,19 @@ block content
       p#description= video.description
       p#tags= video.tags
 
-    form(action=`/video/${video.id}/add-comment` method="POST")
-      .form-element
-        p  Comment: 
-        textarea(name='comment')
-      input(type='submit')
+    if username
+      form(action=`/video/${video.id}/add-comment` method="POST")
+        .form-element
+          p  Comment: 
+          textarea(name='comment')
+        input(type='submit' value='Post Comment')
+    else
+      h3= "You need to log in to be able to post comments"
+  
 
   each comment in comments  
-    comment
-      h1= comment.user
-      p= comment.comment
+    h1= comment.user
+    p= comment.comment
 
 block script
   script(src='/js/test.js')
