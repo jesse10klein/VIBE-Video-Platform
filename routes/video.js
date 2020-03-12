@@ -83,13 +83,13 @@ router.post('/:id/add-comment', asyncHandler(async (req, res) => {
         res.render("404", {message: "Resource not found"});
     }
 
-    const comment = await Comments.create({
+    await Comments.create({
         user: req.cookies.username,
         videoID: req.params.id,
         comment: req.body.comment
     });
 
-    res.redirect('/video/' + req.params.id);
+    res.status(204).send();
 }));
 
 //Form to upload a video
@@ -161,7 +161,7 @@ router.post('/:videoID/subscribe', asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
   if (req.cookies.username == null) {
-    return;
+    res.end();
   }
 
   const video = await Video.findByPk(req.params.videoID);
@@ -173,7 +173,8 @@ router.post('/:videoID/subscribe', asyncHandler(async (req, res) => {
 
   const subscriber = req.cookies.username;
   await Subscriptions.create({ user, subscriber });
-  return;
+  console.log("Subscribed");
+  res.end();
 }));
 
 //Unsubscribe from a user
@@ -181,7 +182,7 @@ router.post('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
   if (req.cookies.username == null) {
-    return;
+    res.end();
   }
 
   const video = await Video.findByPk(req.params.videoID);
@@ -198,8 +199,39 @@ router.post('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
   if (!(subscription == null)) {
     await subscription.destroy();
   }
-  return;
+  console.log("Unsubscribed");
+  res.end();
 }));
+
+//Add upvote
+router.post('/:videoID/addUpvote', asyncHandler(async (req, res) => {
+
+  //Make sure user is logged in
+  if (req.cookies.username == null) {
+    res.end();
+  }
+
+  const video = await Video.findByPk(req.params.videoID);
+  const newUpvoteCount = video.upvotes + 1;
+  await video.update({ upvotes: newUpvoteCount });
+  res.end();
+}));
+
+//Add downvote
+router.post('/:videoID/addUpvote', asyncHandler(async (req, res) => {
+
+  //Make sure user is logged in
+  if (req.cookies.username == null) {
+    res.end();
+  }
+
+  const video = await Video.findByPk(req.params.videoID);
+  const newDownvoteCount = video.upvotes + 1;
+  await video.update({ downvotes: newDownvoteCount });
+  res.end();
+}));
+
+
 
 
 module.exports = router;

@@ -31,6 +31,16 @@ module.exports = (sequelize) => {
     tags: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+    upvotes: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    downvotes: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
     }
   }, { sequelize });
 

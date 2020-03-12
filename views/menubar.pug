@@ -8,7 +8,7 @@ ul#menu-bar
     li
       a(href='/video/upload') Upload
     li 
-      a(href='/account') My Account
+      a#username(href='/account')= `${username}`
     li
       a(href='/users/logout') Log Out
   else

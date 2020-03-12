@@ -5,16 +5,14 @@ const description = document.getElementById("description");
 const tags = document.getElementById("tags");
 const descButton = document.getElementById("descButton");
 
+const comment = document.getElementById("comment");
+const user = document.getElementById("username");
 
 const subButton = document.getElementById('subscribeButton');
 
-subButton.addEventListener('click', function(e) {
-
-  if (button.textContent != "Subscribe" && button.textContent != "Unsubscribe") {
-      return;
-  }
-
-  fetch( window.location.pathname + '/' + button.textContent.toLowerCase(), {method: 'POST'})
+function processUpvote() {
+  
+  fetch( window.location.pathname + '/addUpvote', {method: 'POST'})
     .then( response =>  {
       if(response.ok) {
         return;
@@ -25,13 +23,70 @@ subButton.addEventListener('click', function(e) {
       console.log(error);
     });
 
-  if (button.textContent == "Subscribe") {
-      button.textContent = "Unsubscribe";
+  const count = document.getElementById('upvoteCount');
+  count.innerText = parseInt(count.innerText) + 1;
+
+}
+
+function processDownvote() {
+
+  fetch( window.location.pathname + '/addDownvote', {method: 'POST'})
+  .then( response =>  {
+    if(response.ok) {
+      return;
+    }
+    throw new Error('Request failed.');
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+
+const count = document.getElementById('downvoteCount');
+count.innerText = parseInt(count.innerText) + 1;
+}
+
+function addComment() {
+
+  //Make sure comment isn't empty
+  if (comment.value == "") {
+    console.log(comment.value);
+    return;
+  }
+
+  const toAdd = `<div class="comment"> 
+                  <h1> ${user.textContent} </h1> 
+                  <p> ${comment.value} </p> 
+              </div>`;
+  console.log(toAdd);
+  const comments = document.getElementById("comments");
+  const before = comments.innerHTML;
+  comments.innerHTML = toAdd + before;
+}
+
+subButton.addEventListener('click', function(e) {
+
+  if (subButton.textContent != "Subscribe" && subButton.textContent != "Unsubscribe") {
+      return;
+  }
+
+  fetch( window.location.pathname + '/' + subButton.textContent.toLowerCase(), {method: 'POST'})
+    .then( response =>  {
+      if(response.ok) {
+        return;
+      }
+      throw new Error('Request failed.');
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+  if (subButton.textContent == "Subscribe") {
+    subButton.textContent = "Unsubscribe";
       let subs = document.getElementById("subCount");
       const subCount = parseInt(subs.textContent.slice(12));
       subs.textContent = "Subscribers " + (subCount + 1);
   } else {
-      button.textContent = "Subscribe";
+    subButton.textContent = "Subscribe";
       let subs = document.getElementById("subCount");
       const subCount = parseInt(subs.textContent.slice(12));
       subs.textContent = "Subscribers " + (subCount - 1);

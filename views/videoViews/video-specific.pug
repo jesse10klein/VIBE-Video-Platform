@@ -15,10 +15,14 @@ block content
     
       #subinfo
         p= `${video.viewCount} Views`
+        button#upVote(onclick="processUpvote()")= `Upvote`
+        p#upvoteCount= `${video.upvotes}`
+        p#downvoteCount= `${video.downvotes}`
+        button#downVote(onclick="processDownvote()")= `Downvote`
         p#subCount= `Subscribers: ${uploader.subscriberCount}`
         if username
           if subscribed
-            button#mysubscribeButton= `Unsubscribe`
+            button#subscribeButton= `Unsubscribe`
           else
             button#subscribeButton= `Subscribe`
         else
@@ -32,18 +36,19 @@ block content
       p#tags= video.tags
 
     if username
-      form(action=`/video/${video.id}/add-comment` method="POST")
+      form(action=`/video/${video.id}/add-comment` method="POST" onsubmit='addComment()')
         .form-element
           p  Comment: 
-          textarea(name='comment')
+          textarea#comment(name='comment')
         input(type='submit' value='Post Comment')
     else
       h3= "You need to log in to be able to post comments"
   
-
-  each comment in comments  
-    h1= comment.user
-    p= comment.comment
+  #comments
+    each comment in comments  
+      .comment
+        h1= comment.user
+        p= comment.comment
 
 block script
   script(src='/js/test.js')
