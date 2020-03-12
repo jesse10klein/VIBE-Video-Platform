@@ -18,9 +18,9 @@ block content
         p#subCount= `Subscribers: ${uploader.subscriberCount}`
         if username
           if subscribed
-            button#myButton= `Unsubscribe`
+            button#mysubscribeButton= `Unsubscribe`
           else
-            button#myButton= `Subscribe`
+            button#subscribeButton= `Subscribe`
         else
           button#myButton= `Log in to subscribe`
       h1#username= `${uploader.username}`

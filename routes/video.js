@@ -58,9 +58,12 @@ function asyncHandler(cb) {
 //Home VIDEO route
 router.get('/', asyncHandler(async (req, res) => {
 
-  const videos = await Video.findAll({ 
+  let videos = await Video.findAll({ 
     order: [["uploadDate", "DESC"]]
   });
+  if (videos.length == 0) {
+    videos = null;
+  }
 
   const username = req.cookies.username;
   res.render("videoViews/video", {videos, username});
@@ -77,7 +80,7 @@ router.post('/:id/add-comment', asyncHandler(async (req, res) => {
     }
 
     if (req.cookies.username == null) {
-        res.render("404", {message: "Resourcs not found"});
+        res.render("404", {message: "Resource not found"});
     }
 
     const comment = await Comments.create({

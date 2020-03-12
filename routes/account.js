@@ -7,6 +7,9 @@ const { Comments } = db.models;
 const { UserInfo } = db.models;
 const { Subscriptions } = db.models;
 
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
+
 //Require and use modules
 var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({extended: true}));
@@ -32,7 +35,7 @@ router.get('/', (req, res) => {
 ///////SOME ROUTES FOR LATER
 
 //GET ALL COMMENTS MADE BY A USER
-router.get('/comments', asyncHandler((req, res) => {
+router.get('/comments', asyncHandler(async (req, res) => {
 
     if (req.cookies.username == null) {
         res.redirect('/');
@@ -42,11 +45,12 @@ router.get('/comments', asyncHandler((req, res) => {
     const comments = await Comments.findAll({ where: { user } });
 
     //res.render('SOMETHING', comments, user)
+    res.send(comments);
 
 }));
 
 //GET ALL VIDEOS MADE BY A USER
-router.get('/videos', asyncHandler((req, res) => {
+router.get('/videos', asyncHandler(async (req, res) => {
 
     if (req.cookies.username == null) {
         res.redirect('/');
@@ -62,7 +66,7 @@ router.get('/videos', asyncHandler((req, res) => {
 
 
 //Group comment and video information together
-router.get('/group', asyncHandler((req, res) => {
+router.get('/group', asyncHandler(async (req, res) => {
 
     if (req.cookies.username == null) {
         res.redirect('/');
@@ -86,12 +90,12 @@ router.get('/group', asyncHandler((req, res) => {
 
 
 //Handle deleting a video
-router.get('/:id/deletevideo', asyncHandler((req, res) => {
+router.get('/:id/deletevideo', asyncHandler(async (req, res) => {
     //Get all comments assocaited with video and delete, then delete video entry
 
     const video = await Video.findOne({where: {id: req.params.id}});
 
-    const comments = await Comments.findAll({where: {videoID = req.params.id}});
+    const comments = await Comments.findAll({where: {videoID: req.params.id}});
 
     //Delete these
     await comments.destroy();
@@ -99,9 +103,9 @@ router.get('/:id/deletevideo', asyncHandler((req, res) => {
     res.send("Video deleted");
 
 }));
-/*
+
 //Handle deleting a user
-router.get('/deleteuser', asyncHandler((req, res) => {
+router.get('/deleteuser', asyncHandler(async (req, res) => {
 
     const username = req.cookies.username;
 
@@ -120,7 +124,12 @@ router.get('/deleteuser', asyncHandler((req, res) => {
 
     //Now delete all subscriptions
     const subscriptions = await Subscriptions.findAll({
-        opOR []//sub or user 
+        where: {
+            [Op.or]: {
+                user: username,
+                subscriber: username
+            }
+        }
     });
     await subscriptions.destroy();
 
@@ -130,7 +139,7 @@ router.get('/deleteuser', asyncHandler((req, res) => {
     res.send("All user info has been destroyed");
 
 }));
-*/
+
 
 
 

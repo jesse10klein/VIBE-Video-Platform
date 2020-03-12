@@ -2,6 +2,7 @@ extends ../layout
 
 block content
   if videos
+    h1= `Videos:`
     each video in videos  
       comment
         h1= video.title

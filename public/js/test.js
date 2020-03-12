@@ -6,8 +6,9 @@ const tags = document.getElementById("tags");
 const descButton = document.getElementById("descButton");
 
 
-const button = document.getElementById('myButton');
-button.addEventListener('click', function(e) {
+const subButton = document.getElementById('subscribeButton');
+
+subButton.addEventListener('click', function(e) {
 
   if (button.textContent != "Subscribe" && button.textContent != "Unsubscribe") {
       return;
