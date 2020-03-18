@@ -1,8 +1,6 @@
 console.log('Client-side code running');
 
-const date = document.getElementById("date");
-const description = document.getElementById("description");
-const tags = document.getElementById("tags");
+const div = document.getElementById("description-info");
 const descButton = document.getElementById("descButton");
 
 const comment = document.getElementById("comment");
@@ -11,38 +9,57 @@ const user = document.getElementById("username");
 const subButton = document.getElementById('subscribeButton');
 
 function processUpvote() {
-  
   fetch( window.location.pathname + '/addUpvote', {method: 'POST'})
-    .then( response =>  {
-      if(response.ok) {
-        return;
-      }
-      throw new Error('Request failed.');
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-
-  const count = document.getElementById('upvoteCount');
-  count.innerText = parseInt(count.innerText) + 1;
-
-}
-
-function processDownvote() {
-
-  fetch( window.location.pathname + '/addDownvote', {method: 'POST'})
   .then( response =>  {
-    if(response.ok) {
+    if(response.status == 200) {
+      const count = document.getElementById('upvoteCount');
+      count.innerText = parseInt(count.innerText) + 1;
       return;
-    }
+    } else if (response.status == 202) {
+      window.alert("You must be logged in to vote on a video");
+      return;
+    } else if (response.status == 203) {
+      return;
+    } else if (response.status == 204) {
+      const dcount = document.getElementById('downvoteCount');
+      dcount.innerText = parseInt(dcount.innerText) - 1;
+      const ucount = document.getElementById('upvoteCount');
+      ucount.innerText = parseInt(ucount.innerText) + 1;
+      return;
+    } else {
     throw new Error('Request failed.');
+    }
   })
   .catch(function(error) {
     console.log(error);
   });
+}
 
-const count = document.getElementById('downvoteCount');
-count.innerText = parseInt(count.innerText) + 1;
+function processDownvote() {
+  fetch( window.location.pathname + '/addDownvote', {method: 'POST'})
+  .then( response =>  {
+    if(response.status == 200) {
+      const count = document.getElementById('downvoteCount');
+      count.innerText = parseInt(count.innerText) + 1;
+      return;
+    } else if (response.status == 202) {
+      window.alert("You must be logged in to vote on a video");
+      return;
+    } else if (response.status == 203) {
+      return;
+    } else if (response.status == 204) {
+      const ucount = document.getElementById('upvoteCount');
+      ucount.innerText = parseInt(ucount.innerText) - 1;
+      const dcount = document.getElementById('downvoteCount');
+      dcount.innerText = parseInt(dcount.innerText) + 1;
+      return;
+    } else {
+    throw new Error('Request failed.');
+    }
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
 }
 
 function addComment() {
@@ -66,12 +83,23 @@ function addComment() {
 subButton.addEventListener('click', function(e) {
 
   if (subButton.textContent != "Subscribe" && subButton.textContent != "Unsubscribe") {
-      return;
+    window.alert("Log in to subscribe");
   }
 
   fetch( window.location.pathname + '/' + subButton.textContent.toLowerCase(), {method: 'POST'})
     .then( response =>  {
       if(response.ok) {
+        if (subButton.textContent == "Subscribe") {
+          subButton.textContent = "Unsubscribe";
+            let subs = document.getElementById("subCount");
+            const subCount = parseInt(subs.textContent.slice(12));
+            subs.textContent = "Subscribers " + (subCount + 1);
+        } else {
+          subButton.textContent = "Subscribe";
+            let subs = document.getElementById("subCount");
+            const subCount = parseInt(subs.textContent.slice(12));
+            subs.textContent = "Subscribers " + (subCount - 1);
+        }
         return;
       }
       throw new Error('Request failed.');
@@ -79,34 +107,12 @@ subButton.addEventListener('click', function(e) {
     .catch(function(error) {
       console.log(error);
     });
-
-  if (subButton.textContent == "Subscribe") {
-    subButton.textContent = "Unsubscribe";
-      let subs = document.getElementById("subCount");
-      const subCount = parseInt(subs.textContent.slice(12));
-      subs.textContent = "Subscribers " + (subCount + 1);
-  } else {
-    subButton.textContent = "Subscribe";
-      let subs = document.getElementById("subCount");
-      const subCount = parseInt(subs.textContent.slice(12));
-      subs.textContent = "Subscribers " + (subCount - 1);
-  }
 });
 
 function toggleDescription() {
-
-  console.log("Button Clicked");
-
-  if (date.style.visibility == 'visible') {
-    descButton.innerText = "Show More";
-    date.style.visibility = 'hidden';
-    description.style.visibility = 'hidden';
-    tags.style.visibility = 'hidden';
-    console.log(tags.style.visibility);
+  if (div.style.visibility == 'visible') {
+    div.style.visibility = 'hidden'
   } else {
-    descButton.innerText = "Show Less";
-    date.style.visibility = 'visible';
-    description.style.visibility = 'visible';
-    tags.style.visibility = 'visible';
+    div.style.visibility = 'visible'
   }
 }

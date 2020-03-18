@@ -6,6 +6,7 @@ const { Video } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
 const { Subscriptions } = db.models;
+const { videoVotes } = db.models;
 
 //Require and use modules
 var bodyParser = require('body-parser');
@@ -207,31 +208,95 @@ router.post('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
 router.post('/:videoID/addUpvote', asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
-  if (req.cookies.username == null) {
-    res.end();
+  if (!req.cookies.username) {
+    res.status(202).send();
   }
 
+  //Get the voting status of the user
+  const vote = await videoVotes.findOne({
+    where: {
+      user: req.cookies.username, 
+      videoID: req.params.videoID}
+    });
+
   const video = await Video.findByPk(req.params.videoID);
+
+  let alreadyVoted = false;
+
+  //If user has video disliked, remove the vote
+  if (vote && vote.status == 2) {
+    await vote.destroy();
+    const newDownvotes = video.downVotes - 1;
+    video.update({upVotes: newDownvotes})
+    alreadyVoted = true;
+  }
+
+  if (vote && vote.status == 1) {
+    res.status(203).send();
+  }
+
+  //Add upvote to db
+  const upVote = await videoVotes.create({
+    videoID: req.params.videoID,
+    user: req.cookies.username,
+    status: 1
+  });
+
+  //Add vote to video
   const newUpvoteCount = video.upvotes + 1;
   await video.update({ upvotes: newUpvoteCount });
+  if (alreadyVoted) {
+    res.status(204).send();
+  }
   res.end();
 }));
 
 //Add downvote
-router.post('/:videoID/addUpvote', asyncHandler(async (req, res) => {
+router.post('/:videoID/addDownvote', asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
-  if (req.cookies.username == null) {
-    res.end();
+  if (!req.cookies.username) {
+    res.status(202).send();
   }
 
   const video = await Video.findByPk(req.params.videoID);
-  const newDownvoteCount = video.upvotes + 1;
+
+  //Get the voting status of the user
+  const vote = await videoVotes.findOne({
+    where: {
+      user: req.cookies.username, 
+      videoID: req.params.videoID}
+    });
+  
+  let alreadyVoted = false;
+
+  //If user has video liked, remove the vote
+  if (vote && vote.status == 1) {
+    await vote.destroy();
+    const newUpvotes = video.upVotes - 1;
+    video.update({upVotes: newUpvotes})
+    alreadyVoted = true;
+  }
+
+  if (vote && vote.status == 2) {
+    res.status(203).send();
+  }
+
+  //Add downvote to db
+  const downVote = await videoVotes.create({
+    videoID: req.params.videoID,
+    user: req.cookies.username,
+    status: 2
+  });
+
+  //Add vote to video
+  const newDownvoteCount = video.downvotes + 1;
   await video.update({ downvotes: newDownvoteCount });
+  if (alreadyVoted) {
+    res.status(204).send();
+  }
   res.end();
 }));
-
-
 
 
 module.exports = router;

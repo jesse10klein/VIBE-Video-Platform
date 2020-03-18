@@ -8,32 +8,33 @@ block style
 block content
 
   if video
-    #video-div
-      h1= video.title
-      video(width='700' height='400' controls='')
-        source(src=`/videos/${video.videoURL}` type='video/mp4')
-    
-      #subinfo
+    video#video(src=`/videos/${video.videoURL}` autoplay controls)
+    #videocontent
+      p= video.title
+      #videoinfo
         p= `${video.viewCount} Views`
-        button#upVote(onclick="processUpvote()")= `Upvote`
-        p#upvoteCount= `${video.upvotes}`
-        p#downvoteCount= `${video.downvotes}`
-        button#downVote(onclick="processDownvote()")= `Downvote`
-        p#subCount= `Subscribers: ${uploader.subscriberCount}`
+        #voting
+          p#upvoteCount= `${video.upvotes}`
+          button#upVote(onclick="processUpvote()")= '👍'
+          p#downvoteCount= `${video.downvotes}`
+          button#downVote(onclick="processDownvote()")= `👎`
         if username
           if subscribed
             button#subscribeButton= `Unsubscribe`
           else
             button#subscribeButton= `Subscribe`
         else
-          button#myButton= `Log in to subscribe`
-      h1#username= `${uploader.username}`
+          button#subscribeButton= `Log in to subscribe`
+      #subinfo
+        a#username(href=`/users/${uploader.username}`)= `${uploader.username}`
+        p#subCount= `Subscribers: ${uploader.subscriberCount}`
 
-    #description-info
       button#descButton(onClick="toggleDescription()")= "Show More"
-      h1#date= formattedDate
-      p#description= video.description
-      p#tags= video.tags
+      #description-info
+        h1#date= `Uploaded on ${formattedDate}`
+        h2= `Description`
+        p#description= video.description
+        p#tags= video.tags
 
     if username
       form(action=`/video/${video.id}/add-comment` method="POST" onsubmit='addComment()')

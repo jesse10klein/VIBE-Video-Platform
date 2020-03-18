@@ -20,5 +20,6 @@ db.models.Video = require('./models/videos.js')(sequelize);
 db.models.Comments = require('./models/comments.js')(sequelize);
 db.models.Subscriptions = require('./models/subscriptions.js')(sequelize);
 db.models.Bookmarks = require('./models/bookmarks.js')(sequelize);
+db.models.videoVotes = require('./models/videoVotes.js')(sequelize);
 
 module.exports = db;
