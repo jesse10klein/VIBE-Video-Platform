@@ -2,7 +2,13 @@ const express = require('express')
 const router = express.Router();
 
 const db = require('../db');
+const { Video } = db.models;
+const { Comments } = db.models;
 const { UserInfo } = db.models;
+const { Subscriptions } = db.models;
+const { videoVotes } = db.models;
+
+
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -111,30 +117,30 @@ router.get('/:username', asyncHandler(async (req, res) => {
   
   
 //GET ALL VIDEOS FROM THIS USER
-const videos = Videos.findAll({where: {uploader: req.params.username}});
-if (videos.length == 0) videos = null
+let videos = await Video.findAll({where: {uploader: req.params.username}});
+if (videos.length == 0) videos = null 
 //GET ALL COMMENTS MADE BY THIS USER
-const comments = Comments.findAll({where: {user: req.params.username}});
+let comments = await Comments.findAll({where: {user: req.params.username}});
 if (comments.length == 0) comments = null
 //GET LIST OF PEOPLE SUBSCRIBED TO BY USER
-const subscribedTo = Subscribers.findAll({where: {subscriber: req.params.username}});
+let subscribedTo = await Subscriptions.findAll({where: {subscriber: req.params.username}});
 if (subscribedTo.length == 0) subscribedTo = null
 //GET LIST OF PEOPLE WHO SUBSCRIBE TO USER
-const subscribers = Subscribers.findAll({where: {user: req.params.username}});
+let subscribers = await Subscriptions.findAll({where: {user: req.params.username}});
 if (subscribers.length == 0) subscribers = null
 //GET LIST OF ALL LIKED VIDEOS
-const likedVideos = videoVotes.findAll({where: {user: req.params.username, status: 1}});
+let likedVideos = await videoVotes.findAll({where: {user: req.params.username, status: 1}});
 if (likedVideos.length == 0) likedVideos = null
 //GET LIST OF ALL DISLIKED VIDEOS
-const dislikedVideos = videoVotes.findAll({where: {user: req.params.username, status: 2}});
+let dislikedVideos = await videoVotes.findAll({where: {user: req.params.username, status: 2}});
 if (dislikedVideos.length == 0) dislikedVideos = null
 
-res.render('user-page', {videos, comments, subscribedTo, subscribers, likedVideos, dislikedVideos});
+//NEED TO FIND VIDEOS AND PUT IN LIST WHEN DISPLAYING VOTED VIDS
+
+res.render('userViews/user-page', {videos, comments, subscribedTo, subscribers, likedVideos, dislikedVideos});
 
 
 }));
-
-
 
 
 module.exports = router;

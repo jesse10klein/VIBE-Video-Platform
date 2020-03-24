@@ -26,14 +26,15 @@ block content
         else
           button#subscribeButton= `Log in to subscribe`
       #subinfo
-        a#username(href=`/users/${uploader.username}`)= `${uploader.username}`
+        a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
         p#subCount= `Subscribers: ${uploader.subscriberCount}`
 
       button#descButton(onClick="toggleDescription()")= "Show More"
       #description-info
-        h1#date= `Uploaded on ${formattedDate}`
-        h2= `Description`
+        h3#date= `Uploaded on ${formattedDate}`
+        h3= `Description`
         p#description= video.description
+        h3= `Tags`
         p#tags= video.tags
 
     if username
@@ -48,8 +49,9 @@ block content
   #comments
     each comment in comments  
       .comment
-        h1= comment.user
-        p= comment.comment
+        h1.commentUsername= comment.user
+        p.commentBody= comment.comment
+        p= comment.createdAt
 
 block script
   script(src='/js/test.js')

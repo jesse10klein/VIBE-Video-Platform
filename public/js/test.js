@@ -111,8 +111,10 @@ subButton.addEventListener('click', function(e) {
 
 function toggleDescription() {
   if (div.style.visibility == 'visible') {
-    div.style.visibility = 'hidden'
+    div.style.visibility = 'hidden';
+    div.style.display = 'none';
   } else {
-    div.style.visibility = 'visible'
+    div.style.visibility = 'visible';
+    div.style.display = 'block';
   }
 }

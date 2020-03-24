@@ -210,6 +210,7 @@ router.post('/:videoID/addUpvote', asyncHandler(async (req, res) => {
   //Make sure user is logged in
   if (!req.cookies.username) {
     res.status(202).send();
+    return;
   }
 
   //Get the voting status of the user
@@ -233,6 +234,7 @@ router.post('/:videoID/addUpvote', asyncHandler(async (req, res) => {
 
   if (vote && vote.status == 1) {
     res.status(203).send();
+    return;
   }
 
   //Add upvote to db
@@ -247,6 +249,7 @@ router.post('/:videoID/addUpvote', asyncHandler(async (req, res) => {
   await video.update({ upvotes: newUpvoteCount });
   if (alreadyVoted) {
     res.status(204).send();
+    return;
   }
   res.end();
 }));
@@ -256,7 +259,9 @@ router.post('/:videoID/addDownvote', asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
   if (!req.cookies.username) {
+    console.log("NO USERNAME");
     res.status(202).send();
+    return;
   }
 
   const video = await Video.findByPk(req.params.videoID);
@@ -280,6 +285,7 @@ router.post('/:videoID/addDownvote', asyncHandler(async (req, res) => {
 
   if (vote && vote.status == 2) {
     res.status(203).send();
+    return;
   }
 
   //Add downvote to db
@@ -294,6 +300,7 @@ router.post('/:videoID/addDownvote', asyncHandler(async (req, res) => {
   await video.update({ downvotes: newDownvoteCount });
   if (alreadyVoted) {
     res.status(204).send();
+    return;
   }
   res.end();
 }));
