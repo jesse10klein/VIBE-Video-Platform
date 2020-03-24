@@ -14,21 +14,15 @@ const Op = Sequelize.Op;
 
 const validator = require("email-validator");
 
+//Require helper functions
+var tools = require('./helperFunctions');
+
 //Require and use modules
 var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
-function asyncHandler(cb) {
-    return async(req, res, next) => {
-      try {
-        await cb(req, res, next);
-      } catch(error) {
-        res.status(500).send(error.message);
-      }
-    }
-}
 
 router.get('/', (req, res) => {
   res.redirect('/');
@@ -49,7 +43,7 @@ router.get('/signup', (req, res) => {
 })
 
 //CHECK IF LOGIN MATCHES USER
-router.post('/login', asyncHandler(async (req, res) => {
+router.post('/login', tools.asyncHandler(async (req, res) => {
 
   if (req.cookies.username) {
     res.redirect("/");
@@ -80,7 +74,7 @@ router.get('/logout', (req, res) => {
 
 
 //CREATE NEW USER BASED ON SIGN UP DATA
-router.post('/signup', asyncHandler(async (req, res) => {
+router.post('/signup', tools.asyncHandler(async (req, res) => {
   
     let error = "";
     let { username } = req.body;
@@ -113,7 +107,7 @@ router.post('/signup', asyncHandler(async (req, res) => {
 
 
 //Show a Users Page
-router.get('/:username', asyncHandler(async (req, res) => {
+router.get('/:username', tools.asyncHandler(async (req, res) => {
   
   
 //GET ALL VIDEOS FROM THIS USER

@@ -8,56 +8,19 @@ const { UserInfo } = db.models;
 const { Subscriptions } = db.models;
 const { videoVotes } = db.models;
 
+//Require helper functions
+var tools = require('./helperFunctions');
+
 //Require and use modules
 var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
-function formatDay(day) {
-  const ones = day % 10;
-  let formatted = "" + day;
-  switch (ones) {
-      case 1:
-          formatted += 'st';
-          break;
-      case 2: 
-          formatted += 'nd';
-          break;
-      case 3:
-          formatted += 'rd';
-          break;
-      default:
-          formatted += 'th';
-          break;
-  }
-  return formatted;
-}
 
-function formatDate(entry) {
-  let formattedDate = "";
-  var contents = entry.split('-');
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const month = months[parseInt(contents[1]) - 1];
-  const day = formatDay(parseInt(contents[2]));
-  const year = contents[0];
-  formattedDate += day + " " + month + " " + year;
-  return formattedDate;
-}
-
-function asyncHandler(cb) {
-    return async(req, res, next) => {
-      try {
-        await cb(req, res, next);
-      } catch(error) {
-        console.log(error);
-        res.status(500).send(error.message);
-      }
-    }
-}
 
 //Home VIDEO route
-router.get('/', asyncHandler(async (req, res) => {
+router.get('/', tools.asyncHandler(async (req, res) => {
 
   let videos = await Video.findAll({ 
     order: [["uploadDate", "DESC"]]
@@ -72,7 +35,7 @@ router.get('/', asyncHandler(async (req, res) => {
 
 
 //Create new comment
-router.post('/:id/add-comment', asyncHandler(async (req, res) => {
+router.post('/:id/add-comment', tools.asyncHandler(async (req, res) => {
 
     //Check that the video exists
     const video = await Video.findOne({where: {id: req.params.id}});
@@ -105,7 +68,7 @@ router.get('/upload', (req, res) => {
 })
 
 //Handle the uploading of a video/creating DB entry
-router.post('/process-upload', asyncHandler(async (req, res) => {
+router.post('/process-upload', tools.asyncHandler(async (req, res) => {
 
   const now = new Date()
 
@@ -122,29 +85,34 @@ router.post('/process-upload', asyncHandler(async (req, res) => {
 }));
 
 //Sorting comments under video
-router.get('/:id', asyncHandler(async (req, res) => {
+router.get('/:id', tools.asyncHandler(async (req, res) => {
     
   let video = await Video.findByPk(req.params.id);
   if (video == null) {
     res.render("404", {message: "The video you have requested does not exist"});
   }
+  const newViewCount = video.viewCount + 1;
+  await video.update({ viewCount: newViewCount });
 
   const uploader = await UserInfo.findOne({
     where: {username: video.uploader}
   })
   if (uploader == null) {
-    res.send("DB Integrity Error: Uploader is not in the database");
+    res.render("404", { message: "The uploader of the referenced video has recently deleted their account" });
   }
 
-  const newViewCount = video.viewCount + 1;
-  await video.update({ viewCount: newViewCount });
+  //Format date for video
+  video.formattedDate = tools.formatDate(video.uploadDate);
 
-  const formattedDate = formatDate(video.uploadDate);
   const {username} = req.cookies;
   const comments = await Comments.findAll({ 
       order: [["createdAt", "DESC"]],
       where: { videoID: req.params.id }
   });
+  //Need to format date for comments
+  for (let i = 0; i < comments.length; i++) {
+    comments[i].formattedDate = tools.formatCommentDate(comments[i].createdAt);
+  }
 
   //Check if user is subscribed to the uploader
   let subscribed = false;
@@ -154,11 +122,11 @@ router.get('/:id', asyncHandler(async (req, res) => {
     })
     subscribed = !(subscription == null);
   }
-  res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed, formattedDate});
+  res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed});
 }));
 
 //Subscribe to a user
-router.post('/:videoID/subscribe', asyncHandler(async (req, res) => {
+router.post('/:videoID/subscribe', tools.asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
   if (req.cookies.username == null) {
@@ -179,7 +147,7 @@ router.post('/:videoID/subscribe', asyncHandler(async (req, res) => {
 }));
 
 //Unsubscribe from a user
-router.post('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
+router.post('/:videoID/unsubscribe', tools.asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
   if (req.cookies.username == null) {
@@ -205,7 +173,7 @@ router.post('/:videoID/unsubscribe', asyncHandler(async (req, res) => {
 }));
 
 //Add upvote
-router.post('/:videoID/addUpvote', asyncHandler(async (req, res) => {
+router.post('/:videoID/addUpvote', tools.asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
   if (!req.cookies.username) {
@@ -255,7 +223,7 @@ router.post('/:videoID/addUpvote', asyncHandler(async (req, res) => {
 }));
 
 //Add downvote
-router.post('/:videoID/addDownvote', asyncHandler(async (req, res) => {
+router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
   if (!req.cookies.username) {

@@ -16,16 +16,9 @@ router.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
-function asyncHandler(cb) {
-    return async(req, res, next) => {
-      try {
-        await cb(req, res, next);
-      } catch(error) {
-        res.status(500).send(error.message);
-      }
-    }
-}
 
+//Require helper functions
+var tools = require('./helperFunctions');
 
 router.get('/', (req, res) => {
     console.log("HERE");
@@ -35,7 +28,7 @@ router.get('/', (req, res) => {
 ///////SOME ROUTES FOR LATER
 
 //GET ALL COMMENTS MADE BY A USER
-router.get('/comments', asyncHandler(async (req, res) => {
+router.get('/comments', tools.asyncHandler(async (req, res) => {
 
     if (req.cookies.username == null) {
         res.redirect('/');
@@ -50,7 +43,7 @@ router.get('/comments', asyncHandler(async (req, res) => {
 }));
 
 //GET ALL VIDEOS MADE BY A USER
-router.get('/videos', asyncHandler(async (req, res) => {
+router.get('/videos', tools.asyncHandler(async (req, res) => {
 
     if (req.cookies.username == null) {
         res.redirect('/');
@@ -66,7 +59,7 @@ router.get('/videos', asyncHandler(async (req, res) => {
 
 
 //Group comment and video information together
-router.get('/group', asyncHandler(async (req, res) => {
+router.get('/group', tools.asyncHandler(async (req, res) => {
 
     if (req.cookies.username == null) {
         res.redirect('/');
@@ -90,7 +83,7 @@ router.get('/group', asyncHandler(async (req, res) => {
 
 
 //Handle deleting a video
-router.get('/:id/deletevideo', asyncHandler(async (req, res) => {
+router.get('/:id/deletevideo', tools.asyncHandler(async (req, res) => {
     //Get all comments assocaited with video and delete, then delete video entry
 
     const video = await Video.findOne({where: {id: req.params.id}});
@@ -105,7 +98,7 @@ router.get('/:id/deletevideo', asyncHandler(async (req, res) => {
 }));
 
 //Handle deleting a user
-router.get('/deleteuser', asyncHandler(async (req, res) => {
+router.get('/deleteuser', tools.asyncHandler(async (req, res) => {
 
     const username = req.cookies.username;
 

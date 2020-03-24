@@ -31,7 +31,7 @@ block content
 
       button#descButton(onClick="toggleDescription()")= "Show More"
       #description-info
-        h3#date= `Uploaded on ${formattedDate}`
+        h3#date= `Uploaded on ${video.formattedDate}`
         h3= `Description`
         p#description= video.description
         h3= `Tags`
@@ -51,7 +51,7 @@ block content
       .comment
         h1.commentUsername= comment.user
         p.commentBody= comment.comment
-        p= comment.createdAt
+        p= comment.formattedDate
 
 block script
   script(src='/js/test.js')
