@@ -1,0 +1,32 @@
+extends ../layout 
+
+block content
+  if videos
+    h1= "videos"
+    each video in videos
+      h1= video.title
+
+  if comments
+    h1= "comments"
+    each comment in comments
+      h1= comment.comment
+
+  if subscribedTo
+    h1= "subscribedTo"
+    each subscriber in subscribedTo
+      h1= subscriber.user
+
+  if subscribers
+    h1= "subscribers"
+    each subscriber in subscribers
+      h1= subscriber.subscriber
+
+  if likedVideos
+    h1= "likedVideos"
+    each video in likedVideos
+      h1= video.id
+
+  if dislikedVideos
+    h1= "dislikedVideos"
+    each video in dislikedVideos
+      h1= video.id

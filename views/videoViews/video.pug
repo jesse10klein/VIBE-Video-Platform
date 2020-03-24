@@ -1,7 +1,11 @@
 extends ../layout
 
 block content
-  each video in videos  
-    comment
-      h1= video.title
-      a(href=`/video/${video.id}`) View me!
+  if videos
+    h1= `Videos:`
+    each video in videos  
+      comment
+        h1= video.title
+        a(href=`/video/${video.id}`) View me!
+  else
+    h1= `No videos uploaded yet`

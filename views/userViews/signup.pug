@@ -1,31 +1,34 @@
 extends ../layout
 
+block style
+  link(href="/style/login.css" rel="stylesheet")
+
 block content
   if fill
-    form(action="/users/signup" method="POST")
-      .form-element
-        p  Username: 
-        input(type='text' name='username' value=`${fill.username}`)
-      .form-element
-        p  Email: 
-        input(type='text' name='email' value=`${fill.email}`)
-      .form-element
-        p  Password: 
-        input(name='password')
-      input(type='submit')
-      a#signup(href='/singup') Sign Up
+    #form-div
+      form(action="/users/signup" method="POST")
+        .form-element
+          p  Username: 
+          input(type='text' name='username' value=`${fill.username}`)
+        .form-element
+          p  Email: 
+          input(type='text' name='email' value=`${fill.email}`)
+        .form-element
+          p  Password: 
+          input(name='password')
+        input(type='submit' value="Create Account")
   else
-    form(action="/users/signup" method="POST")
-      .form-element
-        p  Username: 
-        input(type='text' name='username')
-      .form-element
-        p  Email: 
-        input(type='text' name='email')
-      .form-element
-        p  Password: 
-        input(name='password')
-      input(type='submit')
-      a#signup(href='/singup') Sign Up
+    #form-div
+      form(action="/users/signup" method="POST")
+        .form-element
+          p  Username: 
+          input(type='text' name='username')
+        .form-element
+          p  Email: 
+          input(type='text' name='email')
+        .form-element
+          p  Password: 
+          input(name='password')
+        input(type='submit' value="Create Account")
 
   h1= error

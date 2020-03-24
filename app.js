@@ -22,6 +22,8 @@ const userRoutes = require('./routes/users');
 app.use('/users', userRoutes);
 const videoRoutes = require('./routes/video');
 app.use('/video', videoRoutes);
+const accountRoutes = require('./routes/account');
+app.use('/account', accountRoutes);
 
 
 
@@ -38,15 +40,9 @@ app.get('/', (req, res) => {
     res.render('index', {username: req.cookies.username});
 });
 
-function asyncHandler(cb) {
-    return async(req, res, next) => {
-      try {
-        await cb(req, res, next);
-      } catch(error) {
-        res.status(500).send(error);
-      }
-    }
-}
+app.get('*', (req, res) => {
+  res.render("404", {message: "You have requested an invalid route"});
+});
 
 app.listen(3000);
 console.log("Web server listening on port 3000");

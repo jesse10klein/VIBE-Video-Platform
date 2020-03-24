@@ -2,7 +2,7 @@ body {
     padding: 0;
     border: none;
     margin: 0;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Oxanium', cursive;
 }
 
 #menu-bar {
@@ -10,23 +10,25 @@ body {
     padding: 0;
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 80%;
+    padding-left: 20%;
     justify-content: space-evenly;
     background-color: aqua;
+    height: 50px
 }
 
 #menu-bar li {  
-    height: 10vh;
     list-style: none;
-    font-size: 2.5em;
+    font-size: 150%;
 }
 
 #menu-bar a {
-    margin-top: 2vh;
     color: black;
     text-decoration: none;
 }
 
 img {
-    height: 10vh;
+    position: absolute;
+    height: 50px;
+    margin-left: 45px;
 }

@@ -1,14 +1,31 @@
 
 #body {
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Oxanium', cursive;
     padding: 0;
     margin: 0;
 }
 
-#video-div {
-   width: 100%;
-   text-align: center;
-   align-content: center;
+#video {
+    margin-top: 50px;
+    width: 60vw;
+    margin-left: 20vw;
+    height: auto;
+    max-height: 33vw;
+    min-height: 33vw;
+    border: 5px solid black;
+    background-color: black;
+}
+
+#videocontent {
+    width: 60%;
+    margin-left: 20%;
+    font-size: 150%;
+}
+
+#videoinfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
 #subinfo {
@@ -18,21 +35,62 @@
     font-family: 'Oxanium', cursive;
 }
 
-#subinfo p {
-    font-size: 2em;
-    margin: 0;
-}
 
-#subinfo button {
+#subscribeButton {
     text-decoration: none;
     color: white;
-    font-size: 2em;
+    font-size: 100%;
     margin: 0;
+    padding: 0;
     background-color: red;
     border-radius: 5px;
-    border: 5px solid black;
+    border: 3px solid black;
+    margin-top: 20px;
+    height: 40px;
 }
 
-#username {
-    font-family: 'Oxanium', cursive;
+#userName {
+    text-decoration: none;
+    color: black;
+    line-height: 80px;
+}
+
+#descButton {
+    color: black;
+}
+
+#voting {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+#voting button {
+    margin-left: 10px;
+    margin-top: 20px;
+    height: 50%;
+}
+
+#voting p {
+    margin-left: 10px;
+}
+
+#videoinfo {
+    display: flex;
+    flex-direction: row;
+}
+
+#description-info {
+    visibility: hidden;
+    display: none;
+    font-size: 80%;
+}
+
+.commentUsername {
+
+}
+
+.commentBody {
+
 }

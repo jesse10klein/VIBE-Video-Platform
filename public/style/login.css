@@ -1,0 +1,36 @@
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+#form-div {
+    margin-top: 5%;
+    margin-left: 17%;
+    padding: 3%;
+    width: 60%;
+    text-align: center;
+    align-content: center;
+    background-color: rgb(128, 128, 128);
+}
+
+#form-div p {
+    font-size: 1.4em;
+}
+
+#form-div input {
+    width: 60%
+}
+
+#signup {
+    font-size: 1.5em;
+    text-decoration: none;
+    color: white;
+    background-color: red;
+    border: 2px solid black;
+    border-radius: 5px;
+
+}
+
+

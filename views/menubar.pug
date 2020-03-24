@@ -1,14 +1,13 @@
+a(href='/')
+      img(src='/images/metube.png' href=`/`) 
 ul#menu-bar
-  li
-    a(href='/')
-      img(src='/images/metube.png' href="/") 
   li
     a(href='/video')  Video
   if username
     li
       a(href='/video/upload') Upload
     li 
-      a(href='/users/account') My Account
+      a#username(href=`/users/${username}`)= `Account`
     li
       a(href='/users/logout') Log Out
   else
