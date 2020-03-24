@@ -82,8 +82,9 @@ function addComment() {
 
 subButton.addEventListener('click', function(e) {
 
-  if (subButton.textContent != "Subscribe" && subButton.textContent != "Unsubscribe") {
+  if (subButton.className == "notLoggedIn") {
     window.alert("Log in to subscribe");
+    return;
   }
 
   fetch( window.location.pathname + '/' + subButton.textContent.toLowerCase(), {method: 'POST'})

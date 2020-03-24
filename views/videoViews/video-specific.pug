@@ -24,7 +24,7 @@ block content
           else
             button#subscribeButton= `Subscribe`
         else
-          button#subscribeButton= `Log in to subscribe`
+          button#subscribeButton.notLoggedIn= `Subscribe`
       #subinfo
         a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
         p#subCount= `Subscribers: ${uploader.subscriberCount}`
