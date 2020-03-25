@@ -3,9 +3,19 @@ extends ../layout
 block content
   if videos
     h1= `Videos:`
-    each video in videos  
-      comment
-        h1= video.title
-        a(href=`/video/${video.id}`) View me!
+    #video-container
+      each video in videos  
+        .video-preview
+          a(href=`/video/${video.id}`)
+            h1= video.title
+            h2= video.uploader
+            video(src=`/videos/${video.videoURL}`)
   else
-    h1= `No videos uploaded yet`
+    h1= "No videos uploaded yet"
+
+block style
+  link(href='/style/videos.css' rel='stylesheet')
+  link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")
+
+block script
+  script(src='/js/videos.js')

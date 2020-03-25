@@ -56,33 +56,7 @@ router.post('/:id/add-comment', tools.asyncHandler(async (req, res) => {
     res.status(204).send();
 }));
 
-//Form to upload a video
-router.get('/upload', (req, res) => {
 
-  if (req.cookies.username == null) {
-    res.redirect('/login');
-  }
-
-  const username = req.cookies.username;
-  res.render('videoViews/upload', {username});
-})
-
-//Handle the uploading of a video/creating DB entry
-router.post('/process-upload', tools.asyncHandler(async (req, res) => {
-
-  const now = new Date()
-
-  video = await Video.create({
-    uploader: req.cookies.username,
-    title: req.body.title,
-    tags: req.body.tags,
-    description: req.body.description,
-    videoURL: req.body.videoURL,
-    uploadDate: now.toISOString().slice(0, 10)
-  });
-
-  res.redirect("/video/" + video.id);
-}));
 
 //Sorting comments under video
 router.get('/:id', tools.asyncHandler(async (req, res) => {

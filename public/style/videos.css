@@ -1,0 +1,30 @@
+
+
+
+#video-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+#video-container a {
+    text-decoration: none;
+    color: black;
+}
+
+.video-preview {
+    margin-top: 30px;
+    width: 45%;
+    height: 40vw;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.video-preview video {
+    width: 60%;
+    height: auto;
+    max-height: 38%;
+    border: 5px solid black;
+}

@@ -24,6 +24,8 @@ const videoRoutes = require('./routes/video');
 app.use('/video', videoRoutes);
 const accountRoutes = require('./routes/account');
 app.use('/account', accountRoutes);
+const uploadRoutes = require('./routes/upload');
+app.use('/upload', uploadRoutes);
 
 
 
