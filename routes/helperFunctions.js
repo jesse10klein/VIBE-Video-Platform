@@ -40,7 +40,7 @@ function formatDate(entry) {
     return formattedDate;
 }
 
-function formatCommentDate(commentDate) {
+function formatTimeSince(commentDate) {
 
   const date = Date.parse(commentDate);
   const now = Date.now();
@@ -48,22 +48,49 @@ function formatCommentDate(commentDate) {
 
   let timePassed = "NULL";
 
-  const days = Math.ceil(sinceUpload / (1000 * 60 * 60 * 24));
+  let days = sinceUpload / (1000 * 60 * 60 * 24);
+  if (days > 1) {
+    days = Math.ceil(days);
+  }
+  console.log(days);
   const hours = Math.ceil(sinceUpload / (1000 * 60 * 60));
   const minutes =  Math.ceil(sinceUpload / (1000 * 60));
 
-  if (days > 0) {
+  console.log("days: " + days + " hours: " + hours + " minutes: " + minutes);
+
+
+  if (days > 1) {
     if (days == 1) timePassed = "Posted 1 day ago";
-    else timePassed = "Posted " + days + " days ago";
+    else timePassed = days + " days ago";
   } else if (hours > 0) {
-    if (hours == 1) timePassed = "Posted 1 day ago";
+    if (hours == 1) timePassed = "1 hour ago";
     else timePassed = "Posted " + hours + " hours ago";
   } else if (minutes > 0) {
-    if (minutes < 3) timePassed = "Posted just now";
-    else timePassed = "Posted " + minutes + " minutes ago";
+    if (minutes < 3) timePassed = "just now";
+    else timePassed = minutes + " minutes ago";
   } 
   
   return timePassed;
 }
 
-module.exports = {asyncHandler, formatDay, formatDate, formatCommentDate};
+function formatTitle(title) {
+  if (title.length > 45) {
+    return title.slice(0, 45) + "...";
+  } else {
+    return title;
+  }
+}
+
+function formatViews(views) {
+  //Just gonna go ahead and assume a video won't get a billion views
+
+  if (views < 1000) {
+    return views;
+  } else if (views < 1000000) {
+    return (views % 1000) + "K";
+  } else {
+    return (views % 1000000) + "M";
+  }
+}
+
+module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, formatViews};

@@ -13,9 +13,12 @@ block content
       each vid in videos
         .video-preview
             a(href=`/video/${vid.id}`)
-              h1= vid.title
-              h2= vid.uploader
               video(src=`/videos/${vid.videoURL}`)
+              #svidinfo
+                h1= vid.formattedTitle
+                h2= vid.uploader
+                h3= `${vid.formattedViews} Views`
+                h3= vid.formattedUploadDate
   else
     h1= `No videos yet`
 
@@ -64,7 +67,7 @@ block content
         .comment
           h1.commentUsername= comment.user
           p.commentBody= comment.comment
-          p= comment.formattedDate
+          p= `Posted ${comment.formattedDate}`
 
 block script
   script(src='/js/video-specific.js')

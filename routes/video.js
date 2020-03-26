@@ -76,19 +76,26 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   }
 
   //Get videos for sidebar: for now just any videos
-  const videos = await Video.findAll({order: [["createdAt", "DESC"]]});
+  let videos = await Video.findAll({order: [["createdAt", "DESC"]]});
+
+  //FORMAT THESE VIDEOS (TITLE, VIEWS, UPLOAD)
+  for (let i = 0; i < videos.length; i++) {
+    videos[i].formattedTitle = tools.formatTitle(videos[i].title);
+    videos[i].formattedViews = tools.formatViews(videos[i].viewCount);
+    videos[i].formattedUploadDate = tools.formatTimeSince(videos[i].createdAt);
+  }
 
   //Format date for video
   video.formattedDate = tools.formatDate(video.uploadDate);
 
   const {username} = req.cookies;
-  const comments = await Comments.findAll({ 
+  let comments = await Comments.findAll({ 
       order: [["createdAt", "DESC"]],
       where: { videoID: req.params.id }
   });
   //Need to format date for comments
   for (let i = 0; i < comments.length; i++) {
-    comments[i].formattedDate = tools.formatCommentDate(comments[i].createdAt);
+    comments[i].formattedDate = tools.formatTimeSince(comments[i].createdAt);
   }
 
   //Check if user is subscribed to the uploader

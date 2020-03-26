@@ -6,6 +6,7 @@
 }
 
 #other-content {
+    margin-top: 40px;
     position: fixed;
     right: 400px;
     left: 0;
@@ -93,30 +94,59 @@
 }
 
 .video-preview {
-    margin-top: 30px;
+    margin-bottom: 30px;
     text-align: center;
-    border: 1px solid black;
     border-radius: 10px;
 }
 
 .video-preview video {
-    width: 60%;
-    height: auto;
+    margin-top: 10px;
+    width: 150px;
+    height: 85px;
     max-height: 38%;
-    border: 5px solid black;
+    border: 2px solid black;
+    background-color: black;
 }
 
 #sidebar {
     display: block;
     font-size: 0.5em;
     float: right;
-    width: 350px;
-    margin-right: 25px;
-    height: 175px;
+    width: 360px;
+    margin-right: 20px;
     right: 0;
+    height: 100%;
+    padding-left: 10px;
+    margin-top: 80px;
+    margin-bottom: 10px;
+    border-left: 4px solid black;
 }
 
-@media screen and (max-width: 1200px) {
+.video-preview a {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+#svidinfo {
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    line-height: 0%;
+}
+
+#svidinfo h1 {
+    font-size: 2em;
+    line-height: 100%;
+}
+
+#sidebar a {
+    text-decoration: none;
+    color: black;
+}
+
+@media screen and (max-width: 1220px) {
     #sidebar {
         display: none;
     }
@@ -129,11 +159,11 @@
     }
 
     #video {
-        margin-top: 50px;
-        width: 60vw;
+        margin-top: 70px;
+        width: 732px;
         height: auto;
-        max-height: 33vw;
-        min-height: 33vw;
+        max-height: 407px;
+        min-height: 407px;
         border: 5px solid black;
         background-color: black;
     }
@@ -145,7 +175,29 @@
     }
 }
 
-#sidebar a {
-    text-decoration: none;
-    color: black;
+@media screen and (min-width: 1350px) {
+
+
+    #video {
+        margin-top: 40px;
+        width: 900px;
+        height: auto;
+        max-height: 508px;
+        min-height: 508px;
+        background-color: black;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+
+
+    #video {
+        margin-top: 40px;
+        width: 1050px;
+        height: auto;
+        max-height: 583px;
+        min-height: 583px;
+        border: 5px solid black;
+        background-color: black;
+    }
 }
