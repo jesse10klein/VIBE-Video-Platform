@@ -75,6 +75,9 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
     res.render("404", { message: "The uploader of the referenced video has recently deleted their account" });
   }
 
+  //Get videos for sidebar: for now just any videos
+  const videos = await Video.findAll({order: [["createdAt", "DESC"]]});
+
   //Format date for video
   video.formattedDate = tools.formatDate(video.uploadDate);
 
@@ -96,7 +99,7 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
     })
     subscribed = !(subscription == null);
   }
-  res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed});
+  res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed, videos});
 }));
 
 //Subscribe to a user

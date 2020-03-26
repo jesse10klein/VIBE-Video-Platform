@@ -7,51 +7,64 @@ block style
 
 block content
 
-  if video
-    video#video(src=`/videos/${video.videoURL}` autoplay controls)
-    #videocontent
-      p= video.title
-      #videoinfo
-        p= `${video.viewCount} Views`
-        #voting
-          p#upvoteCount= `${video.upvotes}`
-          button#upVote(onclick="processUpvote()")= '👍'
-          p#downvoteCount= `${video.downvotes}`
-          button#downVote(onclick="processDownvote()")= `👎`
-        if username
-          if subscribed
-            button#subscribeButton= `Unsubscribe`
+  //SIDE BAR FOR VIDEOS
+  if videos
+    #sidebar
+      each vid in videos
+        .video-preview
+            a(href=`/video/${vid.id}`)
+              h1= vid.title
+              h2= vid.uploader
+              video(src=`/videos/${vid.videoURL}`)
+  else
+    h1= `No videos yet`
+
+  #other-content
+    if video
+      video#video(src=`/videos/${video.videoURL}` autoplay controls)
+      #videocontent
+        p= video.title
+        #videoinfo
+          p= `${video.viewCount} Views`
+          #voting
+            p#upvoteCount= `${video.upvotes}`
+            button#upVote(onclick="processUpvote()")= '👍'
+            p#downvoteCount= `${video.downvotes}`
+            button#downVote(onclick="processDownvote()")= `👎`
+          if username
+            if subscribed
+              button#subscribeButton= `Unsubscribe`
+            else
+              button#subscribeButton= `Subscribe`
           else
-            button#subscribeButton= `Subscribe`
-        else
-          button#subscribeButton.notLoggedIn= `Subscribe`
-      #subinfo
-        a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
-        p#subCount= `Subscribers: ${uploader.subscriberCount}`
+            button#subscribeButton.notLoggedIn= `Subscribe`
+        #subinfo
+          a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
+          p#subCount= `Subscribers: ${uploader.subscriberCount}`
 
-      button#descButton(onClick="toggleDescription()")= "Show More"
-      #description-info
-        h3#date= `Uploaded on ${video.formattedDate}`
-        h3= `Description`
-        p#description= video.description
-        h3= `Tags`
-        p#tags= video.tags
+        button#descButton(onClick="toggleDescription()")= "Show More"
+        #description-info
+          h3#date= `Uploaded on ${video.formattedDate}`
+          h3= `Description`
+          p#description= video.description
+          h3= `Tags`
+          p#tags= video.tags
 
-    if username
-      form(action=`/video/${video.id}/add-comment` method="POST" onsubmit='addComment()')
-        .form-element
-          p  Comment: 
-          textarea#comment(name='comment')
-        input(type='submit' value='Post Comment')
-    else
-      h3= "You need to log in to be able to post comments"
-  
-  #comments
-    each comment in comments  
-      .comment
-        h1.commentUsername= comment.user
-        p.commentBody= comment.comment
-        p= comment.formattedDate
+      if username
+        form(action=`/video/${video.id}/add-comment` method="POST" onsubmit='addComment()')
+          .form-element
+            p  Comment: 
+            textarea#comment(name='comment')
+          input(type='submit' value='Post Comment')
+      else
+        h3= "You need to log in to be able to post comments"
+    
+    #comments
+      each comment in comments  
+        .comment
+          h1.commentUsername= comment.user
+          p.commentBody= comment.comment
+          p= comment.formattedDate
 
 block script
   script(src='/js/video-specific.js')
