@@ -28,8 +28,11 @@ router.get('/', (req, res) => {
       res.redirect('/login');
     }
   
+    const fillInfo = {};
+    const error = {};
     const username = req.cookies.username;
-    res.render('uploadViews/upload', {username});
+
+    res.render('uploadViews/upload', {username, fillInfo, error});
 })
 /**
  */
@@ -38,10 +41,8 @@ function uploadVideo(fileName) {
   const file = fileName;
   const name = file.name;
   const type = file.mimetype;
-  var uploadpath = "../INFS3202/public/videos/" + name;
 
-  if (type != "video/mp4") {
-  }
+  var uploadpath = "../INFS3202/public/videos/" + name;
 
   file.mv(uploadpath, function(err){
     if(err){
@@ -53,18 +54,26 @@ function uploadVideo(fileName) {
   });
 }
 
-
 router.post('/', tools.asyncHandler( async (req, res) => {
 
-  if (req.files.fileName) {
+  const username = req.cookies.username;
 
+  const {title} = req.body;
+  const {description} = req.body;
+  const {tags} = req.body;
+
+  //CHECK ALL IS VALID
+  const dataCheck = tools.checkUploadData(title, description, tags);
+  if (dataCheck.length != 0) {
+    const error = tools.checkForErrors(dataCheck, req.files);
+    const fillInfo = {title, description, tags};
+    res.render("uploadViews/upload", {username, fillInfo, error});
+    return;
+  }
+
+  if (req.files.fileName) {
     //ASSUME VIDEO IS UPLOADED FINE???
     uploadVideo(req.files.fileName);
-
-    const {title} = req.body;
-    const {description} = req.body;
-    const {tags} = req.body;
-    const {videoURL} = req.files.fileName.name;
 
     const now = new Date();
     const newVideo = await Video.create({

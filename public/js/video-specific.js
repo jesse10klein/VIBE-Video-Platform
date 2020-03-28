@@ -9,7 +9,15 @@ const user = document.getElementById("username");
 const subButton = document.getElementById('subscribeButton');
 
 window.onresize = resizeVideo;
-window.onload = resizeVideo; 
+window.onload = initiatePage; 
+
+function initiatePage() {
+  const video = document.getElementById("video");
+  video.volume = 0.25;
+  resizeVideo();
+
+}
+
 
 function resizeVideo() {
 

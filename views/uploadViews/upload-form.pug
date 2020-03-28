@@ -3,15 +3,36 @@
 
 form(enctype="multipart/form-data" action="/upload" method="POST")
     .form-element
-      p= 'Video Title:'
-      input#title(type='text' name='title')
+      .perror
+        p= 'Video Title:'
+        if error.title
+          p.error= error.title
+      if fillInfo.title
+        input#title(type='text' name='title' value=`${fillInfo.title}`)
+      else
+        input#title(type='text' name='title')
     .form-element
-      p= 'Description: '
-      textarea#description(name='description')
+      .perror
+        p= 'Description: '
+        if error.description
+          p.error= error.description
+      if fillInfo.decription
+        textarea#description(name='description' value=`${fillInfo.decription}`)
+      else
+        textarea#description(name='description')
     .form-element
-      p= 'Tags: '
-      textarea#tags(name='tags')
+      .perror
+        p= 'Tags: '
+        if error.tags
+          p.error= error.tags
+      if fillInfo.tags
+        textarea#tags(name='tags')= `${fillInfo.decription}`
+      else
+        textarea#tags(name='tags')
     #video-upload
-      p= 'Video Path: '
+      .perror
+        p= 'Video Path: '
+        if error.file
+          p.error= error.file
       input(type='file' name='fileName')
     input#submit(type='submit' value='Upload Video')

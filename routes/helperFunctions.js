@@ -89,4 +89,42 @@ function formatViews(views) {
   }
 }
 
-module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, formatViews};
+function checkUploadData(title, description, tags) {
+
+  let errors = [];
+
+  if (title.length < 5) {
+    errors.push(1);
+  }
+
+  if (description.length < 5) {
+    errors.push(2);
+  }
+
+  if (tags.length < 5) {
+    errors.push(3);
+  }
+
+  return errors;
+}
+
+function checkForErrors(potentialErrors, file) {
+  let error = {};
+  if (potentialErrors.includes(1)) {
+    error.title = "Title must be at least 5 characters long";
+  } 
+  if (potentialErrors.includes(2)) {
+    error.description = "Description must be at least 5 characters long";
+  } 
+  if (potentialErrors.includes(3)) {
+    error.tags = "Tags must be at least 5 characters long";
+  } 
+  if (!file) {
+    error.file = "You must select a file to upload";
+  } else if (file.fileName.mimetype != "video/mp4") {
+    error.file = "You must select an mp4 file";
+  }
+  return error;
+}
+
+module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, formatViews, checkUploadData, checkForErrors};

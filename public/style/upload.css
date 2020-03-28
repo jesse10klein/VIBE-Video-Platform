@@ -35,6 +35,14 @@
     font-size: 1.5em;
 }
 
-#submit {
+.error {
+    margin-left: 10px;
+    color: red;
+    font-weight: bolder;
+}
 
+
+.perror {
+    display: flex;
+    flex-direction: row;
 }
