@@ -21,8 +21,7 @@
 }
 
 .video-preview video {
-    width: 60%;
-    height: auto;
-    max-height: 38%;
+    width: 200px;
+    height: 113px;
     border: 2px solid black;
 }

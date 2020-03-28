@@ -109,7 +109,8 @@ router.post('/signup', tools.asyncHandler(async (req, res) => {
 //Show a Users Page
 router.get('/:username', tools.asyncHandler(async (req, res) => {
   
-  
+const username = req.cookies.username;
+
 //GET ALL VIDEOS FROM THIS USER
 let videos = await Video.findAll({where: {uploader: req.params.username}});
 if (videos.length == 0) videos = null 
@@ -131,7 +132,7 @@ if (dislikedVideos.length == 0) dislikedVideos = null
 
 //NEED TO FIND VIDEOS AND PUT IN LIST WHEN DISPLAYING VOTED VIDS
 
-res.render('userViews/user-page', {videos, comments, subscribedTo, subscribers, likedVideos, dislikedVideos});
+res.render('userViews/user-page', {videos, comments, subscribedTo, subscribers, likedVideos, dislikedVideos, username});
 
 
 }));

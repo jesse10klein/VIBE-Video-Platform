@@ -1,6 +1,9 @@
 extends ../layout 
 
-block content
-  h1= `Upload your very own video!`
+block style
+  link(href="/style/upload.css" rel="stylesheet")
 
-  include upload-form
+block content
+
+  #upload-form
+    include upload-form

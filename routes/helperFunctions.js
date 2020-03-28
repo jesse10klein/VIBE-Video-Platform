@@ -52,12 +52,8 @@ function formatTimeSince(commentDate) {
   if (days > 1) {
     days = Math.ceil(days);
   }
-  console.log(days);
   const hours = Math.ceil(sinceUpload / (1000 * 60 * 60));
   const minutes =  Math.ceil(sinceUpload / (1000 * 60));
-
-  console.log("days: " + days + " hours: " + hours + " minutes: " + minutes);
-
 
   if (days > 1) {
     if (days == 1) timePassed = "Posted 1 day ago";

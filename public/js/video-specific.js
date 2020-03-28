@@ -8,6 +8,39 @@ const user = document.getElementById("username");
 
 const subButton = document.getElementById('subscribeButton');
 
+window.onresize = resizeVideo;
+window.onload = resizeVideo; 
+
+function resizeVideo() {
+
+  console.log(window.innerWidth);
+
+  //Get video and change dimensions
+  const video = document.getElementById("video");
+
+  //Only resize if window width is greater than 1220
+  if (window.innerWidth < 1220)  {
+    return;
+  } else if (window.innerWidth > 1540) {
+    video.style.width = 1100 + "px";
+    video.style.minHeight = 1100 / 1.77 + "px";
+    video.style.maxHeight = 1100 / 1.77 + "px";
+    return;
+  }
+  //Width - width of sidebar - 40px padding (20 each side)
+  const roomForVideo = window.innerWidth - 400 - 40;
+
+  video.style.width = roomForVideo + "px";
+  //The 1.77 is based off popular video height/width ratios
+  video.style.minHeight = roomForVideo / 1.77 + "px";
+  video.style.maxHeight = roomForVideo / 1.77 + "px";
+
+  console.log(video.style);
+  console.log(subButton);
+
+};
+
+
 function processUpvote() {
   fetch( window.location.pathname + '/addUpvote', {method: 'POST'})
   .then( response =>  {
@@ -93,13 +126,15 @@ subButton.addEventListener('click', function(e) {
         if (subButton.textContent == "Subscribe") {
           subButton.textContent = "Unsubscribe";
             let subs = document.getElementById("subCount");
-            const subCount = parseInt(subs.textContent.slice(12));
-            subs.textContent = "Subscribers " + (subCount + 1);
+            const len = subs.textContent.length;
+            const subCount = parseInt(subs.textContent.slice(0,len - 12));
+            subs.textContent = (subCount + 1) + " Subscribers ";
         } else {
           subButton.textContent = "Subscribe";
             let subs = document.getElementById("subCount");
-            const subCount = parseInt(subs.textContent.slice(12));
-            subs.textContent = "Subscribers " + (subCount - 1);
+            const len = subs.textContent.length;
+            const subCount = parseInt(subs.textContent.slice(0,len - 12));
+            subs.textContent = (subCount - 1) + " Subscribers ";
         }
         return;
       }
@@ -111,11 +146,14 @@ subButton.addEventListener('click', function(e) {
 });
 
 function toggleDescription() {
+
   if (div.style.visibility == 'visible') {
     div.style.visibility = 'hidden';
     div.style.display = 'none';
+    descButton.textContent = 'Show Description';
   } else {
     div.style.visibility = 'visible';
     div.style.display = 'block';
+    descButton.textContent = 'Hide Description';
   }
 }

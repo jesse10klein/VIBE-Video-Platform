@@ -4,14 +4,14 @@
 form(enctype="multipart/form-data" action="/upload" method="POST")
     .form-element
       p= 'Video Title:'
-      input(type='text' name='title')
+      input#title(type='text' name='title')
     .form-element
       p= 'Description: '
-      textarea(name='description')
+      textarea#description(name='description')
     .form-element
       p= 'Tags: '
-      textarea(name='tags')
-    .form-element
+      textarea#tags(name='tags')
+    #video-upload
       p= 'Video Path: '
       input(type='file' name='fileName')
-    input(type='submit' value='Upload Video')
+    input#submit(type='submit' value='Upload Video')

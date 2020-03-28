@@ -9,7 +9,7 @@ block content
           a(href=`/video/${video.id}`)
             h1= video.title
             h2= video.uploader
-            video(src=`/videos/${video.videoURL}`)
+            video(src=`/videos/${video.videoURL}#t=10`)
   else
     h1= "No videos uploaded yet"
 

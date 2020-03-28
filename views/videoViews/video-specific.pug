@@ -13,7 +13,7 @@ block content
       each vid in videos
         .video-preview
             a(href=`/video/${vid.id}`)
-              video(src=`/videos/${vid.videoURL}`)
+              video(src=`/videos/${vid.videoURL}#t=10`)
               #svidinfo
                 h1= vid.formattedTitle
                 h2= vid.uploader
@@ -26,9 +26,15 @@ block content
     if video
       video#video(src=`/videos/${video.videoURL}` autoplay controls)
       #videocontent
-        p= video.title
+        p#videoTitle= video.title
         #videoinfo
           p= `${video.viewCount} Views`
+          #subinfo
+            a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
+            if uploader.subscriberCount == 1
+              p#subCount= `${uploader.formattedSubscriberCount} Subscriber`
+            else
+              p#subCount= `${uploader.formattedSubscriberCount} Subscribers`
           #voting
             p#upvoteCount= `${video.upvotes}`
             button#upVote(onclick="processUpvote()")= '👍'
@@ -41,11 +47,9 @@ block content
               button#subscribeButton= `Subscribe`
           else
             button#subscribeButton.notLoggedIn= `Subscribe`
-        #subinfo
-          a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
-          p#subCount= `Subscribers: ${uploader.subscriberCount}`
+        
 
-        button#descButton(onClick="toggleDescription()")= "Show More"
+        button#descButton(onClick="toggleDescription()")= "Show Description"
         #description-info
           h3#date= `Uploaded on ${video.formattedDate}`
           h3= `Description`

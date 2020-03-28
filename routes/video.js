@@ -68,12 +68,15 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   const newViewCount = video.viewCount + 1;
   await video.update({ viewCount: newViewCount });
 
-  const uploader = await UserInfo.findOne({
+  let uploader = await UserInfo.findOne({
     where: {username: video.uploader}
   })
   if (uploader == null) {
     res.render("404", { message: "The uploader of the referenced video has recently deleted their account" });
   }
+
+  //Make uploader sub count readable
+  uploader.formattedSubscriberCount = tools.formatViews(uploader.subscriberCount);
 
   //Get videos for sidebar: for now just any videos
   let videos = await Video.findAll({order: [["createdAt", "DESC"]]});
@@ -180,7 +183,7 @@ router.post('/:videoID/addUpvote', tools.asyncHandler(async (req, res) => {
   if (vote && vote.status == 2) {
     await vote.destroy();
     const newDownvotes = video.downVotes - 1;
-    video.update({upVotes: newDownvotes})
+    await video.update({upVotes: newDownvotes})
     alreadyVoted = true;
   }
 
@@ -231,7 +234,7 @@ router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
   if (vote && vote.status == 1) {
     await vote.destroy();
     const newUpvotes = video.upVotes - 1;
-    video.update({upVotes: newUpvotes})
+    await video.update({upVotes: newUpvotes})
     alreadyVoted = true;
   }
 
