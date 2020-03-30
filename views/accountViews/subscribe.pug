@@ -1,0 +1,13 @@
+extends layout 
+
+
+
+block content
+    h1= message
+
+    if subs
+      each sub in subs
+        h1= sub.username
+        h2= `${sub.subscriberCount} Subscribers`
+    else
+      h1= emptyMessage

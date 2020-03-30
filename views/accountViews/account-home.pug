@@ -1,0 +1,16 @@
+extends layout 
+
+
+block content
+    h1= message
+
+    if videos
+      each video in videos
+        .video-preview
+          a(href=`/video/${video.id}`)
+            h1= video.title
+            h2= video.uploader
+            video(src=`/videos/${video.videoURL}#t=10`)
+    else
+      h1= emptyMessage
+

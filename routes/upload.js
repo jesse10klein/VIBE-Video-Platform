@@ -40,7 +40,6 @@ function uploadVideo(fileName) {
 
   const file = fileName;
   const name = file.name;
-  const type = file.mimetype;
 
   var uploadpath = "../INFS3202/public/videos/" + name;
 

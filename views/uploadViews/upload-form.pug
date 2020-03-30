@@ -16,8 +16,8 @@ form(enctype="multipart/form-data" action="/upload" method="POST")
         p= 'Description: '
         if error.description
           p.error= error.description
-      if fillInfo.decription
-        textarea#description(name='description' value=`${fillInfo.decription}`)
+      if fillInfo.description
+        textarea#description(name='description' value=`${fillInfo.description}`)
       else
         textarea#description(name='description')
     .form-element

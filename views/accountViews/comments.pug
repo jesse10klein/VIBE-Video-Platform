@@ -1,0 +1,16 @@
+extends layout 
+
+
+
+block content
+    h1= message
+
+    if comments
+      each comment in comments
+        h2= comment.user
+        h1= comment.comment
+        h2= comment.video.title
+    else
+      h1= emptyMessage
+
+    

@@ -1,0 +1,14 @@
+
+
+
+
+body {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+
+#sidebar {
+    width: 200px;
+}

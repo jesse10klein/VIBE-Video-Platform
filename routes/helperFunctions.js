@@ -48,12 +48,9 @@ function formatTimeSince(commentDate) {
 
   let timePassed = "NULL";
 
-  let days = sinceUpload / (1000 * 60 * 60 * 24);
-  if (days > 1) {
-    days = Math.ceil(days);
-  }
-  const hours = Math.ceil(sinceUpload / (1000 * 60 * 60));
-  const minutes =  Math.ceil(sinceUpload / (1000 * 60));
+  const days = Math.floor(sinceUpload / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(sinceUpload / (1000 * 60 * 60));
+  const minutes =  Math.floor(sinceUpload / (1000 * 60));
 
   if (days > 1) {
     if (days == 1) timePassed = "Posted 1 day ago";
@@ -62,7 +59,7 @@ function formatTimeSince(commentDate) {
     if (hours == 1) timePassed = "1 hour ago";
     else timePassed = "Posted " + hours + " hours ago";
   } else if (minutes > 0) {
-    if (minutes < 3) timePassed = "just now";
+    if (minutes < 3) timePassed = "Just now";
     else timePassed = minutes + " minutes ago";
   } 
   
