@@ -26,7 +26,6 @@ async function getVotes(user, status) {
                 console.log("THERE IS A VOTE IN DB FOR A VIDEO THAT DOES NOT EXIST");
             }
         }
-        //console.log(videos);
         return videos;
       } catch(error) {
         console.log(error.message);

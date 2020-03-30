@@ -18,7 +18,6 @@ function initiatePage() {
 
 }
 
-
 function resizeVideo() {
 
   console.log(window.innerWidth);
@@ -47,7 +46,6 @@ function resizeVideo() {
   console.log(subButton);
 
 };
-
 
 function processUpvote() {
   fetch( window.location.pathname + '/addUpvote', {method: 'POST'})

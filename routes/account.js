@@ -49,7 +49,6 @@ router.get('/comments', tools.asyncHandler(async (req, res) => {
     }
 
     let comments = await Comments.findAll({ where: { user } });
-    console.log(comments);
     
     //Need to get each video the comment is on
     //COULD DO THIS BY JOINING, BUT CAN'T FIGURE OUT SO JUST LOOP

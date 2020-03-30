@@ -52,7 +52,7 @@ function formatTimeSince(commentDate) {
   const hours = Math.floor(sinceUpload / (1000 * 60 * 60));
   const minutes =  Math.floor(sinceUpload / (1000 * 60));
 
-  if (days > 1) {
+  if (days >= 1) {
     if (days == 1) timePassed = "Posted 1 day ago";
     else timePassed = days + " days ago";
   } else if (hours > 0) {

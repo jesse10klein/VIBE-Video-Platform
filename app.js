@@ -26,6 +26,8 @@ const accountRoutes = require('./routes/account');
 app.use('/account', accountRoutes);
 const uploadRoutes = require('./routes/upload');
 app.use('/upload', uploadRoutes);
+const searchRoutes = require('./routes/search');
+app.use('/search', searchRoutes);
 
 
 
@@ -38,8 +40,7 @@ const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
-    console.log(req.cookies.username);
-    res.render('index', {username: req.cookies.username});
+    res.redirect('video');
 });
 
 app.get('*', (req, res) => {

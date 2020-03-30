@@ -1,15 +1,17 @@
-a(href='/')
+#menu-bar
+  a#home-image(href='/')
       img(src='/images/metube.png' href=`/`) 
-ul#menu-bar
-  li
-    a(href='/video')  Video
+
+  form#search-bar(action="/search" method="POST")
+    input#search-query(type='text' name='title')
+    input#submit(type='submit' value='Search')
+
   if username
-    li
-      a(href='/upload') Upload
-    li 
-      a#username(href=`/account`)= `Account`
-    li
-      a(href='/users/logout') Log Out
+    #dd
+      button#dropdown-button Account
+      #dropdown-content
+        a(href='/upload') Upload
+        a#username(href=`/account`)= `Account`
+        a(href='/users/logout') Log Out
   else
-    li
-      a(href='/users/login') Login/Register
+    a#login(href='/users/login') Login/Register
