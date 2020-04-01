@@ -12,7 +12,9 @@ block content
         input#username(type='text' name='username')
       .form-element
         p  Password: 
-        input#password(name='password')
+        input#password(name='password')  
+      if error
+        p.error= error
       input(type='submit')
     p= "Not a user?"
     a#signup(href='/users/signup') Sign Up

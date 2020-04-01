@@ -38,6 +38,8 @@ body {
 }
 
 #login {
+    margin-top: -25px;
+    margin-right: 50px;
     float: right;
     line-height: 200%;
     color: black;

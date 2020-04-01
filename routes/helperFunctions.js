@@ -1,3 +1,10 @@
+const validator = require("email-validator");
+
+
+const db = require('../db');
+const { UserInfo } = db.models;
+
+
 function asyncHandler(cb) {
     return async(req, res, next) => {
       try {
@@ -124,4 +131,39 @@ function checkForErrors(potentialErrors, file) {
   return error;
 }
 
-module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, formatViews, checkUploadData, checkForErrors};
+async function signupErrors(username, email, password) {
+
+  let error = {};
+  //Check for null
+  if (email == null || email.length <= 5) {
+    error.email = "Email must be longer than 5 characters";
+  } 
+  if (username == null || username.length <= 5) {
+    error.username = "Username must be longer than 5 characters";
+  } 
+  if (password == null || password.length <= 5) {
+    error.password = "Password must be longer than 5 characters";
+  } 
+  
+
+  //Check for valid email
+  if (!validator.validate(email)) {
+    error.email = "Your email is invalid";
+  }    
+
+  //Make sure that username and email aren't taken
+  const usernameMatch = await UserInfo.findOne({ where: { username }});
+  if (usernameMatch != null) {
+    error.username = "That username is already in the system";
+  }
+
+  const emailMatch = await UserInfo.findOne({ where: { email }});
+  if (emailMatch != null) {
+    error.email = "That email is already in the system";
+  }
+  return error;
+
+}
+
+module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
+  formatViews, checkUploadData, checkForErrors, signupErrors};

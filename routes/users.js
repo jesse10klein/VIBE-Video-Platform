@@ -12,8 +12,6 @@ const { videoVotes } = db.models;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
-const validator = require("email-validator");
-
 //Require helper functions
 var tools = require('./helperFunctions');
 var userHelp = require('./userInfoHelpers');
@@ -52,18 +50,17 @@ router.post('/login', tools.asyncHandler(async (req, res) => {
 
   const match = await UserInfo.findOne({ 
 	where: {
-    username: req.body.username,
-    password: req.body.password
+      username: req.body.username,
+      password: req.body.password
 		}
   });
 
-  //Check if user is in the system
-  try {
-    const username = match.toJSON().username
-    res.cookie("username", username);
+  if (match) {
+    res.cookie("username", match.username);
     res.redirect("/");
-  } catch(error) {
-    res.send("Incorrect username or password");
+  } else {
+    const error = "Incorrect username or password";
+    res.render("userViews/login", {error});
   }
 
 }));
@@ -77,31 +74,19 @@ router.get('/logout', (req, res) => {
 //CREATE NEW USER BASED ON SIGN UP DATA
 router.post('/signup', tools.asyncHandler(async (req, res) => {
   
-    let error = "";
     let { username } = req.body;
     let { email } = req.body;
     let { password } = req.body;
     const fill = { username, email }
+    
+    const error = await tools.signupErrors(username, email, password);
 
-    if (!validator.validate(email)) {
-      error = "Your email is invalid";
-    }    
-
-    if (error != "") {
-      res.render('userViews/signup', {error, fill});
-    }
-
-    //Make sure that username and email aren't taken
-    _username = await UserInfo.findOne({ where: { username }});
-
-    _email = await UserInfo.findOne({ where: { email }});
-
-    if (_username == null && _email == null ) {
+    if (!error) {
       user = await UserInfo.create({ username, password, email });
       res.render("userViews/newuser");
-    } else {
-      error =  "Username or Email already in use";
+      return;
     } 
+ 
     res.render('userViews/signup', {error, fill});
 }));
 
