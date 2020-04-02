@@ -14,6 +14,18 @@ module.exports = (sequelize) => {
     comment: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+    replyID: {
+      type: Sequelize.INTEGER,
+      defaultValue: -1
+    },
+    commentLikes: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0
+    },
+    commentDislikes: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0
     }
   }, { sequelize });
 

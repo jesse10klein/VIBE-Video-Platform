@@ -79,7 +79,10 @@ router.post('/signup', tools.asyncHandler(async (req, res) => {
     let { password } = req.body;
     const fill = { username, email }
     
-    const error = await tools.signupErrors(username, email, password);
+    let error = await tools.signupErrors(username, email, password);
+    if (!(error.username || error.email || error.password)) {
+      error = null;
+    }
 
     if (!error) {
       user = await UserInfo.create({ username, password, email });
