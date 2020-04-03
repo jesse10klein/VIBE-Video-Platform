@@ -153,16 +153,18 @@ router.post('/:videoID/addUpvote', tools.asyncHandler(async (req, res) => {
 
   //If user has video disliked, remove the vote
   if (vote && vote.status == 2) {
+    console.log("Already disliked");
     await vote.destroy();
-    const newDownvotes = video.downVotes - 1;
-    await video.update({upVotes: newDownvotes})
+    const newDownvotes = video.downvotes - 1;
+    console.log(newDownvotes);
+    await video.update({downvotes: newDownvotes})
     alreadyVoted = true;
   }
 
   if (vote && vote.status == 1) {
+    await vote.destroy();
     const newUpvoteCount = video.upvotes - 1;
     await video.update({ upvotes: newUpvoteCount });
-    await vote.destroy();
     res.status(200).send({voteStatus: 1});
     return;
   }
@@ -200,9 +202,10 @@ router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
 
   //If user has video liked, remove the vote
   if (vote && vote.status == 1) {
+    console.log("Already Liked");
     await vote.destroy();
-    const newUpvotes = video.upVotes - 1;
-    await video.update({upVotes: newUpvotes})
+    const newUpvotes = video.upvotes - 1;
+    await video.update({upvotes: newUpvotes})
     alreadyVoted = true;
   }
 
@@ -234,6 +237,8 @@ router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
 //Add upvote to comment
 router.post('/:videoID/addCommentLike/:commentID', tools.asyncHandler(async (req, res) => {
 
+  console.log(req.params.commentID);
+
   //Get the voting status of the user
   const vote = await commentVotes.findOne({
     where: {
@@ -254,9 +259,9 @@ router.post('/:videoID/addCommentLike/:commentID', tools.asyncHandler(async (req
   }
 
   if (vote && vote.status == 1) {
+    await vote.destroy();
     const newLikeCount = comment.commentLikes - 1;
     await comment.update({ commentLikes: newLikeCount });
-    await vote.destroy();
     res.status(200).send({voteStatus: 1});
     return;
   }
@@ -282,6 +287,8 @@ router.post('/:videoID/addCommentLike/:commentID', tools.asyncHandler(async (req
 //Add downvote to comment
 router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (req, res) => {
 
+  console.log(req.params.commentID);
+
   //Get the voting status of the user
   const vote = await commentVotes.findOne({
     where: {
@@ -293,7 +300,7 @@ router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (
 
   let alreadyVoted = false;
 
-  //If user has comment disliked, remove the vote
+  //If user has comment liked, remove the vote
   if (vote && vote.status == 1) {
     await vote.destroy();
     const newLikes = comment.commentLikes - 1;
@@ -302,9 +309,9 @@ router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (
   }
 
   if (vote && vote.status == 2) {
-    const newDislikeCount = comment.commentDisikes - 1;
-    await comment.update({ commentDislikes: newDislikeCount });
     await vote.destroy();
+    const newDislikeCount = comment.commentDislikes - 1;
+    await comment.update({ commentDislikes: newDislikeCount });
     res.status(200).send({voteStatus: 1});
     return;
   }

@@ -17,11 +17,13 @@ function getCookie(cname) {
 function votePostRequest(pathname, primary, secondary) {
   fetch( pathname, {method: 'POST'})
   .then( response =>  {
+    console.log(response);
     if(response.status == 200) {
       return response.json();
     }
     throw new Error("Request failed");
   }).then( data => {
+    console.log(data);
     if (data.voteStatus == 1) { //Already upvoted, delete
       primary.innerText = parseInt(primary.innerText) - 1;
       return;
@@ -86,6 +88,10 @@ function processCommentVote(item) {
     secondary = item.previousSibling.previousSibling.previousSibling;
     pathname = window.location.pathname + "/addCommentDislike/" + commentID;
   }
+
+  console.log(primary);
+  console.log(secondary);
+
   votePostRequest(pathname, primary, secondary);
 
 }

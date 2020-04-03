@@ -1,0 +1,101 @@
+#description-info {
+    visibility: hidden;
+    display: none;
+    font-size: 80%;
+    text-align: left;
+    margin-left: 50px;
+}
+
+#date {
+    text-align: center;
+}
+
+#voting {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+#voting button {
+    margin-left: 10px;
+    margin-top: 20px;
+    height: 50%;
+}
+
+#voting p {
+    margin-left: 10px;
+}
+
+#videoTitle {
+    margin: 0;
+    font-size: 2em;
+}
+
+#subinfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-family: 'Oxanium', cursive;
+}
+
+#subinfo a {
+    font-weight: bolder;
+    font-size: 1.2em;
+    line-height: 100%;
+    margin: 0;
+}
+
+#subinfo p {
+    margin: 0;
+}
+
+#descButton {
+    display: block;
+    margin-left: 60px;
+    margin-bottom: 50px;
+    color: black;
+}
+
+
+#svidinfo {
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    line-height: 0%;
+}
+
+#svidinfo h1 {
+    font-size: 2em;
+    line-height: 100%;
+}
+
+
+#videocontent {
+    display: inline;
+    width: 100%;
+    font-size: 150%;
+}
+
+#videoinfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 800px;
+    margin: auto;
+}
+
+#subscribeButton {
+    width: 150px;
+    text-decoration: none;
+    color: white;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: red;
+    border-radius: 5px;
+    border: 3px solid black;
+    margin-top: 20px;
+    height: 40px;
+}

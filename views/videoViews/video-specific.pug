@@ -1,8 +1,9 @@
 extends ../layout
 
 block style
-  link(href='/style/comments.css' rel='stylesheet')
-  link(href='/style/video-specific.css' rel='stylesheet')
+  link(href='/style/videoSpecific/comments.css' rel='stylesheet')
+  link(href='/style/videoSpecific/video-specific.css' rel='stylesheet')
+  link(href='/style/videoSpecific/description.css' rel='stylesheet')
   link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")
 
 
@@ -59,11 +60,10 @@ block content
           p#tags= video.tags
 
       if username
-        form(action=`/video/${video.id}/add-comment` method="POST" onsubmit='addComment()')
-          .form-element
-            p  Comment: 
-            textarea#comment(name='comment')
-          input(type='submit' value='Post Comment')
+        form#comment-form(action=`/video/${video.id}/add-comment` method="POST" onsubmit='addComment()')
+          p  Comment: 
+          textarea#comment(name='comment')
+          input(type='submit' value='Post')
       else
         h3= "You need to log in to be able to post comments"
     
@@ -72,33 +72,33 @@ block content
         .comment
           h1.commentUsername= comment.user
           p.commentBody= comment.comment
-          p= `Posted ${comment.formattedDate}`
-          .votes
-            p.commentID= `${comment.id}`
-            p.commentLikes= `${comment.commentLikes}`
-            button.upVote(onclick="processCommentVote(this)")= '👍'
-            p.commentDislikes= `${comment.commentDislikes}`
-            button.downVote(onclick="processCommentVote(this)")= `👎`
-            button.reply(onclick="toggleReplyBox(this)")= `Reply`
+          .footer
+            .votes
+              p.commentID= `${comment.id}`
+              p.commentLikes= `${comment.commentLikes}`
+              button.upVote(onclick="processCommentVote(this)")= '👍'
+              p.commentDislikes= `${comment.commentDislikes}`
+              button.downVote(onclick="processCommentVote(this)")= `👎`
+              button.replyButton(onclick="toggleReplyBox(this)")= `Reply`
+            p= `Posted ${comment.formattedDate}`
+          
 
           form.reply-form(action=`/video/${video.id}/add-reply/${comment.id}` method='POST' onsubmit='addReplyComment(this)')
-            .form-element
-              textarea.reply(name='reply')  
-            input(type='submit' value='Post Reply')
-
-
+            textarea(name='reply')  
+            input(type='submit' value='Reply')
           
         each reply in comment.replies
-          .reply
+          .reply.comment
             h1.commentUsername= reply.user
             p.commentBody= reply.comment
-            p= `Posted ${reply.formattedDate}`
-            .votes
-              p.commentID= `${reply.id}`
-              p.commentLikes= `${reply.commentLikes}`
-              button.upVote(onclick="processCommentVote(this)")= '👍'
-              p.commentDislikes= `${reply.commentDislikes}`
-              button.downVote(onclick="processCommentVote(this)")= `👎`
+            .footer
+              .votes
+                p.commentID= `${reply.id}`
+                p.commentLikes= `${reply.commentLikes}`
+                button.upVote(onclick="processCommentVote(this)")= '👍'
+                p.commentDislikes= `${reply.commentDislikes}`
+                button.downVote(onclick="processCommentVote(this)")= `👎`
+              p= `Posted ${comment.formattedDate}`
 
 
 block script

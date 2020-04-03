@@ -1,0 +1,83 @@
+
+
+.votes {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.reply-form {
+    display: none;
+}
+
+.commentID {
+    display: none;
+}
+
+#comment-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-left: 50px;
+}
+
+#comment-form textarea {
+    margin-left: 20px;
+    width: 350px;
+    height: 50px;
+    font-size: 1.3em;
+    margin-bottom: 50px;
+}
+
+#comment-form input {
+    height: 56px;
+}
+
+.comment {
+    text-align: left;
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    margin-bottom: 20px;
+}
+
+.commentLikes {
+    margin-right: 10px;
+}
+
+.commentDislikes {
+    margin-right: 10px;
+}
+
+.upVote {
+    margin-right: 10px;
+}
+
+.downVote {
+    margin-right: 10px;
+}
+
+.replyButton {
+    margin-right: 10px;
+}
+
+.commentUsername {
+    font-size: 1.4em;
+}
+
+.commentBody {
+    font-size: 1.1em;
+}
+
+.reply {
+    margin-left: 100px;
+}
+
+.reply-form {
+    width: 40px;
+}

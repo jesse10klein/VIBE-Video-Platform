@@ -94,7 +94,7 @@ function toggleReplyBox(item) {
     return;
   }
 
-  const form = item.parentElement.nextSibling;
+  const form = item.parentElement.parentElement.nextSibling;
   form.style.display = "block";
 
 }
@@ -103,19 +103,21 @@ function toggleReplyBox(item) {
 //Need the item as we have to add it under a given comment
 function addReplyComment(item) {
 
-  const textArea = item.childNodes[0].childNodes[0];
+  const textArea = item.childNodes[0];
   const user = getCookie("username");
 
   const toAdd = `<div class="comment"> 
                   <h1 class="commentUsername"> ${user} </h1> 
                   <p class"commentBody"> ${textArea.value} </p>
-                  <p> Posted just now </p>
-                  <div class="votes">
-                    <p class="commentID"> NULL </p>
-                    <p class=commentLikes"> 0 </p>
-                    <button class="upVote" onclick="processCommentVote(this)">👍</button>
-                    <p class="commentDislikes">0</p>
-                    <button class="downVote" onclick="processCommentVote(this)">👎</button>
+                  <div class="footer">
+                    <div class="votes">
+                      <p class="commentID"> NULL </p>
+                      <p class=commentLikes"> 0 </p>
+                      <button class="upVote" onclick="processCommentVote(this)">👍</button>
+                      <p class="commentDislikes">0</p>
+                      <button class="downVote" onclick="processCommentVote(this)">👎</button>
+                    </div>
+                    <p> Posted just now </p>
                   </div>
                 </div>`;
 
