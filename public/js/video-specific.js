@@ -2,11 +2,25 @@ console.log('Client-side code running');
 
 const div = document.getElementById("description-info");
 const descButton = document.getElementById("descButton");
-
-const comment = document.getElementById("comment");
-const user = document.getElementById("username");
-
 const subButton = document.getElementById('subscribeButton');
+
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 
 window.onresize = resizeVideo;
 window.onload = initiatePage; 
@@ -19,8 +33,6 @@ function initiatePage() {
 }
 
 function resizeVideo() {
-
-  console.log(window.innerWidth);
 
   //Get video and change dimensions
   const video = document.getElementById("video");
@@ -42,109 +54,99 @@ function resizeVideo() {
   video.style.minHeight = roomForVideo / 1.77 + "px";
   video.style.maxHeight = roomForVideo / 1.77 + "px";
 
-  console.log(video.style);
-  console.log(subButton);
-
 };
-
-function processUpvote() {
-  fetch( window.location.pathname + '/addUpvote', {method: 'POST'})
-  .then( response =>  {
-    if(response.status == 200) {
-      const count = document.getElementById('upvoteCount');
-      count.innerText = parseInt(count.innerText) + 1;
-      return;
-    } else if (response.status == 202) {
-      window.alert("You must be logged in to vote on a video");
-      return;
-    } else if (response.status == 203) {
-      return;
-    } else if (response.status == 204) {
-      const dcount = document.getElementById('downvoteCount');
-      dcount.innerText = parseInt(dcount.innerText) - 1;
-      const ucount = document.getElementById('upvoteCount');
-      ucount.innerText = parseInt(ucount.innerText) + 1;
-      return;
-    } else {
-    throw new Error('Request failed.');
-    }
-  })
-  .catch(function(error) {
-    console.log(error);
-  });
-}
-
-function processDownvote() {
-  fetch( window.location.pathname + '/addDownvote', {method: 'POST'})
-  .then( response =>  {
-    if(response.status == 200) {
-      const count = document.getElementById('downvoteCount');
-      count.innerText = parseInt(count.innerText) + 1;
-      return;
-    } else if (response.status == 202) {
-      window.alert("You must be logged in to vote on a video");
-      return;
-    } else if (response.status == 203) {
-      return;
-    } else if (response.status == 204) {
-      const ucount = document.getElementById('upvoteCount');
-      ucount.innerText = parseInt(ucount.innerText) - 1;
-      const dcount = document.getElementById('downvoteCount');
-      dcount.innerText = parseInt(dcount.innerText) + 1;
-      return;
-    } else {
-    throw new Error('Request failed.');
-    }
-  })
-  .catch(function(error) {
-    console.log(error);
-  });
-}
 
 function addComment() {
 
+  const comment = document.getElementById("comment");
+  const user = getCookie("username");
+
   //Make sure comment isn't empty
   if (comment.value == "") {
-    console.log(comment.value);
     return;
   }
 
   const toAdd = `<div class="comment"> 
-                  <h1> ${user.textContent} </h1> 
-                  <p> ${comment.value} </p> 
-              </div>`;
-  console.log(toAdd);
+                  <h1 class="commentUsername"> ${user} </h1> 
+                  <p class"commentBody"> ${comment.value} </p>
+                  <p> Posted just now </p>
+                  <div class="votes">
+                    <p class="commentID"> NULL </p>
+                    <p class=commentLikes"> 0 </p>
+                    <button class="upVote" onclick="processCommentVote(this)">👍</button>
+                    <p class="commentDislikes">0</p>
+                    <button class="downVote" onclick="processCommentVote(this)">👎</button>
+                  </div>
+                </div>`
+             
   const comments = document.getElementById("comments");
-  const before = comments.innerHTML;
-  comments.innerHTML = toAdd + before;
+  const node = document.createElement("div");
+  node.innerHTML = toAdd;
+  comments.insertBefore(node, comments.firstChild);
+
+}
+
+function toggleReplyBox(item) {
+
+  const user = getCookie("username");
+  if (user == "") {
+    alert("You must be logged in to reply to a comment");
+    return;
+  }
+
+  const form = item.parentElement.nextSibling;
+  form.style.display = "block";
+
+}
+
+
+//Need the item as we have to add it under a given comment
+function addReplyComment(item) {
+
+  const textArea = item.childNodes[0].childNodes[0];
+  const user = getCookie("username");
+
+  const toAdd = `<div class="comment"> 
+                  <h1 class="commentUsername"> ${user} </h1> 
+                  <p class"commentBody"> ${textArea.value} </p>
+                  <p> Posted just now </p>
+                  <div class="votes">
+                    <p class="commentID"> NULL </p>
+                    <p class=commentLikes"> 0 </p>
+                    <button class="upVote" onclick="processCommentVote(this)">👍</button>
+                    <p class="commentDislikes">0</p>
+                    <button class="downVote" onclick="processCommentVote(this)">👎</button>
+                  </div>
+                </div>`;
+
+  var node = document.createElement("DIV");
+  node.innerHTML = toAdd;
+  const comment = item.parentElement;
+  comment.appendChild(node);
+
 }
 
 subButton.addEventListener('click', function(e) {
 
-  if (subButton.className == "notLoggedIn") {
+  if (getCookie("username") == "") {
     window.alert("Log in to subscribe");
     return;
   }
 
-  fetch( window.location.pathname + '/' + subButton.textContent.toLowerCase(), {method: 'POST'})
+  const subs = document.getElementById("subCount");
+
+  fetch( window.location.pathname + '/handle-sub', {method: 'POST'})
     .then( response =>  {
       if(response.ok) {
-        if (subButton.textContent == "Subscribe") {
-          subButton.textContent = "Unsubscribe";
-            let subs = document.getElementById("subCount");
-            const len = subs.textContent.length;
-            const subCount = parseInt(subs.textContent.slice(0,len - 12));
-            subs.textContent = (subCount + 1) + " Subscribers ";
-        } else {
-          subButton.textContent = "Subscribe";
-            let subs = document.getElementById("subCount");
-            const len = subs.textContent.length;
-            const subCount = parseInt(subs.textContent.slice(0,len - 12));
-            subs.textContent = (subCount - 1) + " Subscribers ";
-        }
-        return;
+        return response.json();
       }
       throw new Error('Request failed.');
+    }).then( data => {
+
+      //Data sent will be sub status and sub count
+      subButton.textContent = data.subscribeStatus;
+      subs.textContent = `${data.subscribers} Subscribers`
+     
     })
     .catch(function(error) {
       console.log(error);

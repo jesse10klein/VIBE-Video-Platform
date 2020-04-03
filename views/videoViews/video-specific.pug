@@ -1,6 +1,7 @@
 extends ../layout
 
 block style
+  link(href='/style/comments.css' rel='stylesheet')
   link(href='/style/video-specific.css' rel='stylesheet')
   link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")
 
@@ -37,9 +38,9 @@ block content
               p#subCount= `${uploader.formattedSubscriberCount} Subscribers`
           #voting
             p#upvoteCount= `${video.upvotes}`
-            button#upVote(onclick="processUpvote()")= '👍'
+            button#upVote(onclick="processVideoVote(this)")= '👍'
             p#downvoteCount= `${video.downvotes}`
-            button#downVote(onclick="processDownvote()")= `👎`
+            button#downVote(onclick="processVideoVote(this)")= `👎`
           if username
             if subscribed
               button#subscribeButton= `Unsubscribe`
@@ -72,6 +73,34 @@ block content
           h1.commentUsername= comment.user
           p.commentBody= comment.comment
           p= `Posted ${comment.formattedDate}`
+          .votes
+            p.commentID= `${comment.id}`
+            p.commentLikes= `${comment.commentLikes}`
+            button.upVote(onclick="processCommentVote(this)")= '👍'
+            p.commentDislikes= `${comment.commentDislikes}`
+            button.downVote(onclick="processCommentVote(this)")= `👎`
+            button.reply(onclick="toggleReplyBox(this)")= `Reply`
+
+          form.reply-form(action=`/video/${video.id}/add-reply/${comment.id}` method='POST' onsubmit='addReplyComment(this)')
+            .form-element
+              textarea.reply(name='reply')  
+            input(type='submit' value='Post Reply')
+
+
+          
+        each reply in comment.replies
+          .reply
+            h1.commentUsername= reply.user
+            p.commentBody= reply.comment
+            p= `Posted ${reply.formattedDate}`
+            .votes
+              p.commentID= `${reply.id}`
+              p.commentLikes= `${reply.commentLikes}`
+              button.upVote(onclick="processCommentVote(this)")= '👍'
+              p.commentDislikes= `${reply.commentDislikes}`
+              button.downVote(onclick="processCommentVote(this)")= `👎`
+
 
 block script
   script(src='/js/video-specific.js')
+  script(src='/js/votes.js')

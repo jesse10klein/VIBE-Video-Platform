@@ -1,0 +1,12 @@
+
+
+.votes {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.commentID {
+    display: none;
+}
+

@@ -3,6 +3,7 @@ const validator = require("email-validator");
 
 const db = require('../db');
 const { UserInfo } = db.models;
+const { Comments } = db.models;
 
 
 function asyncHandler(cb) {
@@ -65,7 +66,7 @@ function formatTimeSince(commentDate) {
   } else if (hours > 0) {
     if (hours == 1) timePassed = "1 hour ago";
     else timePassed = "Posted " + hours + " hours ago";
-  } else if (minutes > 0) {
+  } else {
     if (minutes < 3) timePassed = "Just now";
     else timePassed = minutes + " minutes ago";
   } 
@@ -165,5 +166,31 @@ async function signupErrors(username, email, password) {
 
 }
 
+async function getCommentsForVideo(videoID) {
+
+  let comments = await Comments.findAll({ 
+    order: [["createdAt", "DESC"]], where: {videoID, replyID: -1}});
+
+  //Need to format date for comments
+  for (let i = 0; i < comments.length; i++) {
+    comments[i].formattedDate = formatTimeSince(comments[i].createdAt);
+
+    //Get replies to this comment
+    let replies = await Comments.findAll({
+      order: [["createdAt", "DESC"]],
+      where: {replyID: comments[i].id}
+    })
+
+    //Format date
+    for (let y = 0; y < replies.length; y++) {
+      replies[y].formattedDate = formatTimeSince(replies[y].createdAt);
+    }
+
+    //Set the replies on the comment
+    comments[i].replies = replies;
+  }
+  return comments;
+}
+
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
-  formatViews, checkUploadData, checkForErrors, signupErrors};
+  formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo};

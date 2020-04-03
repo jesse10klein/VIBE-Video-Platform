@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 module.exports = (sequelize) => {
   class commentVotes extends Sequelize.Model {}
   commentVotes.init({
-    videoID: {
+    commentID: {
       type: Sequelize.INTEGER,
       allowNull: false
     },

@@ -7,6 +7,7 @@ const { Comments } = db.models;
 const { UserInfo } = db.models;
 const { Subscriptions } = db.models;
 const { videoVotes } = db.models;
+const { commentVotes } = db.models;
 
 //Require helper functions
 var tools = require('./helperFunctions');
@@ -56,8 +57,6 @@ router.post('/:id/add-comment', tools.asyncHandler(async (req, res) => {
     res.status(204).send();
 }));
 
-
-
 //Sorting comments under video
 router.get('/:id', tools.asyncHandler(async (req, res) => {
     
@@ -92,14 +91,9 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   video.formattedDate = tools.formatDate(video.uploadDate);
 
   const {username} = req.cookies;
-  let comments = await Comments.findAll({ 
-      order: [["createdAt", "DESC"]],
-      where: { videoID: req.params.id }
-  });
-  //Need to format date for comments
-  for (let i = 0; i < comments.length; i++) {
-    comments[i].formattedDate = tools.formatTimeSince(comments[i].createdAt);
-  }
+
+  //Get comments
+  const comments = await tools.getCommentsForVideo(req.params.id);
 
   //Check if user is subscribed to the uploader
   let subscribed = false;
@@ -112,8 +106,8 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed, videos});
 }));
 
-//Subscribe to a user
-router.post('/:videoID/subscribe', tools.asyncHandler(async (req, res) => {
+//Handle subbing/unsubbing
+router.post('/:videoID/handle-sub', tools.asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
   if (req.cookies.username == null) {
@@ -122,51 +116,29 @@ router.post('/:videoID/subscribe', tools.asyncHandler(async (req, res) => {
 
   const video = await Video.findByPk(req.params.videoID);
   const user = video.uploader;
-
   const uploader = await UserInfo.findOne({where: { username: user }})
-  const newSubCount = uploader.subscriberCount + 1;
-  await uploader.update({ subscriberCount: newSubCount });
 
-  const subscriber = req.cookies.username;
-  await Subscriptions.create({ user, subscriber });
-  console.log("Subscribed");
-  res.end();
-}));
-
-//Unsubscribe from a user
-router.post('/:videoID/unsubscribe', tools.asyncHandler(async (req, res) => {
-
-  //Make sure user is logged in
-  if (req.cookies.username == null) {
-    res.end();
-  }
-
-  const video = await Video.findByPk(req.params.videoID);
-  const user = video.uploader;
-
-  const uploader = await UserInfo.findOne({where: { username: user }})
-  const newSubCount = uploader.subscriberCount - 1;
-  await uploader.update({ subscriberCount: newSubCount });
-
-  const subscriber = req.cookies.username;
+  //Check if user is subscribed
   const subscription = await Subscriptions.findOne({
-    where: { user, subscriber }
-  })
-  if (!(subscription == null)) {
+    where: {subscriber: req.cookies.username}});
+  
+
+  if (subscription == null) { 
+    await Subscriptions.create({user, subscriber: req.cookies.username});
+    const newSubCount = uploader.subscriberCount + 1;
+    await uploader.update({ subscriberCount: newSubCount });
+    res.status(200).send({subscribers: newSubCount, subscribeStatus: "Unsubscribe"});
+  } else {
     await subscription.destroy();
+    const newSubCount = uploader.subscriberCount - 1;
+    await uploader.update({ subscriberCount: newSubCount });
+    res.status(200).send({subscribers: newSubCount, subscribeStatus: "Subscribe"});
   }
-  console.log("Unsubscribed");
-  res.end();
+
 }));
 
 //Add upvote
 router.post('/:videoID/addUpvote', tools.asyncHandler(async (req, res) => {
-
-  //Make sure user is logged in
-  if (!req.cookies.username) {
-    res.status(202).send();
-    return;
-  }
 
   //Get the voting status of the user
   const vote = await videoVotes.findOne({
@@ -188,12 +160,15 @@ router.post('/:videoID/addUpvote', tools.asyncHandler(async (req, res) => {
   }
 
   if (vote && vote.status == 1) {
-    res.status(203).send();
+    const newUpvoteCount = video.upvotes - 1;
+    await video.update({ upvotes: newUpvoteCount });
+    await vote.destroy();
+    res.status(200).send({voteStatus: 1});
     return;
   }
 
   //Add upvote to db
-  const upVote = await videoVotes.create({
+  await videoVotes.create({
     videoID: req.params.videoID,
     user: req.cookies.username,
     status: 1
@@ -203,21 +178,14 @@ router.post('/:videoID/addUpvote', tools.asyncHandler(async (req, res) => {
   const newUpvoteCount = video.upvotes + 1;
   await video.update({ upvotes: newUpvoteCount });
   if (alreadyVoted) {
-    res.status(204).send();
+    res.status(200).send({voteStatus: 3});
     return;
   }
-  res.end();
+  res.status(200).send({voteStatus: 2});
 }));
 
 //Add downvote
 router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
-
-  //Make sure user is logged in
-  if (!req.cookies.username) {
-    console.log("NO USERNAME");
-    res.status(202).send();
-    return;
-  }
 
   const video = await Video.findByPk(req.params.videoID);
 
@@ -239,12 +207,15 @@ router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
   }
 
   if (vote && vote.status == 2) {
-    res.status(203).send();
+    await vote.destroy();
+    const newDownvoteCount = video.downvotes - 1;
+    await video.update({ downvotes: newDownvoteCount });
+    res.status(200).send({voteStatus: 1});
     return;
   }
 
   //Add downvote to db
-  const downVote = await videoVotes.create({
+  await videoVotes.create({
     videoID: req.params.videoID,
     user: req.cookies.username,
     status: 2
@@ -254,10 +225,131 @@ router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
   const newDownvoteCount = video.downvotes + 1;
   await video.update({ downvotes: newDownvoteCount });
   if (alreadyVoted) {
-    res.status(204).send();
+    res.status(200).send({voteStatus: 3});
     return;
   }
-  res.end();
+  res.status(200).send({voteStatus: 2});
+}));
+
+//Add upvote to comment
+router.post('/:videoID/addCommentLike/:commentID', tools.asyncHandler(async (req, res) => {
+
+  //Get the voting status of the user
+  const vote = await commentVotes.findOne({
+    where: {
+      commentID: req.params.commentID,
+      user: req.cookies.username
+    }});
+
+  const comment = await Comments.findByPk(req.params.commentID);
+
+  let alreadyVoted = false;
+
+  //If user has comment disliked, remove the vote
+  if (vote && vote.status == 2) {
+    await vote.destroy();
+    const newDislikes = comment.commentDislikes - 1;
+    await comment.update({commentDislikes: newDislikes})
+    alreadyVoted = true;
+  }
+
+  if (vote && vote.status == 1) {
+    const newLikeCount = comment.commentLikes - 1;
+    await comment.update({ commentLikes: newLikeCount });
+    await vote.destroy();
+    res.status(200).send({voteStatus: 1});
+    return;
+  }
+
+  //Add upvote to db
+  await commentVotes.create({
+    commentID: req.params.commentID,
+    user: req.cookies.username,
+    status: 1
+  });
+
+  //Add vote to comment
+  const newLikeCount = comment.commentLikes + 1;
+  await comment.update({ commentLikes: newLikeCount });
+  if (alreadyVoted) {
+    res.status(200).send({voteStatus: 3});
+    return;
+  }
+  res.status(200).send({voteStatus: 2});
+}));
+
+
+//Add downvote to comment
+router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (req, res) => {
+
+  //Get the voting status of the user
+  const vote = await commentVotes.findOne({
+    where: {
+      commentID: req.params.commentID,
+      user: req.cookies.username
+    }});
+
+  const comment = await Comments.findByPk(req.params.commentID);
+
+  let alreadyVoted = false;
+
+  //If user has comment disliked, remove the vote
+  if (vote && vote.status == 1) {
+    await vote.destroy();
+    const newLikes = comment.commentLikes - 1;
+    await comment.update({commentLikes: newLikes})
+    alreadyVoted = true;
+  }
+
+  if (vote && vote.status == 2) {
+    const newDislikeCount = comment.commentDisikes - 1;
+    await comment.update({ commentDislikes: newDislikeCount });
+    await vote.destroy();
+    res.status(200).send({voteStatus: 1});
+    return;
+  }
+
+  //Add downvote to db
+  await commentVotes.create({
+    commentID: req.params.commentID,
+    user: req.cookies.username,
+    status: 2
+  });
+
+  //Add vote to comment
+  const newDislikeCount = comment.commentDislikes + 1;
+  await comment.update({ commentDislikes: newDislikeCount });
+  if (alreadyVoted) {
+    res.status(200).send({voteStatus: 3});
+    return;
+  }
+  res.status(200).send({voteStatus: 2});
+}));
+
+
+
+
+//Add a reply to a comment
+router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res) => {
+
+  //Check that the video exists
+  const video = await Video.findOne({where: {id: req.params.videoID}});
+  if (video == null) {
+    res.render("404", {message: "The video that you have requested does not exist"});
+  }
+
+  if (req.cookies.username == null) {
+      res.render("404", {message: "Resource not found"});
+  }
+
+  await Comments.create({
+      user: req.cookies.username,
+      videoID: req.params.videoID,
+      comment: req.body.reply,
+      replyID: req.params.commentID
+  });
+
+  res.status(204).send();
 }));
 
 
