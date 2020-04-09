@@ -1,18 +1,57 @@
 
-
-.votes {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+.comment, .reply {
+    text-align: left;
+    margin-left: 50px;
+    margin-bottom: 20px;
 }
 
-.reply-form {
-    display: none;
+.reply {
+    margin-left: 100px;
 }
 
 .commentID {
     display: none;
 }
+
+/* HEADER */
+.comment-header {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    margin-bottom: 40px;
+}
+
+.comment-header p {
+    margin-left: 20px;
+    line-height: 400%;
+}
+
+/* BODY */
+
+.commentBody {
+    width: 600px;
+    word-wrap: break-word
+}
+
+/* FOOTER */
+.comment-footer {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    margin-bottom: 20px;
+}
+
+.comment-footer div {
+    margin-right: 10px;
+    line-height: 50%;
+}
+
+/* REPLY FORM */
+.reply-form {
+    display: none;
+}
+
+/* COMMENT FORM */
 
 #comment-form {
     display: flex;
@@ -24,60 +63,13 @@
 #comment-form textarea {
     margin-left: 20px;
     width: 350px;
-    height: 50px;
-    font-size: 1.3em;
-    margin-bottom: 50px;
+    height: 35px;
+    font-size: 1em;
+    margin-bottom: 30px;
 }
 
-#comment-form input {
-    height: 56px;
+#comment-form button {
+    height: 40px;
 }
 
-.comment, .reply {
-    text-align: left;
-    margin-left: 50px;
-    margin-bottom: 20px;
-}
 
-.footer {
-    display: flex;
-    flex-direction: row;
-    height: 30px;
-    margin-bottom: 20px;
-}
-
-.commentLikes {
-    margin-right: 10px;
-}
-
-.commentDislikes {
-    margin-right: 10px;
-}
-
-.upVote {
-    margin-right: 10px;
-}
-
-.downVote {
-    margin-right: 10px;
-}
-
-.replyButton {
-    margin-right: 10px;
-}
-
-.commentUsername {
-    font-size: 1.4em;
-}
-
-.commentBody {
-    font-size: 1.1em;
-}
-
-.reply {
-    margin-left: 100px;
-}
-
-.reply-form {
-    width: 40px;
-}

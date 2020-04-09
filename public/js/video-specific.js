@@ -98,18 +98,33 @@ function postReply(item) {
 function formatCommentHTML(comment) {
 
   const html = ` <div class="comment">
-                    <h1 class="commentUsername">${comment.user}</h1>
-                    <p class="commentBody">${comment.comment}</p>
-                    <div class="footer">
-                      <div class="votes">
-                        <p class="commentID">${comment.id}</p>
-                        <p class="commentLikes">0</p>
-                        <button class="upVote" onclick="processCommentVote(this)">👍</button>
-                        <p class="commentDislikes">0</p><button class="downVote" onclick="processCommentVote(this)">👎</button>
-                        <button class="replyButton" onclick="toggleReplyBox(this)">Reply</button>
-                      </div>
+                    <div class="comment-header">
+                      <h1 class="commentUsername">${comment.user}</h1>
                       <p> Posted Just now </p>
-                      <button id=${comment.id} onClick="deleteComment(this)"> Delete </button>
+                    </div>
+                    <p class="commentBody">${comment.comment}</p>
+                    <div class="comment-footer">
+                      <div> 
+                        <p class="commentID">${comment.id}</p>
+                      </div> 
+                      <div>
+                        <p class="commentLikes">0</p>
+                      </div> 
+                      <div>
+                        <button class="upVote" onclick="processCommentVote(this)">👍</button>
+                      </div> 
+                      <div>
+                        <p class="commentDislikes">0</p>
+                      </div> 
+                      <div>
+                        <button class="downVote" onclick="processCommentVote(this)">👎</button>
+                      </div> 
+                      <div>
+                        <button class="replyButton" onclick="toggleReplyBox(this)">Reply</button>
+                      </div> 
+                      <div>
+                        <button id=${comment.id} onClick="deleteComment(this)"> Delete </button>
+                      </div>
                     </div>
                     <div class="reply-form">
                       <textarea class="comment-reply" name="reply"> </textarea>
@@ -121,19 +136,32 @@ function formatCommentHTML(comment) {
 
 function formatReplyHTML(reply) {
   const html = ` <div class="reply">
+                  <div class="comment-header">
                     <h1 class="commentUsername">${reply.user}</h1>
-                    <p class="commentBody">${reply.comment}</p>
-                    <div class="footer">
-                      <div class="votes">
-                        <p class="commentID">${reply.id}</p>
-                        <p class="commentLikes">0</p>
-                        <button class="upVote" onclick="processCommentVote(this)">👍</button>
-                        <p class="commentDislikes">0</p><button class="downVote" onclick="processCommentVote(this)">👎</button>
-                      </div>
-                      <p> Posted just now </p>
+                    <p> Posted just now </p>
+                  </div>
+                  <p class="commentBody">${reply.comment}</p>
+                  <div class="comment-footer">
+                    <div>
+                      <p class="commentID">${reply.id}</p>
+                    </div> 
+                    <div>
+                      <p class="commentLikes">0</p>
+                    </div> 
+                    <div>
+                      <button class="upVote" onclick="processCommentVote(this)">👍</button>
+                    </div> 
+                    <div>
+                      <p class="commentDislikes">0</p>
+                    </div> 
+                    <div>
+                      <button class="downVote" onclick="processCommentVote(this)">👎</button>
+                    </div> 
+                    <div>
                       <button id=${reply.id} onClick="deleteComment(this)"> Delete </button>
                     </div>
-                  </div>`;
+                  </div>
+                </div>`;
 return html;
 }
 
@@ -203,7 +231,7 @@ function deleteComment(element) {
   const commentID = element.id;
   const path = window.location.pathname + '/delete-comment/' + commentID;
 
-  const comment = element.parentElement.parentElement;
+  const comment = element.parentElement.parentElement.parentElement;
 
   fetch( path, {method: 'POST'})
   .then( response =>  {

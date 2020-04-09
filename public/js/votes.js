@@ -77,18 +77,22 @@ function processCommentVote(item) {
   let pathname = null;
 
   if (item.classList.contains("upVote")) {
-    const commentID = item.previousElementSibling.previousElementSibling.innerText;
-    primary = item.previousElementSibling;
-    secondary = item.nextElementSibling;
+    const commentID = item.parentElement.previousElementSibling.previousElementSibling.firstElementChild.innerText;
+    primary = item.parentElement.previousElementSibling.firstElementChild;
+    secondary = item.parentElement.nextElementSibling.firstElementChild;
     pathname = window.location.pathname + "/addCommentLike/" + commentID;
   } else {
-    const commentID = item.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerText;
+    const commentID = item.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.firstElementChild.innerText;
     if (commentID == "👍") {
       return;
     }
-    primary = item.previousElementSibling;
-    secondary = item.previousElementSibling.previousElementSibling.previousElementSibling;
+    primary = item.parentElement.previousElementSibling.firstElementChild;
+    secondary = item.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.firstElementChild;
     pathname = window.location.pathname + "/addCommentDislike/" + commentID;
   }
+  console.log(pathname);
+  console.log(primary);
+  console.log(secondary);
+
   votePostRequest(pathname, primary, secondary);
 }

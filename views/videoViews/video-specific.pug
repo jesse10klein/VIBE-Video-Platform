@@ -58,9 +58,10 @@ block content
           p#tags= video.tags
 
       if username
-        p= "Comment:" 
-        textarea#comment(name='comment')
-        button#post-comment(onClick="postComment()")= "Post"
+        #comment-form
+          p= "Comment:" 
+          textarea#comment(name='comment')
+          button#post-comment(onClick="postComment()")= "Post"
       else
         h3= "You need to log in to be able to post comments"
     
