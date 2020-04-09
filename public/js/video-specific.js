@@ -65,6 +65,8 @@ function postComment() {
       success: function(response) {
         const commentFormatted = formatCommentHTML(response);
         $('#comments').prepend(commentFormatted);
+        //Empty comment box
+        $('#comment').val("");
       }
   })
 
@@ -98,14 +100,61 @@ function postReply(item) {
 function formatCommentHTML(comment) {
 
   const html = ` <div class="comment">
-                    <div class="comment-header">
-                      <h1 class="commentUsername">${comment.user}</h1>
-                      <p> Posted Just now </p>
+                    <div class="image">
+                      <img src='/images/user-thumbs/default.jpg'>
                     </div>
-                    <p class="commentBody">${comment.comment}</p>
+                    <div class="comment-content">
+                      <div class="comment-header">
+                        <h1 class="commentUsername">${comment.user}</h1>
+                        <p> Posted Just now </p>
+                      </div>
+                      <p class="commentBody">${comment.comment}</p>
+                      <div class="comment-footer">
+                        <div> 
+                          <p class="commentID">${comment.id}</p>
+                        </div> 
+                        <div>
+                          <p class="commentLikes">0</p>
+                        </div> 
+                        <div>
+                          <button class="upVote" onclick="processCommentVote(this)">👍</button>
+                        </div> 
+                        <div>
+                          <p class="commentDislikes">0</p>
+                        </div> 
+                        <div>
+                          <button class="downVote" onclick="processCommentVote(this)">👎</button>
+                        </div> 
+                        <div>
+                          <button class="replyButton" onclick="toggleReplyBox(this)">Reply</button>
+                        </div> 
+                        <div>
+                          <button id=${comment.id} onClick="deleteComment(this)"> Delete </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="reply-form">
+                      <textarea class="comment-reply" name="reply"> </textarea>
+                      <button class="post-reply" onClick="postReply(this)"> Reply </button>
+                    </form>
+                  </div>`;
+  return html;
+}
+
+function formatReplyHTML(reply) {
+  const html = ` <div class="reply">
+                  <div class="image">
+                    <img src="/images/user-thumbs/default.jpg">
+                  </div>
+                  <div class="comment-content">
+                    <div class="comment-header">
+                      <h1 class="commentUsername">${reply.user}</h1>
+                      <p> Posted just now </p>
+                    </div>
+                    <p class="commentBody">${reply.comment}</p>
                     <div class="comment-footer">
-                      <div> 
-                        <p class="commentID">${comment.id}</p>
+                      <div>
+                        <p class="commentID">${reply.id}</p>
                       </div> 
                       <div>
                         <p class="commentLikes">0</p>
@@ -120,45 +169,8 @@ function formatCommentHTML(comment) {
                         <button class="downVote" onclick="processCommentVote(this)">👎</button>
                       </div> 
                       <div>
-                        <button class="replyButton" onclick="toggleReplyBox(this)">Reply</button>
-                      </div> 
-                      <div>
-                        <button id=${comment.id} onClick="deleteComment(this)"> Delete </button>
+                        <button id=${reply.id} onClick="deleteComment(this)"> Delete </button>
                       </div>
-                    </div>
-                    <div class="reply-form">
-                      <textarea class="comment-reply" name="reply"> </textarea>
-                      <button class="post-reply" onClick="postReply(this)"> Reply </button>
-                    </form>
-                  </div>`;
-  return html;
-}
-
-function formatReplyHTML(reply) {
-  const html = ` <div class="reply">
-                  <div class="comment-header">
-                    <h1 class="commentUsername">${reply.user}</h1>
-                    <p> Posted just now </p>
-                  </div>
-                  <p class="commentBody">${reply.comment}</p>
-                  <div class="comment-footer">
-                    <div>
-                      <p class="commentID">${reply.id}</p>
-                    </div> 
-                    <div>
-                      <p class="commentLikes">0</p>
-                    </div> 
-                    <div>
-                      <button class="upVote" onclick="processCommentVote(this)">👍</button>
-                    </div> 
-                    <div>
-                      <p class="commentDislikes">0</p>
-                    </div> 
-                    <div>
-                      <button class="downVote" onclick="processCommentVote(this)">👎</button>
-                    </div> 
-                    <div>
-                      <button id=${reply.id} onClick="deleteComment(this)"> Delete </button>
                     </div>
                   </div>
                 </div>`;
@@ -176,12 +188,12 @@ function toggleReplyBox(item) {
   
   const form = item.parentNode.parentNode.nextElementSibling;
 
-  if (form.style.display == 'block') {
+  if (form.style.display == 'flex') {
     form.style.display = 'none';
     form.firstElementChild.value = '';
     return;
   } else {
-    form.style.display = "block";
+    form.style.display = "flex";
   }
 
 }
@@ -231,7 +243,7 @@ function deleteComment(element) {
   const commentID = element.id;
   const path = window.location.pathname + '/delete-comment/' + commentID;
 
-  const comment = element.parentElement.parentElement.parentElement;
+  const comment = element.parentElement.parentElement.parentElement.parentElement;
 
   fetch( path, {method: 'POST'})
   .then( response =>  {

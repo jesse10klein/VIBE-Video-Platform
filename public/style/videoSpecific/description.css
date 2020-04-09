@@ -99,3 +99,7 @@
     margin-top: 20px;
     height: 40px;
 }
+
+#description {
+    white-space: pre-wrap;
+}

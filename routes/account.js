@@ -13,6 +13,9 @@ router.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
+const fileUploader = require('express-fileupload');
+router.use(fileUploader());
+
 
 //Require helper functions
 var tools = require('./helperFunctions');
@@ -213,6 +216,53 @@ router.get('/delete-account', tools.asyncHandler(async (req, res) => {
     res.clearCookie("username");
     res.redirect('/');
 }));
+
+router.get('/profile-picture', (req, res) => {
+    res.render("accountViews/profile-picture");
+})
+
+//Handle uploading a user's profile picture
+router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
+
+   
+  const username = req.cookies.username;
+
+
+  if (!req.files) {
+      res.send("you must select a file");
+  } 
+
+  const file = req.files.fileName
+
+  if ((file.mimetype != "image/png") && (file.mimetype != "image/jpeg")) {
+      res.send("Please select a png or jpg file");
+      return
+  }
+
+
+  const name = file.name;
+
+  const user = await UserInfo.findOne({where: {username}});
+
+
+  var uploadpath = "../INFS3202/public/images/user-thumbs/" + user.id + ".png";
+
+  await user.update({imageURL: (user.id + ".png")});
+
+
+  file.mv(uploadpath, function(err){
+      if(err) {
+          console.log("File Upload Failed", name, err);
+      }
+      else {
+          console.log("File Uploaded", name);
+      }
+  });
+
+  res.send("uploaded");
+ 
+}));
+
 
 
 module.exports = router;

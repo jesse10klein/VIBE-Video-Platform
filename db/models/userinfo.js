@@ -19,6 +19,10 @@ module.exports = (sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false,
       defaultValue: 0
+    },
+    imageURL: {
+      type: Sequelize.STRING,
+      defaultValue: "dafault.jpg"
     }
   }, { sequelize });
 

@@ -17,7 +17,7 @@ form(enctype="multipart/form-data" action="/upload" method="POST")
         if error.description
           p.error= error.description
       if fillInfo.description
-        textarea#description(name='description' value=`${fillInfo.description}`)
+        textarea#description(name='description')= `${fillInfo.description}`
       else
         textarea#description(name='description')
     .form-element
@@ -26,12 +26,14 @@ form(enctype="multipart/form-data" action="/upload" method="POST")
         if error.tags
           p.error= error.tags
       if fillInfo.tags
-        textarea#tags(name='tags')= `${fillInfo.decription}`
+        textarea#tags(name='tags')= `${fillInfo.tags}`
       else
         textarea#tags(name='tags')
     #video-upload
       .perror
         p= 'Video Path: '
+        if error.video
+          p.error= error.video
         if error.file
           p.error= error.file
       input(type='file' name='fileName')

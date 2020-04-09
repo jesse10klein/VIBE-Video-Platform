@@ -187,6 +187,9 @@ async function getCommentsForVideo(videoID, username) {
 
 
     comments[i].formattedDate = formatTimeSince(comments[i].createdAt);
+    //For each comment, get user for image url
+    const user = await UserInfo.findOne({where: {username: comments[i].user}});
+    comments[i].imageURL = user.imageURL;
 
     //Get replies to this comment
     let replies = await Comments.findAll({
@@ -201,6 +204,11 @@ async function getCommentsForVideo(videoID, username) {
         replies[y].byUser = true;
       }
       replies[y].formattedDate = formatTimeSince(replies[y].createdAt);
+
+      //For each reply, get user for image url
+      const user = await UserInfo.findOne({where: {username: replies[y].user}});
+      replies[y].imageURL = user.imageURL;
+
     }
 
     //Set the replies on the comment

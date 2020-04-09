@@ -2,48 +2,54 @@
 #comments
   each comment in comments  
     .comment
-      .comment-header
-        h1.commentUsername= comment.user
-        p= `Posted ${comment.formattedDate}`
-      p.commentBody= comment.comment
-      .comment-footer
-        div
-          p.commentID= `${comment.id}`
-        div
-          p.commentLikes= `${comment.commentLikes}`
-        div
-          button.upVote(onclick="processCommentVote(this)")= '👍'
-        div
-          p.commentDislikes= `${comment.commentDislikes}`
-        div
-          button.downVote(onclick="processCommentVote(this)")= `👎`
-        div
-          button.replyButton(onclick="toggleReplyBox(this)")= `Reply`
-        if comment.byUser
+      .image
+        img(src=`/images/user-thumbs/${comment.imageURL}`)
+      .comment-content
+        .comment-header
+          h1.commentUsername= comment.user
+          p= `Posted ${comment.formattedDate}`
+        p.commentBody= comment.comment
+        .comment-footer
           div
-            button(id=`${comment.id}` onclick="deleteComment(this)") Delete
+            p.commentID= `${comment.id}`
+          div
+            p.commentLikes= `${comment.commentLikes}`
+          div
+            button.upVote(onclick="processCommentVote(this)")= '👍'
+          div
+            p.commentDislikes= `${comment.commentDislikes}`
+          div
+            button.downVote(onclick="processCommentVote(this)")= `👎`
+          div
+            button.replyButton(onclick="toggleReplyBox(this)")= `Reply`
+          if comment.byUser
+            div
+              button(id=`${comment.id}` onclick="deleteComment(this)") Delete
       .reply-form
         textarea.comment-reply(name='reply')
         button.post-reply(onClick="postReply(this)")= "Reply"
         
     each reply in comment.replies
       .reply
-        .comment-header
-          h1.commentUsername= reply.user
-          p= `Posted ${reply.formattedDate}`
-          
-        p.commentBody= reply.comment
-        .comment-footer
-          div
-            p.commentID= `${reply.id}`
-          div
-            p.commentLikes= `${reply.commentLikes}`
-          div
-            button.upVote(onclick="processCommentVote(this)")= '👍'
-          div
-            p.commentDislikes= `${reply.commentDislikes}`
-          div
-            button.downVote(onclick="processCommentVote(this)")= `👎`
-          if reply.byUser
+        .image
+          img(src=`/images/user-thumbs/${reply.imageURL}`)
+        .comment-content
+          .comment-header
+            h1.commentUsername= reply.user
+            p= `Posted ${reply.formattedDate}`
+            
+          p.commentBody= reply.comment
+          .comment-footer
             div
-              button(id=`${reply.id}` onclick="deleteComment(this)") Delete
+              p.commentID= `${reply.id}`
+            div
+              p.commentLikes= `${reply.commentLikes}`
+            div
+              button.upVote(onclick="processCommentVote(this)")= '👍'
+            div
+              p.commentDislikes= `${reply.commentDislikes}`
+            div
+              button.downVote(onclick="processCommentVote(this)")= `👎`
+            if reply.byUser
+              div
+                button(id=`${reply.id}` onclick="deleteComment(this)") Delete

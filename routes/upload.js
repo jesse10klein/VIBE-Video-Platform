@@ -63,31 +63,27 @@ router.post('/', tools.asyncHandler( async (req, res) => {
 
   //CHECK ALL IS VALID
   const dataCheck = tools.checkUploadData(title, description, tags);
-  if (dataCheck.length != 0) {
+  if ((dataCheck.length != 0) || (!req.files) || (req.files.fileName.mimetype != 'video/mp4')) {
     const error = tools.checkForErrors(dataCheck, req.files);
     const fillInfo = {title, description, tags};
+
     res.render("uploadViews/upload", {username, fillInfo, error});
     return;
   }
 
-  if (req.files.fileName) {
-    //ASSUME VIDEO IS UPLOADED FINE???
-    uploadVideo(req.files.fileName);
+  //ASSUME VIDEO IS UPLOADED FINE???
+  uploadVideo(req.files.fileName);
 
-    const now = new Date();
-    const newVideo = await Video.create({
-      uploader: req.cookies.username,
-      title, 
-      description, 
-      videoURL: req.files.fileName.name,
-      uploadDate: now.toISOString().slice(0, 10),
-      tags
-    });
-    res.redirect("/video/" + newVideo.id);
-  }
-  else {
-    res.send("You must select a file to upload");
-  };
+  const now = new Date();
+  const newVideo = await Video.create({
+    uploader: req.cookies.username,
+    title, 
+    description, 
+    videoURL: req.files.fileName.name,
+    uploadDate: now.toISOString().slice(0, 10),
+    tags
+  });
+  res.redirect("/video/" + newVideo.id);
 
 }));
 
