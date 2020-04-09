@@ -60,47 +60,15 @@ block content
           p#tags= video.tags
 
       if username
-        form#comment-form(action=`/video/${video.id}/add-comment` method="POST" onsubmit='addComment()')
-          p  Comment: 
-          textarea#comment(name='comment')
-          input(type='submit' value='Post')
+        p= "Comment:" 
+        textarea#comment(name='comment')
+        button#post-comment(onClick="postComment()")= "Post"
       else
         h3= "You need to log in to be able to post comments"
     
-    #comments
-      each comment in comments  
-        .comment
-          h1.commentUsername= comment.user
-          p.commentBody= comment.comment
-          .footer
-            .votes
-              p.commentID= `${comment.id}`
-              p.commentLikes= `${comment.commentLikes}`
-              button.upVote(onclick="processCommentVote(this)")= '👍'
-              p.commentDislikes= `${comment.commentDislikes}`
-              button.downVote(onclick="processCommentVote(this)")= `👎`
-              button.replyButton(onclick="toggleReplyBox(this)")= `Reply`
-            p= `Posted ${comment.formattedDate}`
-          
-
-          form.reply-form(action=`/video/${video.id}/add-reply/${comment.id}` method='POST' onsubmit='addReplyComment(this)')
-            textarea(name='reply')  
-            input(type='submit' value='Reply')
-          
-        each reply in comment.replies
-          .reply.comment
-            h1.commentUsername= reply.user
-            p.commentBody= reply.comment
-            .footer
-              .votes
-                p.commentID= `${reply.id}`
-                p.commentLikes= `${reply.commentLikes}`
-                button.upVote(onclick="processCommentVote(this)")= '👍'
-                p.commentDislikes= `${reply.commentDislikes}`
-                button.downVote(onclick="processCommentVote(this)")= `👎`
-              p= `Posted ${comment.formattedDate}`
-
+    include comments
 
 block script
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
   script(src='/js/video-specific.js')
   script(src='/js/votes.js')

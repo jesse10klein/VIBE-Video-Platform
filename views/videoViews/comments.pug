@@ -1,0 +1,35 @@
+
+#comments
+  each comment in comments  
+    .comment
+      h1.commentUsername= comment.user
+      p.commentBody= comment.comment
+      .footer
+        .votes
+          p.commentID= `${comment.id}`
+          p.commentLikes= `${comment.commentLikes}`
+          button.upVote(onclick="processCommentVote(this)")= '👍'
+          p.commentDislikes= `${comment.commentDislikes}`
+          button.downVote(onclick="processCommentVote(this)")= `👎`
+          button.replyButton(onclick="toggleReplyBox(this)")= `Reply`
+        p= `Posted ${comment.formattedDate}`
+        if comment.byUser
+          button(id=`${comment.id}` onclick="deleteComment(this)") Delete
+      .reply-form
+        textarea.comment-reply(name='reply')
+        button.post-reply(onClick="postReply(this)")= "Reply"
+        
+    each reply in comment.replies
+      .reply
+        h1.commentUsername= reply.user
+        p.commentBody= reply.comment
+        .footer
+          .votes
+            p.commentID= `${reply.id}`
+            p.commentLikes= `${reply.commentLikes}`
+            button.upVote(onclick="processCommentVote(this)")= '👍'
+            p.commentDislikes= `${reply.commentDislikes}`
+            button.downVote(onclick="processCommentVote(this)")= `👎`
+          p= `Posted ${reply.formattedDate}`
+          if reply.byUser
+            button(id=`${reply.id}` onclick="deleteComment(this)") Delete

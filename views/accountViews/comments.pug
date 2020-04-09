@@ -7,10 +7,16 @@ block content
 
     if comments
       each comment in comments
-        h2= comment.user
-        h1= comment.comment
-        h2= comment.video.title
+        .comment
+          h2= comment.user
+          h1= comment.comment
+          h2= comment.video.title
+          button(id=`${comment.id}` onclick="deleteComment(this)") Delete
     else
       h1= emptyMessage
+
+block script
+  script(src='/js/account.js')
+
 
     

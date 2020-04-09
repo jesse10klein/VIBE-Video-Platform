@@ -21,7 +21,6 @@ function getCookie(cname) {
   return "";
 }
 
-
 window.onresize = resizeVideo;
 window.onload = initiatePage; 
 
@@ -29,7 +28,6 @@ function initiatePage() {
   const video = document.getElementById("video");
   video.volume = 0.25;
   resizeVideo();
-
 }
 
 function resizeVideo() {
@@ -56,34 +54,87 @@ function resizeVideo() {
 
 };
 
-function addComment() {
+function postComment() {
 
-  const comment = document.getElementById("comment");
-  const user = getCookie("username");
+  //Get comment
+  const data = { comment: $('#comment').val() };
+  const url = window.location.pathname + "/add-comment";
 
-  //Make sure comment isn't empty
-  if (comment.value == "") {
-    return;
-  }
+  $.ajax({
+      url, type: "POST", data,
+      success: function(response) {
+        const commentFormatted = formatCommentHTML(response);
+        $('#comments').prepend(commentFormatted);
+      }
+  })
 
-  const toAdd = `<div class="comment"> 
-                  <h1 class="commentUsername"> ${user} </h1> 
-                  <p class"commentBody"> ${comment.value} </p>
-                  <p> Posted just now </p>
-                  <div class="votes">
-                    <p class="commentID"> NULL </p>
-                    <p class=commentLikes"> 0 </p>
-                    <button class="upVote" onclick="processCommentVote(this)">👍</button>
-                    <p class="commentDislikes">0</p>
-                    <button class="downVote" onclick="processCommentVote(this)">👎</button>
-                  </div>
-                </div>`
-             
-  const comments = document.getElementById("comments");
-  const node = document.createElement("div");
-  node.innerHTML = toAdd;
-  comments.insertBefore(node, comments.firstChild);
+}
 
+//Need store reply in database and attach to dom
+function postReply(item) {
+
+  const data = {reply: item.previousElementSibling.value};
+  const replyID = item.parentNode.previousElementSibling.firstElementChild.firstElementChild.innerText;
+  const replyComment = item.parentNode.parentNode;
+
+  const url = window.location.pathname + "/add-reply/" + replyID;
+
+  $.ajax({
+      url, type: "POST", data,
+      success: function(response) {
+        const replyFormatted = formatReplyHTML(response);
+        const node = $($.parseHTML(replyFormatted))
+        const comment = $(replyComment);
+        (node).insertAfter(comment);
+        
+        //Now close reply box
+        const toggleReplyButton = $(replyComment).find(".replyButton");
+        toggleReplyBox(toggleReplyButton.get(0));
+      }
+  })
+
+}
+
+function formatCommentHTML(comment) {
+
+  const html = ` <div class="comment">
+                    <h1 class="commentUsername">${comment.user}</h1>
+                    <p class="commentBody">${comment.comment}</p>
+                    <div class="footer">
+                      <div class="votes">
+                        <p class="commentID">${comment.id}</p>
+                        <p class="commentLikes">0</p>
+                        <button class="upVote" onclick="processCommentVote(this)">👍</button>
+                        <p class="commentDislikes">0</p><button class="downVote" onclick="processCommentVote(this)">👎</button>
+                        <button class="replyButton" onclick="toggleReplyBox(this)">Reply</button>
+                      </div>
+                      <p> Posted Just now </p>
+                      <button id=${comment.id} onClick="deleteComment(this)"> Delete </button>
+                    </div>
+                    <div class="reply-form">
+                      <textarea class="comment-reply" name="reply"> </textarea>
+                      <button class="post-reply" onClick="postReply(this)"> Reply </button>
+                    </form>
+                  </div>`;
+  return html;
+}
+
+function formatReplyHTML(reply) {
+  const html = ` <div class="reply">
+                    <h1 class="commentUsername">${reply.user}</h1>
+                    <p class="commentBody">${reply.comment}</p>
+                    <div class="footer">
+                      <div class="votes">
+                        <p class="commentID">${reply.id}</p>
+                        <p class="commentLikes">0</p>
+                        <button class="upVote" onclick="processCommentVote(this)">👍</button>
+                        <p class="commentDislikes">0</p><button class="downVote" onclick="processCommentVote(this)">👎</button>
+                      </div>
+                      <p> Posted just now </p>
+                      <button id=${reply.id} onClick="deleteComment(this)"> Delete </button>
+                    </div>
+                  </div>`;
+return html;
 }
 
 function toggleReplyBox(item) {
@@ -94,37 +145,15 @@ function toggleReplyBox(item) {
     return;
   }
 
-  const form = item.parentElement.parentElement.nextSibling;
-  form.style.display = "block";
+  
+  const form = item.parentNode.parentNode.nextElementSibling;
 
-}
-
-
-//Need the item as we have to add it under a given comment
-function addReplyComment(item) {
-
-  const textArea = item.childNodes[0];
-  const user = getCookie("username");
-
-  const toAdd = `<div class="comment"> 
-                  <h1 class="commentUsername"> ${user} </h1> 
-                  <p class"commentBody"> ${textArea.value} </p>
-                  <div class="footer">
-                    <div class="votes">
-                      <p class="commentID"> NULL </p>
-                      <p class=commentLikes"> 0 </p>
-                      <button class="upVote" onclick="processCommentVote(this)">👍</button>
-                      <p class="commentDislikes">0</p>
-                      <button class="downVote" onclick="processCommentVote(this)">👎</button>
-                    </div>
-                    <p> Posted just now </p>
-                  </div>
-                </div>`;
-
-  var node = document.createElement("DIV");
-  node.innerHTML = toAdd;
-  const comment = item.parentElement;
-  comment.appendChild(node);
+  if (form.style.display == 'block') {
+    form.style.display = 'none';
+    return;
+  } else {
+    form.style.display = "block";
+  }
 
 }
 
@@ -166,4 +195,41 @@ function toggleDescription() {
     div.style.display = 'block';
     descButton.textContent = 'Hide Description';
   }
+}
+
+function deleteComment(element) {
+
+  const commentID = element.id;
+  const path = window.location.pathname + '/delete-comment/' + commentID;
+
+  const comment = element.parentElement.parentElement;
+
+  fetch( path, {method: 'POST'})
+  .then( response =>  {
+    if(response.ok) {
+
+      //Then remove comment from page
+      //NOTE: If removing a comment with replies, all replies need to be removed
+
+      let _old = $(comment);
+      
+      while (true) {
+        let _new = _old.next();
+        _old.remove();
+
+        if (_new.hasClass("reply")) {
+          _old = _new;
+        } else {
+          break;
+        }
+      }
+
+      alert("Comment successfully deleted");
+      return;
+    }
+    throw new Error('Request failed.');
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
 }

@@ -41,7 +41,6 @@ function votePostRequest(pathname, primary, secondary) {
   });
 }
 
-
 function processVideoVote(item) {
   let primary = null;
   let secondary = null;
@@ -58,7 +57,7 @@ function processVideoVote(item) {
   }
 
   //Check if user is logged in
-  if (getCookie("username") == null) {
+  if (getCookie("username") == "") {
     alert("You must be logged in to vote on a video");
     return;
   }
@@ -67,31 +66,29 @@ function processVideoVote(item) {
 
 function processCommentVote(item) {
 
+  //Check if user is logged in
+  if (getCookie("username") == "") {
+    alert("You must be logged in to vote on a video");
+    return;
+  }
+
   let primary = null;
   let secondary = null;
   let pathname = null;
 
   if (item.classList.contains("upVote")) {
-    const commentID = item.previousSibling.previousSibling.innerText;
-    if (commentID == 0) {
-      return;
-    }
-    primary = item.previousSibling;
-    secondary = item.nextSibling;
+    const commentID = item.previousElementSibling.previousElementSibling.innerText;
+    primary = item.previousElementSibling;
+    secondary = item.nextElementSibling;
     pathname = window.location.pathname + "/addCommentLike/" + commentID;
   } else {
-    const commentID = item.previousSibling.previousSibling.previousSibling.previousSibling.innerText;
+    const commentID = item.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerText;
     if (commentID == "👍") {
       return;
     }
-    primary = item.previousSibling;
-    secondary = item.previousSibling.previousSibling.previousSibling;
+    primary = item.previousElementSibling;
+    secondary = item.previousElementSibling.previousElementSibling.previousElementSibling;
     pathname = window.location.pathname + "/addCommentDislike/" + commentID;
   }
-
-  console.log(primary);
-  console.log(secondary);
-
   votePostRequest(pathname, primary, secondary);
-
 }

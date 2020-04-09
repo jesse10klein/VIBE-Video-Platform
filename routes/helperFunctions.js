@@ -4,6 +4,8 @@ const validator = require("email-validator");
 const db = require('../db');
 const { UserInfo } = db.models;
 const { Comments } = db.models;
+const { videoVotes } = db.models;
+const { commentVotes } = db.models;
 
 
 function asyncHandler(cb) {
@@ -166,13 +168,20 @@ async function signupErrors(username, email, password) {
 
 }
 
-async function getCommentsForVideo(videoID) {
+async function getCommentsForVideo(videoID, username) {
 
   let comments = await Comments.findAll({ 
     order: [["createdAt", "DESC"]], where: {videoID, replyID: -1}});
 
   //Need to format date for comments
   for (let i = 0; i < comments.length; i++) {
+
+    //If current user made this comment, add thingo
+    if (comments[i].user == username) {
+      comments[i].byUser = true;
+    }
+
+
     comments[i].formattedDate = formatTimeSince(comments[i].createdAt);
 
     //Get replies to this comment
@@ -183,6 +192,10 @@ async function getCommentsForVideo(videoID) {
 
     //Format date
     for (let y = 0; y < replies.length; y++) {
+       //If current user made this comment, add thingo
+      if (replies[y].user == username) {
+        replies[y].byUser = true;
+      }
       replies[y].formattedDate = formatTimeSince(replies[y].createdAt);
     }
 
@@ -192,5 +205,73 @@ async function getCommentsForVideo(videoID) {
   return comments;
 }
 
+async function deleteComments(comments) {
+
+  console.log("Delete comments function")
+
+  for (let i = 0; i < comments.length; i++) {
+
+    //Get all votes related to the comment
+    const commentID = comments[i].id
+    const votes = await commentVotes.findAll({where: {commentID}});
+
+    //Delete votes
+    for (let y = 0; y < votes.length; y++) {
+      await votes[y].destroy();
+    }
+    
+    //Delete comment
+    await comments[i].destroy();
+  }
+
+}
+
+async function deleteVideo(video) {
+
+  console.log("Delete video function");
+
+  //Get all votes associated with video
+  const videoID = video.id;
+  const vidVotes = await videoVotes.findAll({where: {videoID}})
+
+  //Delete votes
+  for (let i = 0; i < vidVotes.length; i++) {
+    await vidVotes[i].destroy();
+  }
+
+  //Get all comments associated with video
+  const comments = await Comments.findAll({where: {videoID}});
+  await deleteComments(comments);
+
+  console.log("NEED TO ADD IN DELETING BOOKMARED VIDEOS");
+
+  //await video.destroy();
+  return;
+
+}
+
+async function deleteAccount(user) {
+
+  //Get list of videos made by user
+  const videos = await videos.findAll({where: {uploader: user.username}});
+
+  //Delete videos
+  for (let i = 0; i < videos.length; i++) {
+    await deleteVideo(videos[i]);
+  }
+
+  //Delete remaining comments
+  const comments = await Comments.findAll({where: {user: user.username}})
+  await deleteComments(comments);
+
+  //NEED TO DELETE VIDEO VOTES AND COMMENT VOTES
+  //AND SUBSCRIPTIONS (DONT FORGET TO UPDATE LIKE COUNTS ETC)
+  //MAKE HELPER FUNCTIONS TO DO THIS
+
+  console.log("NEED TO IMPLEMENT REMOVING BOOKMARKS WHEN DELETING USER");
+  await user.destroy();
+  return;
+}
+
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
-  formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo};
+  formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, deleteComments, deleteVideo};

@@ -33,7 +33,7 @@
     height: 56px;
 }
 
-.comment {
+.comment, .reply {
     text-align: left;
     margin-left: 50px;
     margin-bottom: 20px;

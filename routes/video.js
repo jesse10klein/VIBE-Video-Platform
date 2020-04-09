@@ -48,13 +48,12 @@ router.post('/:id/add-comment', tools.asyncHandler(async (req, res) => {
         res.render("404", {message: "Resource not found"});
     }
 
-    await Comments.create({
+    const comment = await Comments.create({
         user: req.cookies.username,
         videoID: req.params.id,
         comment: req.body.comment
     });
-
-    res.status(204).send();
+    res.send(comment);
 }));
 
 //Sorting comments under video
@@ -93,7 +92,7 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   const {username} = req.cookies;
 
   //Get comments
-  const comments = await tools.getCommentsForVideo(req.params.id);
+  const comments = await tools.getCommentsForVideo(req.params.id, username);
 
   //Check if user is subscribed to the uploader
   let subscribed = false;
@@ -334,8 +333,6 @@ router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (
 }));
 
 
-
-
 //Add a reply to a comment
 router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res) => {
 
@@ -349,15 +346,34 @@ router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res
       res.render("404", {message: "Resource not found"});
   }
 
-  await Comments.create({
+  const comment = await Comments.create({
       user: req.cookies.username,
       videoID: req.params.videoID,
       comment: req.body.reply,
       replyID: req.params.commentID
   });
 
-  res.status(204).send();
+  res.send(comment);
 }));
+
+//Handle deleting a comment
+router.post('/:vidID/delete-comment/:commentID', tools.asyncHandler(async (req, res) => {
+
+  const comment = await Comments.findOne({where: {
+    id: req.params.commentID,
+    user: req.cookies.username
+  }});
+
+  if (comment == null) {
+      res.render("404", {message: "Could not find what you were looking for"});
+      return;
+  }
+
+  await comment.destroy();
+  res.send("Comment deleted");
+
+}));
+
 
 
 module.exports = router;

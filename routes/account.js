@@ -156,6 +156,42 @@ router.get('/:id/deletevideo', tools.asyncHandler(async (req, res) => {
 
 }));
 
+//Handle deleting a comment
+router.post('/comments/delete-comment/:id', tools.asyncHandler(async (req, res) => {
+    const comment = await Comments.findOne({where: {
+        id: req.params.id,
+        user: req.cookies.username
+      }});
+      if (comment == null) {
+          res.render("404", {message: "Could not find what you were looking for"});
+          return;
+      }
+    
+      await comment.destroy();
+      res.send("Comment deleted");
+}));
+
+
+//Handle deleting a video
+router.post('/delete-video/:id', tools.asyncHandler(async (req, res) => {
+
+    
+    const video = await Video.findOne({where: {id: req.params.id}});
+
+    if (video == null) {
+        res.render("404", {message: "Could not find what you were looking for"});
+        return;
+    }
+
+    await tools.deleteVideo(video);
+
+    res.sendStatus(200);
+    return;
+
+}));
+
+
+/*
 //Handle deleting a user
 router.get('/deleteuser', tools.asyncHandler(async (req, res) => {
 
@@ -191,5 +227,6 @@ router.get('/deleteuser', tools.asyncHandler(async (req, res) => {
     res.send("All user info has been destroyed");
 
 }));
+*/
 
 module.exports = router;
