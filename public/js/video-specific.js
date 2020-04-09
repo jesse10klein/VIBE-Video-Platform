@@ -86,7 +86,7 @@ function postReply(item) {
         const node = $($.parseHTML(replyFormatted))
         const comment = $(replyComment);
         (node).insertAfter(comment);
-        
+
         //Now close reply box
         const toggleReplyButton = $(replyComment).find(".replyButton");
         toggleReplyBox(toggleReplyButton.get(0));
@@ -150,6 +150,7 @@ function toggleReplyBox(item) {
 
   if (form.style.display == 'block') {
     form.style.display = 'none';
+    form.firstElementChild.value = '';
     return;
   } else {
     form.style.display = "block";
@@ -157,7 +158,7 @@ function toggleReplyBox(item) {
 
 }
 
-subButton.addEventListener('click', function(e) {
+function processSubscribe() {
 
   if (getCookie("username") == "") {
     window.alert("Log in to subscribe");
@@ -182,7 +183,7 @@ subButton.addEventListener('click', function(e) {
     .catch(function(error) {
       console.log(error);
     });
-});
+};
 
 function toggleDescription() {
 
@@ -212,6 +213,12 @@ function deleteComment(element) {
       //NOTE: If removing a comment with replies, all replies need to be removed
 
       let _old = $(comment);
+
+      if (_old.hasClass("reply")) {
+        _old.remove();
+        alert("Comment successfully deleted");
+        return;
+      }
       
       while (true) {
         let _new = _old.next();
@@ -232,4 +239,30 @@ function deleteComment(element) {
   .catch(function(error) {
     console.log(error);
   });
+}
+
+function processBookmark() {
+  
+  if (getCookie("username") == "") {
+    window.alert("Log in to bookmark a video");
+    return;
+  }
+  const path = window.location.pathname + '/bookmark-video';
+
+  fetch( path, {method: 'POST'})
+    .then( response =>  {
+      if(response.ok) {
+        return response.json();
+      }
+      throw new Error('Request failed.');
+    }).then( data => {
+      if (data.added) {
+        alert("Bookmark added");
+      } else {
+        alert("Bookmark removed");
+      }
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
 }

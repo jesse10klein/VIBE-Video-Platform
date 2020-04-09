@@ -2,11 +2,15 @@ const validator = require("email-validator");
 
 
 const db = require('../db');
+const { Video } = db.models;
 const { UserInfo } = db.models;
 const { Comments } = db.models;
 const { videoVotes } = db.models;
 const { commentVotes } = db.models;
+const { Bookmarks } = db.models;
+const { Subscriptions} = db.models;
 
+const Op = require('Sequelize').Op;
 
 function asyncHandler(cb) {
     return async(req, res, next) => {
@@ -243,35 +247,73 @@ async function deleteVideo(video) {
   const comments = await Comments.findAll({where: {videoID}});
   await deleteComments(comments);
 
-  console.log("NEED TO ADD IN DELETING BOOKMARED VIDEOS");
+  const bookmarks = Bookmarks.findAll({where: {videoID}});
+  await bookmarks.destory();
 
-  //await video.destroy();
+  await video.destroy();
   return;
 
 }
 
 async function deleteAccount(user) {
 
-  //Get list of videos made by user
-  const videos = await videos.findAll({where: {uploader: user.username}});
+  const username = user.username;
 
-  //Delete videos
+  const videos = await Video.findAll({where: {uploader: username}});
+  //Destroy all of the comments on each video
   for (let i = 0; i < videos.length; i++) {
-    await deleteVideo(videos[i]);
+      const comments = await Comments.findAll({where: {videoID: videos[i].id}});
+      for (let i = 0; i < comments.length; i++) {
+        await comments[i].destroy();
+      }
+  }
+  //Destroy all videos
+  for (let i = 0; i < videos.length; i++) {
+    await videos[i].destroy();
   }
 
-  //Delete remaining comments
-  const comments = await Comments.findAll({where: {user: user.username}})
-  await deleteComments(comments);
+  //Now delete all comments made by user
+  const comments = await Comments.findAll({where: {user: username}});
+  for (let i = 0; i < comments.length; i++) {
+    await comments[i].destroy();
+  }
 
-  //NEED TO DELETE VIDEO VOTES AND COMMENT VOTES
-  //AND SUBSCRIPTIONS (DONT FORGET TO UPDATE LIKE COUNTS ETC)
-  //MAKE HELPER FUNCTIONS TO DO THIS
+  //Now delete all subscriptions
+  const subscriptions = await Subscriptions.findAll({
+      where: {
+          [Op.or]: {
+              user: username,
+              subscriber: username
+          }
+      }
+  });
+  
+  for (let i = 0; i < subscriptions.length; i++) {
+    await subscriptions[i].destroy();
+  }
 
-  console.log("NEED TO IMPLEMENT REMOVING BOOKMARKS WHEN DELETING USER");
+  //Delete all bookmarks made by user
+  const bookmarks = await Bookmarks.findAll({where: {username}});
+  for (let i = 0; i < bookmarks.length; i++) {
+    await bookmarks[i].destroy();
+  }
+
+
+  //Delete all video votes and comment votes
+  const vidVotes = await videoVotes.findAll({where: {user: username}});
+  for (let i = 0; i < vidVotes.length; i++) {
+    await vidVotes[i].destroy();
+  }
+  
+  const comVotes = await commentVotes.findAll({where: {user: username}});
+  for (let i = 0; i < comVotes.length; i++) {
+    await comVotes[i].destroy();
+  }
   await user.destroy();
-  return;
+
 }
 
+
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
-  formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, deleteComments, deleteVideo};
+  formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
+  deleteComments, deleteVideo, deleteAccount};

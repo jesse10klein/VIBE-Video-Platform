@@ -12,7 +12,8 @@ block content
             h2= video.uploader
             video(src=`/videos/${video.videoURL}#t=10`)
             a(href=`/account/delete-video/${video.id}`)
-          button(id=`${video.id}` onclick="deleteVideo(this)") Delete
+          if myVids
+            button(id=`${video.id}` onclick="deleteVideo(this)") Delete
     else
       h1= emptyMessage
 

@@ -3,6 +3,7 @@ const router = express.Router();
 
 const db = require('../db');
 const { Video } = db.models;
+const { Bookmarks } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
 const { Subscriptions } = db.models;
@@ -374,6 +375,30 @@ router.post('/:vidID/delete-comment/:commentID', tools.asyncHandler(async (req, 
 
 }));
 
+//Handle bookmarking a video
+router.post('/:videoID/bookmark-video', tools.asyncHandler(async (req, res) => {
+
+  //Check if user already has video bookmarked
+  const bookmark = await Bookmarks.findOne({where: {
+    username: req.cookies.username,
+    videoID: req.params.videoID
+  }});
+
+  if (bookmark == null) {
+      await Bookmarks.create({
+        username: req.cookies.username,
+        videoID: req.params.videoID
+      });
+    res.send({added: true});
+    return;
+  } else {
+    await bookmark.destroy();
+    res.send({added: false});
+    return;
+  }
+
+
+}));
 
 
 module.exports = router;

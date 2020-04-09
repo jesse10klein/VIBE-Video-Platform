@@ -42,15 +42,13 @@ block content
             button#upVote(onclick="processVideoVote(this)")= '👍'
             p#downvoteCount= `${video.downvotes}`
             button#downVote(onclick="processVideoVote(this)")= `👎`
-          if username
-            if subscribed
-              button#subscribeButton= `Unsubscribe`
-            else
-              button#subscribeButton= `Subscribe`
+          if subscribed
+            button#subscribeButton(onClick="processSubscribe()")= `Unsubscribe`
           else
-            button#subscribeButton.notLoggedIn= `Subscribe`
+            button#subscribeButton(onClick="processSubscribe()")= `Subscribe`
+          
+        button#bookmark(onClick="processBookmark()")= "Bookmark Video"
         
-
         button#descButton(onClick="toggleDescription()")= "Show Description"
         #description-info
           h3#date= `Uploaded on ${video.formattedDate}`
