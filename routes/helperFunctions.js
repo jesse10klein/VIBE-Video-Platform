@@ -119,7 +119,7 @@ function checkUploadData(title, description, tags) {
   return errors;
 }
 
-function checkForErrors(potentialErrors, file) {
+function checkForErrors(potentialErrors) {
   let error = {};
   if (potentialErrors.includes(1)) {
     error.title = "Title must be at least 5 characters long";
@@ -129,11 +129,6 @@ function checkForErrors(potentialErrors, file) {
   } 
   if (potentialErrors.includes(3)) {
     error.tags = "Tags must be at least 5 characters long";
-  } 
-  if (!file) {
-    error.file = "You must select a file to upload";
-  } else if (file.fileName.mimetype != "video/mp4") {
-    error.file = "You must select an mp4 file";
   }
   return error;
 }
@@ -193,7 +188,7 @@ async function getCommentsForVideo(videoID, username) {
 
     //Get replies to this comment
     let replies = await Comments.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["createdAt", "ASC"]],
       where: {replyID: comments[i].id}
     })
 

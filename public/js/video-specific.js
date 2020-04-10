@@ -4,6 +4,23 @@ const div = document.getElementById("description-info");
 const descButton = document.getElementById("descButton");
 const subButton = document.getElementById('subscribeButton');
 
+let alerting = false;
+
+function toggleLoginAlert() {
+  if (alerting) {
+    return;
+  }
+
+  const loginAlert = $("#login-alert");
+  loginAlert.removeClass("hidden");
+  alerting = true;
+
+  setTimeout(() => {
+    loginAlert.addClass("hidden");
+    alerting = false;
+  }, 4000);
+}
+
 
 function getCookie(cname) {
   var name = cname + "=";
@@ -63,6 +80,8 @@ function postComment() {
   $.ajax({
       url, type: "POST", data,
       success: function(response) {
+        console.log(response);
+        console.log(response.imageURL);
         const commentFormatted = formatCommentHTML(response);
         $('#comments').prepend(commentFormatted);
         //Empty comment box
@@ -76,22 +95,24 @@ function postComment() {
 function postReply(item) {
 
   const data = {reply: item.previousElementSibling.value};
-  const replyID = item.parentNode.previousElementSibling.firstElementChild.firstElementChild.innerText;
-  const replyComment = item.parentNode.parentNode;
+  const replyID = $(item.parentNode.previousElementSibling).find('.commentID').text();
+  const replyComment = item.parentNode.previousElementSibling;
 
   const url = window.location.pathname + "/add-reply/" + replyID;
 
   $.ajax({
       url, type: "POST", data,
       success: function(response) {
-        const replyFormatted = formatReplyHTML(response);
-        const node = $($.parseHTML(replyFormatted))
-        const comment = $(replyComment);
-        (node).insertAfter(comment);
-
+    
         //Now close reply box
         const toggleReplyButton = $(replyComment).find(".replyButton");
         toggleReplyBox(toggleReplyButton.get(0));
+
+
+        const replyFormatted = formatReplyHTML(response);
+        const node = $($.parseHTML(replyFormatted))
+        const comment = $(replyComment.nextElementSibling);
+        (node).insertAfter(comment);
       }
   })
 
@@ -101,17 +122,17 @@ function formatCommentHTML(comment) {
 
   const html = ` <div class="comment">
                     <div class="image">
-                      <img src='/images/user-thumbs/default.jpg'>
+                      <img src='/images/user-thumbs/${comment.imageURL}'>
                     </div>
                     <div class="comment-content">
                       <div class="comment-header">
-                        <h1 class="commentUsername">${comment.user}</h1>
+                        <h1 class="commentUsername">${comment.comment.user}</h1>
                         <p> Posted Just now </p>
                       </div>
-                      <p class="commentBody">${comment.comment}</p>
+                      <p class="commentBody">${comment.comment.comment}</p>
                       <div class="comment-footer">
                         <div> 
-                          <p class="commentID">${comment.id}</p>
+                          <p class="commentID">${comment.comment.id}</p>
                         </div> 
                         <div>
                           <p class="commentLikes">0</p>
@@ -129,32 +150,32 @@ function formatCommentHTML(comment) {
                           <button class="replyButton" onclick="toggleReplyBox(this)">Reply</button>
                         </div> 
                         <div>
-                          <button id=${comment.id} onClick="deleteComment(this)"> Delete </button>
+                          <button id=${comment.comment.id} onClick="deleteComment(this)"> Delete </button>
                         </div>
                       </div>
                     </div>
+                  </div>
                     <div class="reply-form">
                       <textarea class="comment-reply" name="reply"> </textarea>
                       <button class="post-reply" onClick="postReply(this)"> Reply </button>
-                    </form>
-                  </div>`;
+                    </div>`;
   return html;
 }
 
 function formatReplyHTML(reply) {
   const html = ` <div class="reply">
                   <div class="image">
-                    <img src="/images/user-thumbs/default.jpg">
+                    <img src="/images/user-thumbs/${reply.imageURL}">
                   </div>
                   <div class="comment-content">
                     <div class="comment-header">
-                      <h1 class="commentUsername">${reply.user}</h1>
+                      <h1 class="commentUsername">${reply.comment.user}</h1>
                       <p> Posted just now </p>
                     </div>
-                    <p class="commentBody">${reply.comment}</p>
+                    <p class="commentBody">${reply.comment.comment}</p>
                     <div class="comment-footer">
                       <div>
-                        <p class="commentID">${reply.id}</p>
+                        <p class="commentID">${reply.comment.id}</p>
                       </div> 
                       <div>
                         <p class="commentLikes">0</p>
@@ -169,7 +190,7 @@ function formatReplyHTML(reply) {
                         <button class="downVote" onclick="processCommentVote(this)">👎</button>
                       </div> 
                       <div>
-                        <button id=${reply.id} onClick="deleteComment(this)"> Delete </button>
+                        <button id=${reply.comment.id} onClick="deleteComment(this)"> Delete </button>
                       </div>
                     </div>
                   </div>
@@ -181,12 +202,12 @@ function toggleReplyBox(item) {
 
   const user = getCookie("username");
   if (user == "") {
-    alert("You must be logged in to reply to a comment");
+    toggleLoginAlert();
     return;
   }
 
   
-  const form = item.parentNode.parentNode.nextElementSibling;
+  const form = item.parentNode.parentNode.parentNode.parentNode.nextElementSibling;
 
   if (form.style.display == 'flex') {
     form.style.display = 'none';
@@ -201,7 +222,7 @@ function toggleReplyBox(item) {
 function processSubscribe() {
 
   if (getCookie("username") == "") {
-    window.alert("Log in to subscribe");
+    toggleLoginAlert();
     return;
   }
 
@@ -258,6 +279,11 @@ function deleteComment(element) {
         _old.remove();
         alert("Comment successfully deleted");
         return;
+      } else {
+        let replyBox = _old.next();
+        _old.remove();
+        _old = replyBox.next();
+        replyBox.remove();
       }
       
       while (true) {
@@ -284,7 +310,7 @@ function deleteComment(element) {
 function processBookmark() {
   
   if (getCookie("username") == "") {
-    window.alert("Log in to bookmark a video");
+    toggleLoginAlert();
     return;
   }
   const path = window.location.pathname + '/bookmark-video';

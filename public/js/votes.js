@@ -1,19 +1,3 @@
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
 function votePostRequest(pathname, primary, secondary) {
   fetch( pathname, {method: 'POST'})
   .then( response =>  {
@@ -58,7 +42,7 @@ function processVideoVote(item) {
 
   //Check if user is logged in
   if (getCookie("username") == "") {
-    alert("You must be logged in to vote on a video");
+    toggleLoginAlert();
     return;
   }
   votePostRequest(pathname, primary, secondary)
@@ -68,7 +52,7 @@ function processCommentVote(item) {
 
   //Check if user is logged in
   if (getCookie("username") == "") {
-    alert("You must be logged in to vote on a video");
+    toggleLoginAlert();
     return;
   }
 

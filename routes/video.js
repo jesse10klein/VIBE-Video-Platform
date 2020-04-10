@@ -54,7 +54,12 @@ router.post('/:id/add-comment', tools.asyncHandler(async (req, res) => {
         videoID: req.params.id,
         comment: req.body.comment
     });
-    res.send(comment);
+
+    //Get user's profile pic and attach it
+    const user = await UserInfo.findOne({where: {username: req.cookies.username}});
+    const imageURL = user.imageURL
+
+    res.send({comment, imageURL});
 }));
 
 //Sorting comments under video
@@ -354,7 +359,14 @@ router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res
       replyID: req.params.commentID
   });
 
-  res.send(comment);
+  //Get user's profile pic and attach it
+  const user = await UserInfo.findOne({where: {username: req.cookies.username}});
+  const imageURL = user.imageURL;
+
+  console.log(user);
+  console.log(imageURL);
+
+  res.send({comment, imageURL});
 }));
 
 //Handle deleting a comment
@@ -368,6 +380,11 @@ router.post('/:vidID/delete-comment/:commentID', tools.asyncHandler(async (req, 
   if (comment == null) {
       res.render("404", {message: "Could not find what you were looking for"});
       return;
+  }
+  //Check if the comment has replies and delete them
+  const replies = await Comments.findAll({where: {replyID: comment.id}});
+  for (let i = 0; i < replies.length; i++) {
+    await replies[i].destroy();
   }
 
   await comment.destroy();

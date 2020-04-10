@@ -25,9 +25,9 @@
           if comment.byUser
             div
               button(id=`${comment.id}` onclick="deleteComment(this)") Delete
-      .reply-form
-        textarea.comment-reply(name='reply')
-        button.post-reply(onClick="postReply(this)")= "Reply"
+    .reply-form
+      textarea.comment-reply(name='reply')
+      button.post-reply(onClick="postReply(this)")= "Reply"
         
     each reply in comment.replies
       .reply

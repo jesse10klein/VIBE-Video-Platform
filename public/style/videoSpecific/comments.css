@@ -26,6 +26,7 @@
     height: 75px;
     width: 75px;
     object-fit: cover;
+    border-radius: 50%;
 }
 
 /* HEADER */
@@ -81,12 +82,13 @@
 .reply-form {
     display: none;
     flex-direction: row;
-    margin-left: -20px;
+    margin-left: 120px;
+    margin-bottom: 10px;
 }
 
 .comment-reply {
     margin-left: 20px;
-    width: 200px;
+    width: 250px;
     height: 35px;
     font-size: 1em;
 }

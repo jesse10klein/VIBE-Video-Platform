@@ -1,0 +1,44 @@
+
+body {
+  background: #eef1f3;
+}
+
+.progress-bar {
+	border-radius: 60px;
+	overflow: hidden;
+    width: 100%;
+}
+
+.progress-bar span {
+	display: block;
+}
+
+.bar {
+  background: rgba(0,0,0,0.075);;
+}
+
+.progress {
+  background: #75b800;
+  color: #fff;
+  padding: 5px;
+  width: 0;
+}
+
+.progress-bar {
+  margin-left: 50%;
+  max-width: 75%;
+  transform: translate3d(-50%,-50%,0);
+}
+
+.upload-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#uploading {
+    display: none;
+    position: relative;
+    top: 20px;
+    text-align: center;
+}

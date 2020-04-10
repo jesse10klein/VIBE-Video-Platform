@@ -6,6 +6,7 @@ block style
 block content
   if fill
     #form-div
+      #title= "Create an account"
       form(action="/users/signup" method="POST")
         .form-element
           .errors
@@ -25,9 +26,10 @@ block content
             if error
               p.error= error.password
           input(name='password')
-        input(type='submit' value="Create Account")
+        input#createAccount(type='submit' value="Create Account")
   else
     #form-div
+      #title= "Create an account"
       form(action="/users/signup" method="POST")
         .form-element
           p  Username: 
@@ -42,4 +44,4 @@ block content
         .form-element
           p  Password: 
           input(name='password')
-        input(type='submit' value="Create Account")
+        input#createAccount(type='submit' value="Create Account")
