@@ -5,14 +5,9 @@ const db = require('../db');
 const { Video } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
-const { Subscriptions } = db.models;
-const { videoVotes } = db.models;
 
 const bcrypt = require("bcrypt");
 
-
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 
 //Require helper functions
 var tools = require('./helperFunctions');
@@ -24,18 +19,19 @@ router.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
-
 router.get('/', (req, res) => {
   res.redirect('/');
 })
 
 //Login page
 router.get('/login', (req, res) => {
-  if (req.cookies.username) {
+
+  if (req.session.username) {
     res.redirect("/");
-  } else {
-    res.render('userViews/login');
+    return;
   }
+
+  res.render('userViews/login');
 })
 
 //Signup page
@@ -48,8 +44,9 @@ router.post('/login', tools.asyncHandler(async (req, res) => {
 
   const username = req.body.username;
 
-  if (req.cookies.username) {
+  if (req.session.username) {
     res.redirect("/");
+    return;
   }
 
   //Find user by username
@@ -59,7 +56,8 @@ router.post('/login', tools.asyncHandler(async (req, res) => {
 
     //Get user password and compare using bcrypt
     if (await bcrypt.compare(req.body.password, match.password)) {
-      res.cookie("username", match.username);
+      req.session.username = match.username;
+      req.session.save();
       res.redirect("/");
       return;
     }
@@ -71,17 +69,17 @@ router.post('/login', tools.asyncHandler(async (req, res) => {
 }));
 
 router.get('/logout', (req, res) => {
-  res.clearCookie('username');
-  res.redirect('/');
+  req.session.destroy( err => {
+    res.clearCookie('sid');
+    res.redirect('/users/login');
+  });
 })
 
 
 //CREATE NEW USER BASED ON SIGN UP DATA
 router.post('/signup', tools.asyncHandler(async (req, res) => {
   
-    let { username } = req.body;
-    let { email } = req.body;
-    let { password } = req.body;
+    let { username, email, password } = req.body;
     const fill = { username, email }
     
     let error = await tools.signupErrors(username, email, password);
@@ -105,7 +103,7 @@ router.post('/signup', tools.asyncHandler(async (req, res) => {
 //GET ALL VIDEOS MADE BY THE USER
 router.get('/:user', tools.asyncHandler(async (req, res) => {
 
-  if (req.cookies.username == req.params.user) {
+  if (req.session.username == req.params.user) {
     res.redirect('/account');
   }
 
@@ -143,7 +141,7 @@ router.get('/:user/comments', tools.asyncHandler(async (req, res) => {
 router.get('/:user/liked-videos', tools.asyncHandler(async (req, res) => {
 
   //GET UPVOTES
-  const uploader = req.cookies.username;
+  const uploader = req.session.username;
   const notHomeUser = req.params.user;
   let videos = await userHelp.getVotes(notHomeUser, 1);
 
@@ -158,7 +156,7 @@ router.get('/:user/liked-videos', tools.asyncHandler(async (req, res) => {
 router.get('/:user/disliked-videos', tools.asyncHandler(async (req, res) => {
 
   //GET DOWNVOTES
-  const uploader = req.cookies.username;
+  const uploader = req.session.username;
   const notHomeUser = req.params.user;
   let videos = await userHelp.getVotes(notHomeUser, 2);
 
@@ -173,7 +171,7 @@ router.get('/:user/disliked-videos', tools.asyncHandler(async (req, res) => {
 router.get('/:user/subscribers', tools.asyncHandler(async (req, res) => {
 
   //GET SUBSCRIBERS
-  const uploader = req.cookies.username;
+  const uploader = req.session.username;
   const notHomeUser = req.params.user;
   const subs = await userHelp.getSubs(notHomeUser, 1);
 
@@ -184,7 +182,7 @@ router.get('/:user/subscribers', tools.asyncHandler(async (req, res) => {
 router.get('/:user/subscribed-to', tools.asyncHandler(async (req, res) => {
 
   //GET SUBSCRIBERS
-  const uploader = req.cookies.username;
+  const uploader = req.session.username;
   const notHomeUser = req.params.user;
   const subs = await userHelp.getSubs(notHomeUser, 2);
 
@@ -194,7 +192,7 @@ router.get('/:user/subscribed-to', tools.asyncHandler(async (req, res) => {
 //GET ALL BOOKMARKS
 router.get('/:user/bookmarked-videos', tools.asyncHandler(async (req, res) => {
 
-  const username = req.cookies.username
+  const username = req.session.username
   const notHomeUser = req.params.user;
 
   if (username == null) {

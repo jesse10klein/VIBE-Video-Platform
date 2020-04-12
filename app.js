@@ -16,6 +16,20 @@ const pug = require("pug");
 const app = express();
 var bodyParser = require('body-parser');
 
+const expressSession = require("express-session");
+
+const sessionName = 'sid';
+app.use(expressSession({
+  name: sessionName,
+  cookie: {
+    maxAge: (1000 * 60 * 60),
+    sameSite: true,
+    secure: false
+  },
+  secret: 'isthisthingon?', 
+  saveUninitialized: true, 
+  resave: false
+}));
 
 //Get Routes
 const userRoutes = require('./routes/users');
@@ -28,8 +42,6 @@ const uploadRoutes = require('./routes/upload');
 app.use('/upload', uploadRoutes);
 const searchRoutes = require('./routes/search');
 app.use('/search', searchRoutes);
-
-
 
 //Set view engine and tell express where to look for views
 app.use(express.static("public"));

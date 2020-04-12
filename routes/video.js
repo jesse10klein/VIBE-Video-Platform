@@ -31,7 +31,7 @@ router.get('/', tools.asyncHandler(async (req, res) => {
     videos = null;
   }
 
-  const username = req.cookies.username;
+  const username = req.session.username;
   res.render("videoViews/video", {videos, username});
 }));
 
@@ -45,18 +45,18 @@ router.post('/:id/add-comment', tools.asyncHandler(async (req, res) => {
       res.render("404", {message: "The video that you have requested does not exist"});
     }
 
-    if (req.cookies.username == null) {
+    if (req.session.username == null) {
         res.render("404", {message: "Resource not found"});
     }
 
     const comment = await Comments.create({
-        user: req.cookies.username,
+        user: req.session.username,
         videoID: req.params.id,
         comment: req.body.comment
     });
 
     //Get user's profile pic and attach it
-    const user = await UserInfo.findOne({where: {username: req.cookies.username}});
+    const user = await UserInfo.findOne({where: {username: req.session.username}});
     const imageURL = user.imageURL
 
     res.send({comment, imageURL});
@@ -95,14 +95,14 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   //Format date for video
   video.formattedDate = tools.formatDate(video.uploadDate);
 
-  const {username} = req.cookies;
+  const {username} = req.session;
 
   //Get comments
   const comments = await tools.getCommentsForVideo(req.params.id, username);
 
   //Check if user is subscribed to the uploader
   let subscribed = false;
-  if (req.cookies.username) {
+  if (req.session.username) {
     const subscription = await Subscriptions.findOne({
       where: {user: uploader.username, subscriber: username}
     })
@@ -115,7 +115,7 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
 router.post('/:videoID/handle-sub', tools.asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
-  if (req.cookies.username == null) {
+  if (req.session.username == null) {
     res.end();
   }
 
@@ -125,11 +125,11 @@ router.post('/:videoID/handle-sub', tools.asyncHandler(async (req, res) => {
 
   //Check if user is subscribed
   const subscription = await Subscriptions.findOne({
-    where: {subscriber: req.cookies.username}});
+    where: {subscriber: req.session.username}});
   
 
   if (subscription == null) { 
-    await Subscriptions.create({user, subscriber: req.cookies.username});
+    await Subscriptions.create({user, subscriber: req.session.username});
     const newSubCount = uploader.subscriberCount + 1;
     await uploader.update({ subscriberCount: newSubCount });
     res.status(200).send({subscribers: newSubCount, subscribeStatus: "Unsubscribe"});
@@ -148,7 +148,7 @@ router.post('/:videoID/addUpvote', tools.asyncHandler(async (req, res) => {
   //Get the voting status of the user
   const vote = await videoVotes.findOne({
     where: {
-      user: req.cookies.username, 
+      user: req.session.username, 
       videoID: req.params.videoID}
     });
 
@@ -177,7 +177,7 @@ router.post('/:videoID/addUpvote', tools.asyncHandler(async (req, res) => {
   //Add upvote to db
   await videoVotes.create({
     videoID: req.params.videoID,
-    user: req.cookies.username,
+    user: req.session.username,
     status: 1
   });
 
@@ -199,7 +199,7 @@ router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
   //Get the voting status of the user
   const vote = await videoVotes.findOne({
     where: {
-      user: req.cookies.username, 
+      user: req.session.username, 
       videoID: req.params.videoID}
     });
   
@@ -225,7 +225,7 @@ router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
   //Add downvote to db
   await videoVotes.create({
     videoID: req.params.videoID,
-    user: req.cookies.username,
+    user: req.session.username,
     status: 2
   });
 
@@ -248,7 +248,7 @@ router.post('/:videoID/addCommentLike/:commentID', tools.asyncHandler(async (req
   const vote = await commentVotes.findOne({
     where: {
       commentID: req.params.commentID,
-      user: req.cookies.username
+      user: req.session.username
     }});
 
   const comment = await Comments.findByPk(req.params.commentID);
@@ -274,7 +274,7 @@ router.post('/:videoID/addCommentLike/:commentID', tools.asyncHandler(async (req
   //Add upvote to db
   await commentVotes.create({
     commentID: req.params.commentID,
-    user: req.cookies.username,
+    user: req.session.username,
     status: 1
   });
 
@@ -298,7 +298,7 @@ router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (
   const vote = await commentVotes.findOne({
     where: {
       commentID: req.params.commentID,
-      user: req.cookies.username
+      user: req.session.username
     }});
 
   const comment = await Comments.findByPk(req.params.commentID);
@@ -324,7 +324,7 @@ router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (
   //Add downvote to db
   await commentVotes.create({
     commentID: req.params.commentID,
-    user: req.cookies.username,
+    user: req.session.username,
     status: 2
   });
 
@@ -348,19 +348,19 @@ router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res
     res.render("404", {message: "The video that you have requested does not exist"});
   }
 
-  if (req.cookies.username == null) {
+  if (req.session.username == null) {
       res.render("404", {message: "Resource not found"});
   }
 
   const comment = await Comments.create({
-      user: req.cookies.username,
+      user: req.session.username,
       videoID: req.params.videoID,
       comment: req.body.reply,
       replyID: req.params.commentID
   });
 
   //Get user's profile pic and attach it
-  const user = await UserInfo.findOne({where: {username: req.cookies.username}});
+  const user = await UserInfo.findOne({where: {username: req.session.username}});
   const imageURL = user.imageURL;
 
   console.log(user);
@@ -374,7 +374,7 @@ router.post('/:vidID/delete-comment/:commentID', tools.asyncHandler(async (req, 
 
   const comment = await Comments.findOne({where: {
     id: req.params.commentID,
-    user: req.cookies.username
+    user: req.session.username
   }});
 
   if (comment == null) {
@@ -397,13 +397,13 @@ router.post('/:videoID/bookmark-video', tools.asyncHandler(async (req, res) => {
 
   //Check if user already has video bookmarked
   const bookmark = await Bookmarks.findOne({where: {
-    username: req.cookies.username,
+    username: req.session.username,
     videoID: req.params.videoID
   }});
 
   if (bookmark == null) {
       await Bookmarks.create({
-        username: req.cookies.username,
+        username: req.session.username,
         videoID: req.params.videoID
       });
     res.send({added: true});

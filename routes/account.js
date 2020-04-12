@@ -24,11 +24,11 @@ var userHelp = require('./userInfoHelpers');
 //GET ALL VIDEOS MADE BY THE USER
 router.get('/', tools.asyncHandler(async (req, res) => {
 
-    if (req.cookies.username == null) {
+    if (req.session.username == null) {
         res.redirect('/');
     }
 
-    const uploader = req.cookies.username;
+    const uploader = req.session.username;
     let videos = await Video.findAll({ where: { uploader } });
 
     if (videos.length == 0) {
@@ -41,7 +41,7 @@ router.get('/', tools.asyncHandler(async (req, res) => {
 //GET ALL COMMENTS MADE BY THE USER
 router.get('/comments', tools.asyncHandler(async (req, res) => {
 
-    const user = req.cookies.username;
+    const user = req.session.username;
 
     if (user == null) {
         res.redirect('/');
@@ -67,12 +67,12 @@ router.get('/comments', tools.asyncHandler(async (req, res) => {
 //GET ALL VIDEOS UPVOTED BY THE USER
 router.get('/liked-videos', tools.asyncHandler(async (req, res) => {
 
-    if (req.cookies.username == null) {
+    if (req.session.username == null) {
         res.redirect('/');
     }
 
     //GET UPVOTES
-    const uploader = req.cookies.username;
+    const uploader = req.session.username;
     let videos = await userHelp.getVotes(uploader, 1);
 
     if (videos.length == 0) {
@@ -85,12 +85,12 @@ router.get('/liked-videos', tools.asyncHandler(async (req, res) => {
 //GET ALL VIDEOS DOWNVOTED BY THE USER
 router.get('/disliked-videos', tools.asyncHandler(async (req, res) => {
 
-    if (req.cookies.username == null) {
+    if (req.session.username == null) {
         res.redirect('/');
     }
 
     //GET DOWNVOTES
-    const uploader = req.cookies.username;
+    const uploader = req.session.username;
     let videos = await userHelp.getVotes(uploader, 2);
 
     if (videos.length == 0) {
@@ -103,12 +103,12 @@ router.get('/disliked-videos', tools.asyncHandler(async (req, res) => {
 //GET ALL SUBSCRIBERS
 router.get('/subscribers', tools.asyncHandler(async (req, res) => {
 
-    if (req.cookies.username == null) {
+    if (req.session.username == null) {
         res.redirect('/');
     }
 
     //GET SUBSCRIBERS
-    const uploader = req.cookies.username;
+    const uploader = req.session.username;
     const subs = await userHelp.getSubs(uploader, 1);
 
     res.render("accountViews/subscribe", {message: "Subscribers", emptyMessage: "No subscribers", subs, username: uploader});
@@ -117,12 +117,12 @@ router.get('/subscribers', tools.asyncHandler(async (req, res) => {
 //GET ALL SUBSCRIBED TO
 router.get('/subscribed-to', tools.asyncHandler(async (req, res) => {
 
-    if (req.cookies.username == null) {
+    if (req.session.username == null) {
         res.redirect('/');
     }
 
     //GET SUBSCRIBERS
-    const uploader = req.cookies.username;
+    const uploader = req.session.username;
     const subs = await userHelp.getSubs(uploader, 2);
 
     res.render("accountViews/subscribe", {message: "Subscribed to", emptyMessage: "Not subscribed to anyone", subs, username: uploader});
@@ -131,12 +131,12 @@ router.get('/subscribed-to', tools.asyncHandler(async (req, res) => {
 //GET ALL BOOKMARKS
 router.get('/bookmarked-videos', tools.asyncHandler(async (req, res) => {
 
-    if (req.cookies.username == null) {
+    if (req.session.username == null) {
         res.redirect('/');
     }
 
     //GET BOOKMARKED
-    const uploader = req.cookies.username;
+    const uploader = req.session.username;
 
     const bookmarks = await Bookmarks.findAll({where: {username: uploader}});
     
@@ -175,7 +175,7 @@ router.get('/:id/deletevideo', tools.asyncHandler(async (req, res) => {
 router.post('/comments/delete-comment/:id', tools.asyncHandler(async (req, res) => {
     const comment = await Comments.findOne({where: {
         id: req.params.id,
-        user: req.cookies.username
+        user: req.session.username
       }});
       if (comment == null) {
           res.render("404", {message: "Could not find what you were looking for"});
@@ -207,7 +207,7 @@ router.get('/delete-video/:id', tools.asyncHandler(async (req, res) => {
 //Handle deleting a user
 router.get('/delete-account', tools.asyncHandler(async (req, res) => {
 
-    const user = await UserInfo.findOne({where: {username: req.cookies.username}});
+    const user = await UserInfo.findOne({where: {username: req.session.username}});
     if (user == null) {
         res.render("404", {message: "Could not find what you were looking for"});
         return;
@@ -225,7 +225,7 @@ router.get('/profile-picture', (req, res) => {
 router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
 
    
-  const username = req.cookies.username;
+  const username = req.session.username;
 
 
   if (!req.files) {

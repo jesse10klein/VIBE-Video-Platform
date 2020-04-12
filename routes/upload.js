@@ -27,13 +27,13 @@ var fs = require('fs');
 //Form to upload a video
 router.get('/', (req, res) => {
 
-    if (req.cookies.username == null) {
+    if (req.session.username == null) {
       res.redirect('/login');
     }
   
     const fillInfo = {};
     const error = {};
-    const username = req.cookies.username;
+    const username = req.session.username;
 
     res.render('uploadViews/upload', {username, fillInfo, error});
 })
@@ -70,7 +70,9 @@ router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
 
 router.post('/post-upload', tools.asyncHandler( async (req, res) => {
 
-  const username = req.cookies.username;
+  console.log("post upload route");
+
+  const username = req.session.username;
 
   const {title} = req.body;
   const {description} = req.body;
@@ -85,17 +87,22 @@ router.post('/post-upload', tools.asyncHandler( async (req, res) => {
     return;
   }
 
+  console.log("All g after helpers");
+
   //If we get to here everything is fine
   //Create video and send video to user
 
   const now = new Date();
 
   const video = await Video.create({
-    uploader: req.cookies.username,
+    uploader: req.session.username,
     title, description, tags, videoURL,
     uploadDate: now.toISOString().slice(0, 10)
   });
+
+  console.log("after creating vid");
   res.send(video);
+  console.log("after sending to client");
 
 }));
 
