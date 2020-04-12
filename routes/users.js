@@ -8,6 +8,8 @@ const { UserInfo } = db.models;
 const { Subscriptions } = db.models;
 const { videoVotes } = db.models;
 
+const bcrypt = require("bcrypt");
+
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -44,24 +46,27 @@ router.get('/signup', (req, res) => {
 //CHECK IF LOGIN MATCHES USER
 router.post('/login', tools.asyncHandler(async (req, res) => {
 
+  const username = req.body.username;
+
   if (req.cookies.username) {
     res.redirect("/");
   }
 
-  const match = await UserInfo.findOne({ 
-	where: {
-      username: req.body.username,
-      password: req.body.password
-		}
-  });
+  //Find user by username
+  const match = await UserInfo.findOne({where: {username}});
 
   if (match) {
-    res.cookie("username", match.username);
-    res.redirect("/");
-  } else {
-    const error = "Incorrect username or password";
-    res.render("userViews/login", {error});
+
+    //Get user password and compare using bcrypt
+    if (await bcrypt.compare(req.body.password, match.password)) {
+      res.cookie("username", match.username);
+      res.redirect("/");
+      return;
+    }
   }
+
+  const error = "Incorrect username or password";
+  res.render("userViews/login", {error});
 
 }));
 
@@ -85,7 +90,10 @@ router.post('/signup', tools.asyncHandler(async (req, res) => {
     }
 
     if (!error) {
-      user = await UserInfo.create({ username, password, email });
+      //Hash the password before creating
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      user = await UserInfo.create({ username, password: hashedPassword, email });
       res.render("userViews/newuser");
       return;
     } 
