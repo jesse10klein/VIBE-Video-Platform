@@ -9,7 +9,7 @@
     ALL BUT SIDEBAR
 */
 #other-content {
-    margin-top: 40px;
+    margin-top: -20px;
     right: 400px;
     left: 0;
     text-align: center;
@@ -108,6 +108,11 @@
 
     #non-video {
         margin-right: 0;
+    }
+
+    #videoTitle {
+        text-align: center !important;
+        margin-left: -250px !important;
     }
 }
 

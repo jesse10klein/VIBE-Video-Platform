@@ -51,6 +51,7 @@ function resizeVideo() {
 
   //Get video and change dimensions
   const video = document.getElementById("video");
+  const other = document.getElementById("videocontent");
 
   //Only resize if window width is greater than 1220
   if (window.innerWidth < 1220)  {
@@ -59,6 +60,8 @@ function resizeVideo() {
     video.style.width = 1100 + "px";
     video.style.minHeight = 1100 / 1.77 + "px";
     video.style.maxHeight = 1100 / 1.77 + "px";
+    other.style.width = 1100 + "px";
+    other.style.marginLeft = "100px";
     return;
   }
   //Width - width of sidebar - 40px padding (20 each side)
@@ -68,6 +71,11 @@ function resizeVideo() {
   //The 1.77 is based off popular video height/width ratios
   video.style.minHeight = roomForVideo / 1.77 + "px";
   video.style.maxHeight = roomForVideo / 1.77 + "px";
+
+  other.style.width = roomForVideo + "px";
+  other.style.marginLeft = "0px";
+  console.log(other);
+  console.log(other.style.width);
 
 };
 

@@ -35,13 +35,15 @@ block content
       #videocontent
         p#videoTitle= video.title
         #videoinfo
-          p= `${video.viewCount} Views`
           #subinfo
-            a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
-            if uploader.subscriberCount == 1
-              p#subCount= `${uploader.formattedSubscriberCount} Subscriber`
-            else
-              p#subCount= `${uploader.formattedSubscriberCount} Subscribers`
+            img#uploaderPhoto(src=`/images/user-thumbs/${uploader.imageURL}`)
+            #subdiv
+              a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
+              if uploader.subscriberCount == 1
+                p#subCount= `${uploader.formattedSubscriberCount} Subscriber`
+              else
+                p#subCount= `${uploader.formattedSubscriberCount} Subscribers`
+          p= `${video.viewCount} Views`
           #voting
             p#upvoteCount= `${video.upvotes}`
             button#upVote(onclick="processVideoVote(this)")= '👍'
