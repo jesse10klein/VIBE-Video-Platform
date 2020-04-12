@@ -2,8 +2,21 @@ extends ../layout
 
 block style
   link(href="/style/upload.css" rel="stylesheet")
+  link(href="/style/progress-bar.css" rel="stylesheet")
 
 block content
 
+  h1#pageTitle= "Upload a video!"
+
+  #progress-bar
+    include progress-bar
+
   #upload-form
     include upload-form
+
+  
+  button#post-video(onclick="parseFormData()")= "Post Video"
+
+block script 
+  script(src="/js/uploadFile.js")
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")

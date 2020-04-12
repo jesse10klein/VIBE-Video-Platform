@@ -4,33 +4,103 @@ body {
     padding: 0;
 }
 
+#bg {
+    overflow: hidden;
+    z-index: -1;
+    position: absolute; 
+    top: -50%; 
+    left: -50%; 
+    width: 100%; 
+    height: 100%;
+}
+
+#bg img {
+    overflow: hidden;
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    margin: auto; 
+    min-width: 50%;
+    min-height: 50%;
+}
+
 
 #form-div {
-    margin-top: 5%;
-    margin-left: 17%;
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 150px;
     padding: 3%;
-    width: 60%;
+    width: 500px;
     text-align: center;
     align-content: center;
-    background-color: rgb(128, 128, 128);
+    background-color: rgb(35, 147, 199);
 }
 
 #form-div p {
+    text-align: left;
     font-size: 1.4em;
+    margin-left: 100px;
+    margin-bottom: 0;
 }
 
-#form-div input {
-    width: 60%
+.form-element input {
+    width: 60%;
+    height: 30px;
+    background-color: rgb(238, 236, 236);
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+#form-div input:hover {
+    background-color: rgb(202, 202, 202);
+}
+
+
+.signupQ {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
 }
 
 #signup {
+    margin-left: 10px;
+    line-height: 70px;
+    height: 20px;
+    color: blue;
+    display: inline;
     font-size: 1.5em;
     text-decoration: none;
-    color: white;
-    background-color: red;
-    border: 2px solid black;
     border-radius: 5px;
-
 }
 
+.errors {
+    display: flex;
+    flex-direction: row;
+}
 
+.error {
+    color: red;
+    margin-left: 20px;
+}
+
+#createAccount, #loginButton {
+    width: 60%;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    margin-top: 10px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(215, 226, 240) !important;
+}
+
+#createAccount:hover, #loginButton:hover {
+    border: 1px solid black;
+}
+
+#title {
+    font-size: 2em;
+}

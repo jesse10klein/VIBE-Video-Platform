@@ -2,6 +2,7 @@ body {
     padding: 0;
     border: none;
     margin: 0;
+    margin-top: 50px;
     font-family: 'Oxanium', cursive;
 }
 
@@ -38,13 +39,15 @@ body {
 }
 
 #login {
+    margin-top: -25px;
+    margin-right: 50px;
     float: right;
     line-height: 200%;
     color: black;
     text-decoration: none;
 }
 
-img {
+#home-image img {
     top: 0;
     z-index: 101;
     position: fixed;

@@ -6,29 +6,42 @@ block style
 block content
   if fill
     #form-div
+      #title= "Create an account"
       form(action="/users/signup" method="POST")
         .form-element
-          p  Username: 
+          .errors
+            p  Username: 
+            if error
+              p.error= error.username
           input(type='text' name='username' value=`${fill.username}`)
         .form-element
-          p  Email: 
+          .errors
+            p  Email: 
+            if error
+              p.error= error.email
           input(type='text' name='email' value=`${fill.email}`)
         .form-element
-          p  Password: 
+          .errors
+            p  Password: 
+            if error
+              p.error= error.password
           input(name='password')
-        input(type='submit' value="Create Account")
+        input#createAccount(type='submit' value="Create Account")
   else
     #form-div
+      #title= "Create an account"
       form(action="/users/signup" method="POST")
         .form-element
           p  Username: 
+          if error
+            p.error= error.username
           input(type='text' name='username')
         .form-element
           p  Email: 
+          if error
+            p.error= error.email
           input(type='text' name='email')
         .form-element
           p  Password: 
           input(name='password')
-        input(type='submit' value="Create Account")
-
-  h1= error
+        input#createAccount(type='submit' value="Create Account")

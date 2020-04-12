@@ -1,38 +1,25 @@
 
 
 
-form(enctype="multipart/form-data" action="/upload" method="POST")
+form(enctype="multipart/form-data" method="POST")
     .form-element
       .perror
         p= 'Video Title:'
-        if error.title
-          p.error= error.title
-      if fillInfo.title
-        input#title(type='text' name='title' value=`${fillInfo.title}`)
-      else
-        input#title(type='text' name='title')
+        p#titleError.error= ""
+      input#title(type='text' name='title')
     .form-element
       .perror
         p= 'Description: '
-        if error.description
-          p.error= error.description
-      if fillInfo.description
-        textarea#description(name='description' value=`${fillInfo.description}`)
-      else
-        textarea#description(name='description')
+        p#descriptionError.error= ""
+      textarea#description(name='description')
     .form-element
       .perror
         p= 'Tags: '
-        if error.tags
-          p.error= error.tags
-      if fillInfo.tags
-        textarea#tags(name='tags')= `${fillInfo.decription}`
-      else
-        textarea#tags(name='tags')
+        p#tagsError.error= ""
+      textarea#tags(name='tags')
     #video-upload
       .perror
         p= 'Video Path: '
-        if error.file
-          p.error= error.file
-      input(type='file' name='fileName')
-    input#submit(type='submit' value='Upload Video')
+        p#videoError.error= ""
+      input#file1(type='file' name='file1')
+    input#start-upload(type='button' value='Start Upload' onclick="uploadVideo()")

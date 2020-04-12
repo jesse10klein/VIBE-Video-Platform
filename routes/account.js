@@ -3,18 +3,18 @@ const router = express.Router();
 
 const db = require('../db');
 const { Video } = db.models;
+const { Bookmarks } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
-const { Subscriptions } = db.models;
-
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op
 
 //Require and use modules
 var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');
 router.use(cookieParser());
+
+const fileUploader = require('express-fileupload');
+router.use(fileUploader());
 
 
 //Require helper functions
@@ -35,12 +35,11 @@ router.get('/', tools.asyncHandler(async (req, res) => {
         videos = null;
     }
 
-    res.render("accountViews/account-home", {message: "Your videos", videos, username: uploader});
+    res.render("accountViews/account-home", {message: "Your videos", videos, username: uploader, myVids: true});
 }));
 
 //GET ALL COMMENTS MADE BY THE USER
 router.get('/comments', tools.asyncHandler(async (req, res) => {
-
 
     const user = req.cookies.username;
 
@@ -132,13 +131,29 @@ router.get('/subscribed-to', tools.asyncHandler(async (req, res) => {
 //GET ALL BOOKMARKS
 router.get('/bookmarked-videos', tools.asyncHandler(async (req, res) => {
 
-    const username = req.cookies.username
-
-    if (username == null) {
+    if (req.cookies.username == null) {
         res.redirect('/');
     }
 
-    res.render("accountViews/bookmarks", {message: "BOOKMARKS NOT IMPLEMENTED YET", username});
+    //GET BOOKMARKED
+    const uploader = req.cookies.username;
+
+    const bookmarks = await Bookmarks.findAll({where: {username: uploader}});
+    
+    let videos = [];
+    for (let i = 0; i < bookmarks.length; i++) {
+        //Find video corresponding to each bookmark
+        const video = await Video.findOne({where: {
+            id: bookmarks[i].videoID
+        }});
+        videos.push(video);
+    }
+
+    if (videos.length == 0) {
+        videos = null;
+    }
+
+    res.render("accountViews/account-home", {message: "Bookmarked Videos", videos, username: uploader, emptyMessage: "No Bookmarked Videos Yet"});
 }));
 
 //Handle deleting a video
@@ -156,40 +171,98 @@ router.get('/:id/deletevideo', tools.asyncHandler(async (req, res) => {
 
 }));
 
-//Handle deleting a user
-router.get('/deleteuser', tools.asyncHandler(async (req, res) => {
+//Handle deleting a comment
+router.post('/comments/delete-comment/:id', tools.asyncHandler(async (req, res) => {
+    const comment = await Comments.findOne({where: {
+        id: req.params.id,
+        user: req.cookies.username
+      }});
+      if (comment == null) {
+          res.render("404", {message: "Could not find what you were looking for"});
+          return;
+      }
+    
+      await comment.destroy();
+      res.send("Comment deleted");
+}));
 
-    const username = req.cookies.username;
 
-    const videos = await Video.findAll({where: {uploader: username}});
-    //Destroy all of the comments on each video
-    for (video in videos) {
-        const comments = await Comments.findAll({where: {videoID: video.id}});
-        await comments.destroy();
+//Handle deleting a video
+router.get('/delete-video/:id', tools.asyncHandler(async (req, res) => {
+
+    const video = await Video.findOne({where: {id: req.params.id}});
+    if (video == null) {
+        res.render("404", {message: "Could not find what you were looking for"});
+        return;
     }
-    //Destroy all videos
-    await videos.destroy();
 
-    //Now delete all comments made by user
-    const comments = await Comments.findAll({where: {user: username}});
-    await comments.destroy;
+    await tools.deleteVideo(video);
 
-    //Now delete all subscriptions
-    const subscriptions = await Subscriptions.findAll({
-        where: {
-            [Op.or]: {
-                user: username,
-                subscriber: username
-            }
-        }
-    });
-    await subscriptions.destroy();
-
-    const user = await UserInfo.findOne({where: {username}});
-    await user.destroy();
-
-    res.send("All user info has been destroyed");
+    res.send("Your account has been successfully deleted");
 
 }));
+
+
+
+//Handle deleting a user
+router.get('/delete-account', tools.asyncHandler(async (req, res) => {
+
+    const user = await UserInfo.findOne({where: {username: req.cookies.username}});
+    if (user == null) {
+        res.render("404", {message: "Could not find what you were looking for"});
+        return;
+    }
+    await tools.deleteAccount(user);
+    res.clearCookie("username");
+    res.redirect('/');
+}));
+
+router.get('/profile-picture', (req, res) => {
+    res.render("accountViews/profile-picture");
+})
+
+//Handle uploading a user's profile picture
+router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
+
+   
+  const username = req.cookies.username;
+
+
+  if (!req.files) {
+      res.send("you must select a file");
+  } 
+
+  const file = req.files.fileName
+
+  if ((file.mimetype != "image/png") && (file.mimetype != "image/jpeg")) {
+      res.send("Please select a png or jpg file");
+      return
+  }
+
+
+  const name = file.name;
+
+  const user = await UserInfo.findOne({where: {username}});
+
+
+  var uploadpath = "../INFS3202/public/images/user-thumbs/" + user.id + ".png";
+
+  await user.update({imageURL: (user.id + ".png")});
+
+
+  file.mv(uploadpath, function(err){
+      if(err) {
+          console.log("File Upload Failed", name, err);
+      }
+      else {
+          console.log("File Uploaded", name);
+      }
+  });
+
+  res.send("uploaded");
+ 
+}));
+
+
 
 module.exports = router;

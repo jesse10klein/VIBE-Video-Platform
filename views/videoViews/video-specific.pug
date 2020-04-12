@@ -1,11 +1,18 @@
 extends ../layout
 
 block style
-  link(href='/style/video-specific.css' rel='stylesheet')
+  link(href='/style/videoSpecific/comments.css' rel='stylesheet')
+  link(href='/style/videoSpecific/video-specific.css' rel='stylesheet')
+  link(href='/style/videoSpecific/description.css' rel='stylesheet')
   link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")
+
+  
+  link(href='/style/login-alert.css' rel='stylesheet')
 
 
 block content
+
+  include ../login-alert
 
   //SIDE BAR FOR VIDEOS
   if videos
@@ -28,27 +35,27 @@ block content
       #videocontent
         p#videoTitle= video.title
         #videoinfo
-          p= `${video.viewCount} Views`
           #subinfo
-            a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
-            if uploader.subscriberCount == 1
-              p#subCount= `${uploader.formattedSubscriberCount} Subscriber`
-            else
-              p#subCount= `${uploader.formattedSubscriberCount} Subscribers`
+            img#uploaderPhoto(src=`/images/user-thumbs/${uploader.imageURL}`)
+            #subdiv
+              a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
+              if uploader.subscriberCount == 1
+                p#subCount= `${uploader.formattedSubscriberCount} Subscriber`
+              else
+                p#subCount= `${uploader.formattedSubscriberCount} Subscribers`
+          p= `${video.viewCount} Views`
           #voting
             p#upvoteCount= `${video.upvotes}`
-            button#upVote(onclick="processUpvote()")= '👍'
+            button#upVote(onclick="processVideoVote(this)")= '👍'
             p#downvoteCount= `${video.downvotes}`
-            button#downVote(onclick="processDownvote()")= `👎`
-          if username
-            if subscribed
-              button#subscribeButton= `Unsubscribe`
-            else
-              button#subscribeButton= `Subscribe`
+            button#downVote(onclick="processVideoVote(this)")= `👎`
+          if subscribed
+            button#subscribeButton(onClick="processSubscribe()")= `Unsubscribe`
           else
-            button#subscribeButton.notLoggedIn= `Subscribe`
+            button#subscribeButton(onClick="processSubscribe()")= `Subscribe`
+          
+        button#bookmark(onClick="processBookmark()")= "Bookmark Video"
         
-
         button#descButton(onClick="toggleDescription()")= "Show Description"
         #description-info
           h3#date= `Uploaded on ${video.formattedDate}`
@@ -58,20 +65,16 @@ block content
           p#tags= video.tags
 
       if username
-        form(action=`/video/${video.id}/add-comment` method="POST" onsubmit='addComment()')
-          .form-element
-            p  Comment: 
-            textarea#comment(name='comment')
-          input(type='submit' value='Post Comment')
+        #comment-form
+          p= "Comment:" 
+          textarea#comment(name='comment')
+          button#post-comment(onClick="postComment()")= "Post"
       else
         h3= "You need to log in to be able to post comments"
     
-    #comments
-      each comment in comments  
-        .comment
-          h1.commentUsername= comment.user
-          p.commentBody= comment.comment
-          p= `Posted ${comment.formattedDate}`
+    include comments
 
 block script
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
   script(src='/js/video-specific.js')
+  script(src='/js/votes.js')

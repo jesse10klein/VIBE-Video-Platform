@@ -20,6 +20,9 @@ const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
 
+//FOR THING
+var fs = require('fs');
+
 
 //Form to upload a video
 router.get('/', (req, res) => {
@@ -34,60 +37,65 @@ router.get('/', (req, res) => {
 
     res.render('uploadViews/upload', {username, fillInfo, error});
 })
-/**
- */
-function uploadVideo(fileName) {
 
-  const file = fileName;
+router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
+
+  console.log("RECIEVED UPLOAD THINGO");
+
+  if (!req.files) {
+    res.sendStatus(500);
+    return;
+  }
+
+  const file = req.files.file1;
   const name = file.name;
+  const uploadpath = "../INFS3202/public/videos/" + file.name;
 
-  var uploadpath = "../INFS3202/public/videos/" + name;
 
-  file.mv(uploadpath, function(err){
-    if(err){
-      console.log("File Upload Failed",name,err);
+  file.mv(uploadpath, function(err) {
+    if(err) {
+        console.log("File Upload Failed", err);
+        res.sendStatus(500);
+        return;
     }
     else {
-      console.log("File Uploaded",name);
+        console.log("File Uploaded", name);
+        res.sendStatus(200);
+        return;
     }
   });
-}
 
-router.post('/', tools.asyncHandler( async (req, res) => {
+}));
+
+
+router.post('/post-upload', tools.asyncHandler( async (req, res) => {
 
   const username = req.cookies.username;
 
   const {title} = req.body;
   const {description} = req.body;
   const {tags} = req.body;
+  const {videoURL} = req.body;
 
   //CHECK ALL IS VALID
   const dataCheck = tools.checkUploadData(title, description, tags);
-  if (dataCheck.length != 0) {
-    const error = tools.checkForErrors(dataCheck, req.files);
-    const fillInfo = {title, description, tags};
-    res.render("uploadViews/upload", {username, fillInfo, error});
+  if ((dataCheck.length != 0)) {
+    const error = tools.checkForErrors(dataCheck);
+    res.send(error);
     return;
   }
 
-  if (req.files.fileName) {
-    //ASSUME VIDEO IS UPLOADED FINE???
-    uploadVideo(req.files.fileName);
+  //If we get to here everything is fine
+  //Create video and send video to user
 
-    const now = new Date();
-    const newVideo = await Video.create({
-      uploader: req.cookies.username,
-      title, 
-      description, 
-      videoURL: req.files.fileName.name,
-      uploadDate: now.toISOString().slice(0, 10),
-      tags
-    });
-    res.redirect("/video/" + newVideo.id);
-  }
-  else {
-    res.send("You must select a file to upload");
-  };
+  const now = new Date();
+
+  const video = await Video.create({
+    uploader: req.cookies.username,
+    title, description, tags, videoURL,
+    uploadDate: now.toISOString().slice(0, 10)
+  });
+  res.send(video);
 
 }));
 

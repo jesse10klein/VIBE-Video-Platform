@@ -5,14 +5,23 @@ block style
   link(href="/style/login.css" rel="stylesheet")
 
 block content
+
+  #bg
+    img(src="/images/login-background.jpg")
+
+
   #form-div
+    #title= "Log in"
     form(action="/users/login" method="POST")
       .form-element
         p  Username: 
         input#username(type='text' name='username')
       .form-element
         p  Password: 
-        input#password(name='password')
-      input(type='submit')
-    p= "Not a user?"
-    a#signup(href='/users/signup') Sign Up
+        input#password(name='password')  
+      if error
+        p.error= error
+      input#loginButton(type='submit' value='Log in')
+    .signupQ
+      p= "Not a user?"
+      a#signup(href='/users/signup') Sign Up

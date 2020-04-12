@@ -1,0 +1,15 @@
+extends layout 
+
+block style
+  link(href="/style/upload.css" rel="stylesheet")
+
+block content
+  form#upload_form(enctype="multipart/form-data" method="POST")
+    p= 'Video Path: '
+    input#file1(type='file' name='file1')
+    input(type='button' value='Upload Video' onclick="uploadVideo()")
+
+block script
+  script(src="/js/uploadFile.js")
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+

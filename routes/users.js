@@ -8,11 +8,11 @@ const { UserInfo } = db.models;
 const { Subscriptions } = db.models;
 const { videoVotes } = db.models;
 
+const bcrypt = require("bcrypt");
+
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-
-const validator = require("email-validator");
 
 //Require helper functions
 var tools = require('./helperFunctions');
@@ -46,25 +46,27 @@ router.get('/signup', (req, res) => {
 //CHECK IF LOGIN MATCHES USER
 router.post('/login', tools.asyncHandler(async (req, res) => {
 
+  const username = req.body.username;
+
   if (req.cookies.username) {
     res.redirect("/");
   }
 
-  const match = await UserInfo.findOne({ 
-	where: {
-    username: req.body.username,
-    password: req.body.password
-		}
-  });
+  //Find user by username
+  const match = await UserInfo.findOne({where: {username}});
 
-  //Check if user is in the system
-  try {
-    const username = match.toJSON().username
-    res.cookie("username", username);
-    res.redirect("/");
-  } catch(error) {
-    res.send("Incorrect username or password");
+  if (match) {
+
+    //Get user password and compare using bcrypt
+    if (await bcrypt.compare(req.body.password, match.password)) {
+      res.cookie("username", match.username);
+      res.redirect("/");
+      return;
+    }
   }
+
+  const error = "Incorrect username or password";
+  res.render("userViews/login", {error});
 
 }));
 
@@ -77,31 +79,25 @@ router.get('/logout', (req, res) => {
 //CREATE NEW USER BASED ON SIGN UP DATA
 router.post('/signup', tools.asyncHandler(async (req, res) => {
   
-    let error = "";
     let { username } = req.body;
     let { email } = req.body;
     let { password } = req.body;
     const fill = { username, email }
-
-    if (!validator.validate(email)) {
-      error = "Your email is invalid";
-    }    
-
-    if (error != "") {
-      res.render('userViews/signup', {error, fill});
+    
+    let error = await tools.signupErrors(username, email, password);
+    if (!(error.username || error.email || error.password)) {
+      error = null;
     }
 
-    //Make sure that username and email aren't taken
-    _username = await UserInfo.findOne({ where: { username }});
+    if (!error) {
+      //Hash the password before creating
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-    _email = await UserInfo.findOne({ where: { email }});
-
-    if (_username == null && _email == null ) {
-      user = await UserInfo.create({ username, password, email });
+      user = await UserInfo.create({ username, password: hashedPassword, email });
       res.render("userViews/newuser");
-    } else {
-      error =  "Username or Email already in use";
+      return;
     } 
+ 
     res.render('userViews/signup', {error, fill});
 }));
 

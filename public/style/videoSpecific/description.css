@@ -1,0 +1,120 @@
+#description-info {
+    visibility: hidden;
+    display: none;
+    font-size: 80%;
+    text-align: left;
+    margin-left: 50px;
+}
+
+#date {
+    text-align: center;
+}
+
+#voting {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+#voting button {
+    margin-left: 5px;
+    background-color: white;
+    border: none;
+    font-size: 20px;
+}
+
+#voting p {
+    margin-left: 10px;
+    font-size: 25px;
+}
+
+#videoTitle {
+    margin: 0;
+    margin-left: 20px;
+    font-size: 1.2em;
+    text-align: left;
+}
+
+#uploaderPhoto {
+    height: 75px;
+    width: 75px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+#subinfo {
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-family: 'Oxanium', cursive;
+}
+
+#subdiv {
+    margin-left: 10px;
+}
+
+#subdiv a {
+    font-weight: bolder;
+    font-size: 1.2em;
+    line-height: 100%;
+    margin: 0;
+}
+
+#subdiv p {
+    margin: 0;
+}
+
+#descButton {
+    display: block;
+    margin-left: 60px;
+    margin-bottom: 50px;
+    color: black;
+}
+
+
+#svidinfo {
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    line-height: 0%;
+}
+
+#svidinfo h1 {
+    font-size: 2em;
+    line-height: 100%;
+}
+
+
+#videocontent {
+    font-size: 150%;
+    width: 800px;
+}
+
+#videoinfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: auto;
+    margin-top: 20px;
+}
+
+#subscribeButton {
+    width: 150px;
+    text-decoration: none;
+    color: white;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: red;
+    border-radius: 5px;
+    border: 3px solid black;
+    margin-top: 20px;
+    height: 40px;
+}
+
+#description {
+    white-space: pre-wrap;
+}

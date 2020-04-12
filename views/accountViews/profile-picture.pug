@@ -1,0 +1,16 @@
+
+
+extends layout 
+
+block content
+        
+    form(enctype="multipart/form-data" action="/account/upload-pic" method="POST")
+        #video-upload
+            p= 'Video Path: '
+            input(type='file' name='fileName')
+        input#submit(type='submit' value='Upload Video')
+
+
+block script
+  script(src='/js/account.js')
+
