@@ -33,6 +33,16 @@ function loginAlert(item, message) {
 
 }
 
+function formatNumber(number) {
+  if (number < 1000) {
+    return number;
+  } else if (number < 1000000) {
+    return Math.floor(number / 1000) + "K";
+  } else {
+    return Math.floor(number / 1000000) + "M";
+  }
+}
+
 function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -85,9 +95,6 @@ function resizeVideo() {
 
   other.style.width = roomForVideo + "px";
   other.style.marginLeft = "0px";
-  console.log(other);
-  console.log(other.style.width);
-
 };
 
 function postComment() {
@@ -99,8 +106,6 @@ function postComment() {
   $.ajax({
       url, type: "POST", data,
       success: function(response) {
-        console.log(response);
-        console.log(response.imageURL);
         const commentFormatted = formatCommentHTML(response);
         $('#comments').prepend(commentFormatted);
         //Empty comment box
@@ -231,6 +236,7 @@ function toggleReplyBox(item) {
 
   if (getCookie("username") == "") {
     loginAlert($(item), {message: "You must login to reply to comments"});
+    window.location.pathname = '/users/login';
     return;
   }
 
@@ -253,6 +259,7 @@ function processSubscribe() {
 
   if (getCookie("username") == "") {
     loginAlert($('#subscribeButton'), {message: "Please login to subscribe"});
+    window.location.pathname = '/users/login';
     return;
   }
 
@@ -267,7 +274,7 @@ function processSubscribe() {
 
       //Data sent will be sub status and sub count
       subButton.textContent = data.subscribeStatus;
-      subs.textContent = `${data.subscribers} Subscribers`
+      subs.textContent = `${formatNumber(data.subscribers)} Subscribers`
      
     })
     .catch(function(error) {
@@ -302,9 +309,7 @@ function applyEdit(element) {
       const commentContent = element.parentElement;
 
       if ($(commentContent).find('.edited').length == 0) {
-        console.log("found")
         const node = $($.parseHTML(`<div> <p class="edited"> (Edited) </p> </div>`));
-        console.log(node);
         $(commentContent).find('.comment-footer').append(node);
       }
 
@@ -318,10 +323,7 @@ function applyEdit(element) {
 
 function editComment(element) {
 
-
   const commentBody = element.parentElement.parentElement.previousElementSibling;
-
-  console.log(commentBody);
 
   if (!$(commentBody).hasClass('commentBody')) {
     return;
@@ -394,6 +396,7 @@ function processBookmark() {
   
   if (getCookie("username") == "") {
     loginAlert($('#bookmark'), {message: "Please log in to bookmard this video"});
+    window.location.pathname = '/users/login';
     return;
   }
   const path = window.location.pathname + '/bookmark-video';

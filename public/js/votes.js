@@ -1,22 +1,33 @@
 function votePostRequest(pathname, primary, secondary) {
   fetch( pathname, {method: 'POST'})
   .then( response =>  {
-    console.log(response);
     if(response.status == 200) {
       return response.json();
     }
     throw new Error("Request failed");
   }).then( data => {
-    console.log(data);
+    const pVotes = primary.innerText;
+    const sVotes = secondary.innerText;
+    const pNum = pVotes.toString().slice(pVotes.length - 1, pVotes.length);
+    const sNum = sVotes.toString().slice(sVotes.length - 1);
+
     if (data.voteStatus == 1) { //Already upvoted, delete
-      primary.innerText = parseInt(primary.innerText) - 1;
+      if (pVotes < 1000) { 
+        primary.innerText = parseInt(primary.innerText) - 1;
+      }
       return;
     } else if (data.voteStatus == 2) { //Not voted yet
-      primary.innerText = parseInt(primary.innerText) + 1;
+      if (!(pNum == 'K' || pNum == 'M')) { 
+        primary.innerText = parseInt(primary.innerText) + 1;
+      }
       return;
     } else if (data.voteStatus == 3) { //Had it downvoted
-      secondary.innerText = parseInt(secondary.innerText) - 1;
-      primary.innerText = parseInt(primary.innerText) + 1;
+      if (!(pNum == 'K' || pNum == 'M')) { 
+        primary.innerText = parseInt(primary.innerText) + 1;
+      }
+      if (!(sNum == 'K' || sNum == 'M')) {
+        primary.innerText = parseInt(primary.innerText) + 1;
+      }
       return;
     }   
   })
@@ -43,6 +54,7 @@ function processVideoVote(item) {
   //Check if user is logged in
   if (getCookie("username") == "") {
     loginAlert($(item), {message: "You must login to vote on a video"});
+    window.location.pathname = '/users/login';
     return;
   }
   votePostRequest(pathname, primary, secondary)
@@ -53,6 +65,7 @@ function processCommentVote(item) {
   //Check if user is logged in
   if (getCookie("username") == "") {
     loginAlert($(item), {message: "You must login to vote on a comment"});
+    window.location.pathname = '/users/login';
     return;
   }
 
@@ -74,9 +87,6 @@ function processCommentVote(item) {
     secondary = item.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.firstElementChild;
     pathname = window.location.pathname + "/addCommentDislike/" + commentID;
   }
-  console.log(pathname);
-  console.log(primary);
-  console.log(secondary);
 
   votePostRequest(pathname, primary, secondary);
 }

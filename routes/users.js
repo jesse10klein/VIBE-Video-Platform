@@ -107,6 +107,7 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
 
   if (req.session.username == req.params.user) {
     res.redirect('/account');
+    return;
   }
 
   const uploader = req.params.user;

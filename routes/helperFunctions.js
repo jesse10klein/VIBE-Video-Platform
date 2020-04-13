@@ -214,8 +214,6 @@ async function getCommentsForVideo(videoID, username) {
 
 async function deleteComments(comments) {
 
-  console.log("Delete comments function")
-
   for (let i = 0; i < comments.length; i++) {
 
     //Get all votes related to the comment
@@ -234,8 +232,6 @@ async function deleteComments(comments) {
 }
 
 async function deleteVideo(video) {
-
-  console.log("Delete video function");
 
   //Get all votes associated with video
   const videoID = video.id;

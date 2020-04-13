@@ -161,10 +161,8 @@ router.post('/:videoID/addUpvote', tools.asyncHandler(async (req, res) => {
 
   //If user has video disliked, remove the vote
   if (vote && vote.status == 2) {
-    console.log("Already disliked");
     await vote.destroy();
     const newDownvotes = video.downvotes - 1;
-    console.log(newDownvotes);
     await video.update({downvotes: newDownvotes})
     alreadyVoted = true;
   }
@@ -210,7 +208,6 @@ router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
 
   //If user has video liked, remove the vote
   if (vote && vote.status == 1) {
-    console.log("Already Liked");
     await vote.destroy();
     const newUpvotes = video.upvotes - 1;
     await video.update({upvotes: newUpvotes})
@@ -244,8 +241,6 @@ router.post('/:videoID/addDownvote', tools.asyncHandler(async (req, res) => {
 
 //Add upvote to comment
 router.post('/:videoID/addCommentLike/:commentID', tools.asyncHandler(async (req, res) => {
-
-  console.log(req.params.commentID);
 
   //Get the voting status of the user
   const vote = await commentVotes.findOne({
@@ -294,8 +289,6 @@ router.post('/:videoID/addCommentLike/:commentID', tools.asyncHandler(async (req
 
 //Add downvote to comment
 router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (req, res) => {
-
-  console.log(req.params.commentID);
 
   //Get the voting status of the user
   const vote = await commentVotes.findOne({
@@ -365,9 +358,6 @@ router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res
   //Get user's profile pic and attach it
   const user = await UserInfo.findOne({where: {username: req.session.username}});
   const imageURL = user.imageURL;
-
-  console.log(user);
-  console.log(imageURL);
 
   res.send({comment, imageURL});
 }));

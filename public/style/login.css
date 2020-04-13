@@ -28,7 +28,7 @@ body {
 
 
 #form-div {
-    border: 1px solid grey;
+    border: 1px solid black;
     border-radius: 10px;
     margin: auto;
     margin-top: 150px;
@@ -36,7 +36,7 @@ body {
     width: 500px;
     text-align: center;
     align-content: center;
-    background-color: rgb(35, 147, 199);
+    background-color: rgba(41, 128, 150, 0.4);
 }
 
 #form-div p {

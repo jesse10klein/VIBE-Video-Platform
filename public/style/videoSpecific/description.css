@@ -42,12 +42,13 @@
     border: 1px solid black;
     object-fit: cover;
     border-radius: 50%;
+    transition: 0.3s;
 }
 
 #uploaderPhoto:hover {
     border: 2px solid black;
-    height: 77px;
-    width: 77px;
+    height: 73px;
+    width: 73px;
     margin-right: 0px;
     margin-bottom: 0px;
 }

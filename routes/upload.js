@@ -40,8 +40,6 @@ router.get('/', (req, res) => {
 
 router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
 
-  console.log("RECIEVED UPLOAD THINGO");
-
   if (!req.files) {
     res.sendStatus(500);
     return;
@@ -70,8 +68,6 @@ router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
 
 router.post('/post-upload', tools.asyncHandler( async (req, res) => {
 
-  console.log("post upload route");
-
   const username = req.session.username;
 
   const {title} = req.body;
@@ -87,8 +83,6 @@ router.post('/post-upload', tools.asyncHandler( async (req, res) => {
     return;
   }
 
-  console.log("All g after helpers");
-
   //If we get to here everything is fine
   //Create video and send video to user
 
@@ -99,10 +93,8 @@ router.post('/post-upload', tools.asyncHandler( async (req, res) => {
     title, description, tags, videoURL,
     uploadDate: now.toISOString().slice(0, 10)
   });
-
-  console.log("after creating vid");
+  
   res.send(video);
-  console.log("after sending to client");
 
 }));
 

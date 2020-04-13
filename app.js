@@ -487,11 +487,24 @@ app.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
+
+app.use((req, res, next) => {
+  console.log("Check login middleware");
+  if (!req.session.username) {
+    if (req.cookies.username) {
+      res.clearCookie("username");
+      console.log("Login cookie cleared");
+    }  
+  }
+  next();
+});
+
+
 app.get('/', (req, res) => {
   if (!req.session.username) {
-    req.session.username = "Spacey Jane";
-    res.cookie("username", "Spacey Jane");
-    req.session.save();
+    //req.session.username = "Spacey Jane";
+    //res.cookie("username", "Spacey Jane");
+    //req.session.save();
   }
   res.redirect('video');
 });
