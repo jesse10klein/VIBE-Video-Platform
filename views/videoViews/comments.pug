@@ -3,10 +3,11 @@
   each comment in comments  
     .comment
       .image
-        img(src=`/images/user-thumbs/${comment.imageURL}`)
+        a.thumb-holder(href=`/users/${comment.user}`)
+          img(src=`/images/user-thumbs/${comment.imageURL}`)
       .comment-content
         .comment-header
-          h1.commentUsername= comment.user
+          a.commentUsername(href=`/users/${comment.user}`)= comment.user
           p= `Posted ${comment.formattedDate}`
         p.commentBody= comment.comment
         .comment-footer
@@ -24,7 +25,12 @@
             button.replyButton(onclick="toggleReplyBox(this)")= `Reply`
           if comment.byUser
             div
+              button(onclick="editComment(this)") Edit
+            div
               button(id=`${comment.id}` onclick="deleteComment(this)") Delete
+          if comment.edited
+            div
+              p.edited= `(Edited)`
     .reply-form
       textarea.comment-reply(name='reply')
       button.post-reply(onClick="postReply(this)")= "Reply"
@@ -35,7 +41,7 @@
           img(src=`/images/user-thumbs/${reply.imageURL}`)
         .comment-content
           .comment-header
-            h1.commentUsername= reply.user
+            a.commentUsername(href=`/users/${reply.user}`)= reply.user
             p= `Posted ${reply.formattedDate}`
             
           p.commentBody= reply.comment
@@ -52,4 +58,9 @@
               button.downVote(onclick="processCommentVote(this)")= `👎`
             if reply.byUser
               div
+                button(onclick="editComment(this)") Edit
+              div
                 button(id=`${reply.id}` onclick="deleteComment(this)") Delete
+            if reply.edited
+              div
+                p= `(Edited)`

@@ -39,8 +39,17 @@
 #uploaderPhoto {
     height: 75px;
     width: 75px;
+    border: 1px solid black;
     object-fit: cover;
     border-radius: 50%;
+}
+
+#uploaderPhoto:hover {
+    border: 2px solid black;
+    height: 77px;
+    width: 77px;
+    margin-right: 0px;
+    margin-bottom: 0px;
 }
 
 #subinfo {
@@ -117,4 +126,14 @@
 
 #description {
     white-space: pre-wrap;
+}
+
+#userName {
+    transition: 0.3s;
+}
+
+#userName:hover {
+    font-weight: bolder;
+    font-size: 1.22em;
+    text-shadow: 0.3px 0.3px grey;
 }

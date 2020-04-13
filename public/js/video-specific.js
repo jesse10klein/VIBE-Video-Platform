@@ -1,4 +1,5 @@
 console.log('Client-side code running');
+console.log(decodeURIComponent(document.cookie));
 
 const div = document.getElementById("description-info");
 const descButton = document.getElementById("descButton");
@@ -6,21 +7,31 @@ const subButton = document.getElementById('subscribeButton');
 
 let alerting = false;
 
-function toggleLoginAlert() {
-  if (alerting) {
-    return;
-  }
+function loginAlert(item, message) {
 
-  const loginAlert = $("#login-alert");
-  loginAlert.removeClass("hidden");
-  alerting = true;
+  //Make it pop up from the clicked element with a custom message
 
+  console.log(item);
+  console.log(message);
+  return;
+
+  const html = `
+  
+    <h2> ${message.title} </h2>
+    <p> ${message.body} </p>
+    <a href="/users/login"> Log in </a>
+  
+  `
+
+  /*
   setTimeout(() => {
     loginAlert.addClass("hidden");
     alerting = false;
   }, 4000);
-}
+  */
 
+
+}
 
 function getCookie(cname) {
   var name = cname + "=";
@@ -130,11 +141,13 @@ function formatCommentHTML(comment) {
 
   const html = ` <div class="comment">
                     <div class="image">
-                      <img src='/images/user-thumbs/${comment.imageURL}'>
+                      <a class="thumb-holder" href="/users/${comment.comment.user}"}>
+                        <img src="/images/user-thumbs/${comment.imageURL}">
+                      </a>
                     </div>
                     <div class="comment-content">
                       <div class="comment-header">
-                        <h1 class="commentUsername">${comment.comment.user}</h1>
+                        <a class="commentUsername" href="/users/${comment.comment.user}">${comment.comment.user}</a>
                         <p> Posted Just now </p>
                       </div>
                       <p class="commentBody">${comment.comment.comment}</p>
@@ -158,6 +171,9 @@ function formatCommentHTML(comment) {
                           <button class="replyButton" onclick="toggleReplyBox(this)">Reply</button>
                         </div> 
                         <div>
+                          <button onclick="editComment(this)">Edit</button>
+                        </div>
+                        <div>
                           <button id=${comment.comment.id} onClick="deleteComment(this)"> Delete </button>
                         </div>
                       </div>
@@ -173,11 +189,13 @@ function formatCommentHTML(comment) {
 function formatReplyHTML(reply) {
   const html = ` <div class="reply">
                   <div class="image">
-                    <img src="/images/user-thumbs/${reply.imageURL}">
+                    <a class="thumb-holder" href="/users/${reply.user}"}>
+                      <img src="/images/user-thumbs/${reply.imageURL}">
+                    </a>
                   </div>
                   <div class="comment-content">
                     <div class="comment-header">
-                      <h1 class="commentUsername">${reply.comment.user}</h1>
+                      <a class="commentUsername" href="/users/${reply.comment.user}">${reply.comment.user}</a>
                       <p> Posted just now </p>
                     </div>
                     <p class="commentBody">${reply.comment.comment}</p>
@@ -196,7 +214,10 @@ function formatReplyHTML(reply) {
                       </div> 
                       <div>
                         <button class="downVote" onclick="processCommentVote(this)">👎</button>
-                      </div> 
+                      </div>
+                      <div>
+                          <button onclick="editComment(this)">Edit</button>
+                      </div>
                       <div>
                         <button id=${reply.comment.id} onClick="deleteComment(this)"> Delete </button>
                       </div>
@@ -208,9 +229,8 @@ return html;
 
 function toggleReplyBox(item) {
 
-  const user = getCookie("username");
-  if (user == "") {
-    toggleLoginAlert();
+  if (getCookie("username") == "") {
+    loginAlert($(item), {message: "You must login to reply to comments"});
     return;
   }
 
@@ -229,12 +249,13 @@ function toggleReplyBox(item) {
 
 function processSubscribe() {
 
+  const subs = document.getElementById("subCount");
+
   if (getCookie("username") == "") {
-    toggleLoginAlert();
+    loginAlert($('#subscribeButton'), {message: "Please login to subscribe"});
     return;
   }
 
-  const subs = document.getElementById("subCount");
 
   fetch( window.location.pathname + '/handle-sub', {method: 'POST'})
     .then( response =>  {
@@ -267,6 +288,60 @@ function toggleDescription() {
   }
 }
 
+function applyEdit(element) {
+
+  const body = $(element.previousElementSibling).val();
+  const commentID = $(element.parentElement.parentElement).find('.commentID').text();
+  const url = window.location.pathname + "/edit-comment";
+  const data = {comment: body, commentID};
+
+  $.ajax({
+    url, type: "POST", data,
+    success: function(response) {
+
+      const commentContent = element.parentElement;
+
+      if ($(commentContent).find('.edited').length == 0) {
+        console.log("found")
+        const node = $($.parseHTML(`<div> <p class="edited"> (Edited) </p> </div>`));
+        console.log(node);
+        $(commentContent).find('.comment-footer').append(node);
+      }
+
+      const node = $($.parseHTML(`<p class="commentBody">${body}</p>`));
+      node.insertAfter($(element));
+      $(element).prev().remove();
+      $(element).remove();
+    }
+  })
+}
+
+function editComment(element) {
+
+
+  const commentBody = element.parentElement.parentElement.previousElementSibling;
+
+  console.log(commentBody);
+
+  if (!$(commentBody).hasClass('commentBody')) {
+    return;
+  }
+
+  const text = commentBody.innerText;
+
+
+  //Get text from p and set in textbox
+  const html = `
+    <textarea class="editComment"> ${text}  </textarea>
+    <button class="applyEdit" onclick=applyEdit(this)> Apply Edit </button>
+  `;
+
+  const node = $($.parseHTML(html));
+  node.insertAfter($(commentBody));
+  $(commentBody.remove());
+
+}
+
 function deleteComment(element) {
 
   const commentID = element.id;
@@ -281,32 +356,32 @@ function deleteComment(element) {
       //Then remove comment from page
       //NOTE: If removing a comment with replies, all replies need to be removed
 
-      let _old = $(comment);
-
-      if (_old.hasClass("reply")) {
-        _old.remove();
-        alert("Comment successfully deleted");
-        return;
-      } else {
-        let replyBox = _old.next();
-        _old.remove();
-        _old = replyBox.next();
-        replyBox.remove();
-      }
+      //it will either be a comment or a reply
+      let toDelete = $(comment);
       
-      while (true) {
-        let _new = _old.next();
-        _old.remove();
-
-        if (_new.hasClass("reply")) {
-          _old = _new;
-        } else {
-          break;
-        }
+      if (toDelete.hasClass("reply")) {
+        toDelete.remove();
+        alert("reply successfully removed");
+        return;
+      } if (!toDelete.hasClass("comment")) {
+        alert("SOMETHING WRONG IN DELETE COMMENTS FUNCTION");
       }
 
+      //If we get here, it's a comment
+      let replyForm = toDelete.next();
+      let potentialReply = replyForm.next();
+
+      toDelete.remove();
+      replyForm.remove();
+
+      while (potentialReply.hasClass("reply")) {
+        let _old = potentialReply;
+        potentialReply = potentialReply.next();
+        _old.remove();
+      }
       alert("Comment successfully deleted");
-      return;
+      
+
     }
     throw new Error('Request failed.');
   })
@@ -318,7 +393,7 @@ function deleteComment(element) {
 function processBookmark() {
   
   if (getCookie("username") == "") {
-    toggleLoginAlert();
+    loginAlert($('#bookmark'), {message: "Please log in to bookmard this video"});
     return;
   }
   const path = window.location.pathname + '/bookmark-video';

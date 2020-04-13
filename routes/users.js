@@ -56,6 +56,7 @@ router.post('/login', tools.asyncHandler(async (req, res) => {
 
     //Get user password and compare using bcrypt
     if (await bcrypt.compare(req.body.password, match.password)) {
+      res.cookie("username", match.username);
       req.session.username = match.username;
       req.session.save();
       res.redirect("/");
@@ -71,6 +72,7 @@ router.post('/login', tools.asyncHandler(async (req, res) => {
 router.get('/logout', (req, res) => {
   req.session.destroy( err => {
     res.clearCookie('sid');
+    res.clearCookie('username');
     res.redirect('/users/login');
   });
 })

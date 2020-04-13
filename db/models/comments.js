@@ -26,6 +26,10 @@ module.exports = (sequelize) => {
     commentDislikes: {
       type: Sequelize.INTEGER,
       defaultValue: 0
+    },
+    edited: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0
     }
   }, { sequelize });
 

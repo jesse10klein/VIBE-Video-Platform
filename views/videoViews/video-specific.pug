@@ -12,8 +12,6 @@ block style
 
 block content
 
-  include ../login-alert
-
   //SIDE BAR FOR VIDEOS
   if videos
     #sidebar
@@ -36,18 +34,19 @@ block content
         p#videoTitle= video.title
         #videoinfo
           #subinfo
-            img#uploaderPhoto(src=`/images/user-thumbs/${uploader.imageURL}`)
+            a(href=`/users/${uploader.username}`)
+              img#uploaderPhoto(src=`/images/user-thumbs/${uploader.imageURL}`)
             #subdiv
               a#userName(href=`/users/${uploader.username}`)= `${uploader.username}`
               if uploader.subscriberCount == 1
                 p#subCount= `${uploader.formattedSubscriberCount} Subscriber`
               else
                 p#subCount= `${uploader.formattedSubscriberCount} Subscribers`
-          p= `${video.viewCount} Views`
+          p= `${video.formattedViews} Views`
           #voting
-            p#upvoteCount= `${video.upvotes}`
+            p#upvoteCount= `${video.formattedUpvotes}`
             button#upVote(onclick="processVideoVote(this)")= '👍'
-            p#downvoteCount= `${video.downvotes}`
+            p#downvoteCount= `${video.formattedDownvotes}`
             button#downVote(onclick="processVideoVote(this)")= `👎`
           if subscribed
             button#subscribeButton(onClick="processSubscribe()")= `Unsubscribe`

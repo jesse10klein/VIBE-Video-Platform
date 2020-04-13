@@ -23,10 +23,18 @@
 }
 
 .image img {
-    height: 75px;
-    width: 75px;
+    height: 74px;
+    width: 74px;
     object-fit: cover;
     border-radius: 50%;
+    transition: 0.3s;
+    border: 1px solid black;
+}
+
+.image img:hover {
+    border: 2px solid black;
+    height: 77px;
+    width: 77px;
 }
 
 /* HEADER */
@@ -76,6 +84,32 @@
     margin: 0;
     font-size: 15px;
     padding-top: 5px;
+    transition: 0.3s;
+}
+
+.commentUsername {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    line-height: 52px;
+    transition: 0.3s;
+}
+
+
+.comment-footer button:hover {
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.05em;
+}
+
+.commentUsername:hover {
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 1.02em;
+}
+
+.edited {
+    color: grey;
 }
 
 /* REPLY FORM */

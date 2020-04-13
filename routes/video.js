@@ -94,6 +94,9 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
 
   //Format date for video
   video.formattedDate = tools.formatDate(video.uploadDate);
+  video.formattedViews = tools.formatViews(video.viewCount);
+  video.formattedUpvotes = tools.formatViews(video.upvotes);
+  video.formattedDownvotes = tools.formatViews(video.downvotes);
 
   const {username} = req.session;
 
@@ -413,7 +416,30 @@ router.post('/:videoID/bookmark-video', tools.asyncHandler(async (req, res) => {
     res.send({added: false});
     return;
   }
+}));
 
+
+//Handle editing a comment
+router.post('/:videoID/edit-comment/', tools.asyncHandler(async (req, res) => {
+
+  if (!req.session.username) {
+    res.sendStatus(500);
+    return;
+  }
+
+  const { comment } = req.body;
+
+  //Update comment
+  const toUpdate = await Comments.findByPk(req.body.commentID);
+
+  if (comment == null) {
+    res.sendStatus(500);
+    return;
+  }
+
+  await toUpdate.update({comment, edited: '1'});
+
+  res.sendStatus(200);
 
 }));
 

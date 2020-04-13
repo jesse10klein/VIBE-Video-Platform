@@ -94,9 +94,9 @@ function formatViews(views) {
   if (views < 1000) {
     return views;
   } else if (views < 1000000) {
-    return (views % 1000) + "K";
+    return Math.floor(views / 1000) + "K";
   } else {
-    return (views % 1000000) + "M";
+    return Math.floor(views / 1000000) + "M";
   }
 }
 
