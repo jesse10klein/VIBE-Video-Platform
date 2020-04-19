@@ -22,6 +22,11 @@
     background-color: white;
     border: none;
     font-size: 20px;
+    transition: 0.4s;
+}
+
+#voting button:hover {
+    font-size: 1.02em;
 }
 
 #voting p {
@@ -123,6 +128,13 @@
     border: 3px solid black;
     margin-top: 20px;
     height: 40px;
+    transition: 0.4s;
+}
+
+#subscribeButton:hover {
+    width: 140px;
+    margin-right: 5px;
+    border: 4px solid black;
 }
 
 #description {

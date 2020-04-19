@@ -52,7 +52,7 @@ body {
     z-index: 101;
     position: fixed;
     height: 50px;
-    margin-left: 50px;
+    margin-left: 0px;
 }
 
 #dropdown-button {
@@ -81,3 +81,16 @@ body {
 #dropdown-content a:hover {background-color: #ddd;}
 #dd:hover #dropdown-content {display: block;}
 #dropdown:hover #dropdown-button {background-color: #3e8e41;}
+
+#icons {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    margin-left: 100px;
+}
+
+#icons img {
+    margin-left: 15px;
+    width: 50px;
+    height: 50px;
+}

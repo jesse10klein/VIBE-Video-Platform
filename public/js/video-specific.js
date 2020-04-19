@@ -62,10 +62,37 @@ function getCookie(cname) {
 window.onresize = resizeVideo;
 window.onload = initiatePage; 
 
+function animateSidebarVideos() {
+  sidebarVideos = document.querySelectorAll('.sidebar-video');
+
+  for (let i = 0; i < sidebarVideos.length; i++) {
+
+    $(sidebarVideos[i]).hover(function() {
+
+      console.log("Hovering over");
+      sidebarVideos[i].play();
+
+
+
+    }, function() {
+
+      console.log("You left :(");
+      sidebarVideos[i].pause();
+
+
+    })
+  }
+
+}
+
 function initiatePage() {
+
   const video = document.getElementById("video");
   video.volume = 0.25;
   resizeVideo();
+
+  animateSidebarVideos();
+
 }
 
 function resizeVideo() {

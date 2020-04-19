@@ -64,6 +64,16 @@
     display: flex;
     flex-direction: row;
     justify-content: start;
+    padding: 2px;
+    transform: 0.5s;
+}
+
+.video-preview a:hover {
+    background-color: rgba(41, 128, 150, 0.4);
+    border: 1px solid black;
+    box-shadow:0px 2px 0px 2px rgba(31, 34, 80, 0.4);
+    padding-right: 0;
+    padding-top: 0;
 }
 
 #sidebar a {

@@ -1,6 +1,14 @@
 #menu-bar
   a#home-image(href='/')
-      img(src='/images/metube.png' href=`/`) 
+    img(src='/images/main-menu/metube.png') 
+
+  //#icons
+    a#home(href='/video/home')
+      img(src='/images/main-menu/home.svg')
+    a#hot(href='/video/hot')
+      img(src='/images/main-menu/hot.svg')
+    a#subs(href='/video/subscriptions')
+      img(src='/images/main-menu/subs.svg')
 
   form#search-bar(action="/search" method="POST")
     input#search-query(type='text' name='title')
