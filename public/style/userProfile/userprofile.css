@@ -1,0 +1,41 @@
+body {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+
+#sidebar {
+    height: 90vh;
+    width: 200px;
+    text-align: center;
+    border-right: 3px solid black;
+}
+
+#sidebar li {
+    list-style: none;
+    height: 60px;
+    
+}
+
+#sidebar a {
+    margin-left: -50px;
+    color: black;
+    text-decoration: none;
+    font-size: 1.5em;
+
+}
+
+#sidebar a:hover {
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 1.6em;
+}
+#content {
+    margin-left: 20px;
+}
+
+#userHeader {
+    width: 400px;
+    margin: auto;
+}

@@ -1,0 +1,41 @@
+
+
+#uploaderPhoto {
+    height: 125px;
+    width: 125px;
+    border: 2px solid black;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+#uploaderPhoto:hover {
+    height: 121px;
+    width: 121px;
+    border: 4px solid black;
+}
+
+#userName {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+#subcount {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+#userHeader {
+    display: flex;
+    flex-direction: row;
+}
+
+#subdiv {
+    text-align: center;
+    margin-top: 15px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+}

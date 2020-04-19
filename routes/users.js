@@ -5,6 +5,7 @@ const db = require('../db');
 const { Video } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
+const { Bookmarks } = db.models;
 
 const bcrypt = require("bcrypt");
 
@@ -69,6 +70,7 @@ router.post('/login', tools.asyncHandler(async (req, res) => {
 
 }));
 
+//Log user out
 router.get('/logout', (req, res) => {
   req.session.destroy( err => {
     res.clearCookie('sid');
@@ -76,7 +78,6 @@ router.get('/logout', (req, res) => {
     res.redirect('/users/login');
   });
 })
-
 
 //CREATE NEW USER BASED ON SIGN UP DATA
 router.post('/signup', tools.asyncHandler(async (req, res) => {
@@ -101,29 +102,34 @@ router.post('/signup', tools.asyncHandler(async (req, res) => {
     res.render('userViews/signup', {error, fill});
 }));
 
-
 //GET ALL VIDEOS MADE BY THE USER
 router.get('/:user', tools.asyncHandler(async (req, res) => {
-
-  if (req.session.username == req.params.user) {
-    res.redirect('/account');
-    return;
+  
+  const user = await UserInfo.findOne({where: {username: req.params.user}});
+  if (user == null) {
+    res.render('404', {message: "That user does not exist"})
   }
-
-  const uploader = req.params.user;
-  let videos = await Video.findAll({ where: { uploader } });
+  let videos = await Video.findAll({ where: { uploader: user.username } });
   if (videos.length == 0) {
       videos = null;
   }
-  res.render("accountViews/account-home", {message: `${uploader}'s Videos:`, videos, username: uploader, notHomeUser: uploader});
+
+  res.render("userProfile/user-home", {message: `${user.username}'s Videos:`, videos, user, username: req.session.username});
 }));
 
 //GET ALL COMMENTS MADE BY THE USER
 router.get('/:user/comments', tools.asyncHandler(async (req, res) => {
 
-  const user = req.params.user;
+  console.log("Implement comments made maybe? users.js 123");
+  res.redirect("/");
+  return;
 
-  let comments = await Comments.findAll({ where: { user } });
+  const user = await UserInfo.findOne({where: {username: req.params.user}});
+  if (user == null) {
+    res.render('404', {message: "That user does not exist"})
+  }
+
+  let comments = await Comments.findAll({ where: { user: user.username } });
   
   //Need to get each video the comment is on
   //COULD DO THIS BY JOINING, BUT CAN'T FIGURE OUT SO JUST LOOP
@@ -136,73 +142,100 @@ router.get('/:user/comments', tools.asyncHandler(async (req, res) => {
       comments = null;
   }
 
-  res.render('accountViews/comments', {comments, username: user, message: "Comments", emptyMessage: "No comments yet", notHomeUser: user});
+  res.render('userProfile/comments', {comments, message: "Comments", emptyMessage: "No comments yet", user, username: req.session.username});
 }));
 
 
 //GET ALL VIDEOS UPVOTED BY THE USER
 router.get('/:user/liked-videos', tools.asyncHandler(async (req, res) => {
 
+  const user = await UserInfo.findOne({where: {username: req.params.user}});
+  if (user == null) {
+    res.render('404', {message: "That user does not exist"})
+  }
+
   //GET UPVOTES
-  const uploader = req.session.username;
-  const notHomeUser = req.params.user;
-  let videos = await userHelp.getVotes(notHomeUser, 1);
+  let videos = await userHelp.getVotes(user.username, 1);
 
   if (videos.length == 0) {
       videos = null;
   }
 
-  res.render("accountViews/account-home", {message: "Liked Videos", videos, username: uploader, emptyMessage: "No liked videos yet", notHomeUser});
+  res.render("userProfile/user-home", {message: "Liked Videos", videos, emptyMessage: "No liked videos yet", user, username: req.session.username});
 }));
 
 //GET ALL VIDEOS DOWNVOTED BY THE USER
 router.get('/:user/disliked-videos', tools.asyncHandler(async (req, res) => {
 
+  const user = await UserInfo.findOne({where: {username: req.params.user}});
+  if (user == null) {
+    res.render('404', {message: "That user does not exist"})
+  }
+
   //GET DOWNVOTES
-  const uploader = req.session.username;
-  const notHomeUser = req.params.user;
-  let videos = await userHelp.getVotes(notHomeUser, 2);
+  let videos = await userHelp.getVotes(user.username, 2);
 
   if (videos.length == 0) {
       videos = null;
   }
 
-  res.render("accountViews/account-home", {message: "Disliked Videos", videos, username: uploader, emptyMessage: "No disliked videos yet", notHomeUser});
+  res.render("userProfile/user-home", {message: "Disliked Videos", videos, emptyMessage: "No disliked videos yet", user, username: req.session.username});
 }));
 
 //GET ALL SUBSCRIBERS
 router.get('/:user/subscribers', tools.asyncHandler(async (req, res) => {
 
-  //GET SUBSCRIBERS
-  const uploader = req.session.username;
-  const notHomeUser = req.params.user;
-  const subs = await userHelp.getSubs(notHomeUser, 1);
+  const user = await UserInfo.findOne({where: {username: req.params.user}});
+  if (user == null) {
+    res.render('404', {message: "That user does not exist"})
+  }
 
-  res.render("accountViews/subscribe", {message: "Subscribers", emptyMessage: "No subscribers", subs, username: uploader, notHomeUser});
+  //GET SUBSCRIBERS
+  const subs = await userHelp.getSubs(user.username, 1);
+
+  res.render("userProfile/subscribe", {message: "Subscribers", emptyMessage: "No subscribers", subs, user, username: req.session.username});
 }));
 
 //GET ALL SUBSCRIBED TO
 router.get('/:user/subscribed-to', tools.asyncHandler(async (req, res) => {
 
-  //GET SUBSCRIBERS
-  const uploader = req.session.username;
-  const notHomeUser = req.params.user;
-  const subs = await userHelp.getSubs(notHomeUser, 2);
+  const user = await UserInfo.findOne({where: {username: req.params.user}});
+  if (user == null) {
+    res.render('404', {message: "That user does not exist"})
+  }
 
-  res.render("accountViews/subscribe", {message: "Subscribed to", emptyMessage: "Not subscribed to anyone", subs, username: uploader, notHomeUser});
+  //GET SUBSCRIBERS
+  const subs = await userHelp.getSubs(user.username, 2);
+
+  res.render("userProfile/subscribe", {message: "Subscribed to", emptyMessage: "Not subscribed to anyone", subs, user, username: req.session.username});
 }));
 
 //GET ALL BOOKMARKS
 router.get('/:user/bookmarked-videos', tools.asyncHandler(async (req, res) => {
 
-  const username = req.session.username
-  const notHomeUser = req.params.user;
+  //GET BOOKMARKED
 
-  if (username == null) {
-      res.redirect('/');
+  const user = await UserInfo.findOne({where: {username: req.params.user}});
+  if (user == null) {
+    res.render('404', {message: "That user does not exist"})
   }
 
-  res.render("accountViews/bookmarks", {message: "BOOKMARKS NOT IMPLEMENTED YET", username, notHomeUser});
+  const bookmarks = await Bookmarks.findAll({where: {username: user.username}});
+
+  let videos = [];
+  for (let i = 0; i < bookmarks.length; i++) {
+      //Find video corresponding to each bookmark
+      const video = await Video.findOne({where: {
+          id: bookmarks[i].videoID
+      }});
+      videos.push(video);
+  }
+
+  if (videos.length == 0) {
+      videos = null;
+  }
+
+  res.render("userProfile/user-home", {message: "Bookmarked Videos", videos, emptyMessage: "No Bookmarked Videos Yet", user, username: req.session.username});
 }));
 
 

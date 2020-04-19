@@ -128,7 +128,7 @@ router.post('/:videoID/handle-sub', tools.asyncHandler(async (req, res) => {
 
   //Check if user is subscribed
   const subscription = await Subscriptions.findOne({
-    where: {subscriber: req.session.username}});
+    where: {subscriber: req.session.username, user: uploader.username}});
   
 
   if (subscription == null) { 

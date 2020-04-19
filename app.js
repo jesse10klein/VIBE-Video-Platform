@@ -403,7 +403,7 @@ async function createShit() {
       imageURL: user.imageURL,
       subscriberCount: user.subscriberCount
     });
-    console.log(use);
+    //console.log(use);
   }
 
   for (video of videos) {
