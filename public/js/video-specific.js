@@ -7,6 +7,95 @@ const subButton = document.getElementById('subscribeButton');
 
 let alerting = false;
 
+let scrollAlert = false;
+
+window.addEventListener('scroll', () => {
+  if (scrollAlert) return;
+
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = window.scrollY;
+
+  if (Math.abs(scrolled - scrollable) > 20) {
+    return;
+  }
+
+  scrollAlert = true;
+  setTimeout(function () { scrollAlert = false; }, 500);
+
+
+  const lastComment = $("#comments .comment").last();
+
+  if (lastComment.length == 0) {
+    console.log("No comments on this vid, nothing to load");
+    return;
+  }
+
+  const commentID = lastComment.find(".commentID").text();
+  const lastRec = $("#sidebar a").last();
+  videoID = lastRec.attr("href").split('/')[2];
+  data = {lastCommentID: commentID, lastVideoID: videoID};
+  url = window.location.pathname + "/content-payload";
+
+  console.log("About to send ajax");
+
+  $.ajax({
+    url, type: "POST", data, dataType: 'json',
+    success: function(response) {
+      console.log(response)
+      if (response.comments.length > 0 || response.videos.length > 0) {
+        addContent(response);
+      }
+      
+    }
+  })
+})
+
+function addContent(response) {
+
+  const { comments } = response;
+  const { videos } = response;
+
+  for (comment of comments) {
+
+    const commentHTML = formatCommentHTML(comment, comment.imageURL);
+
+    //Append comment
+    $("#comments").append(commentHTML);
+
+    const replies = comment.replies;
+    for (reply of replies) {
+      const replyHTML = formatReplyHTML(reply, reply.imageURL);
+      $("#comments").append(replyHTML);
+    }
+  }
+
+  for (video of videos) {
+    const videoHTML = formatSidebarVideoHTML(video);
+    console.log(videoHTML);
+    $("#sidebar").append(videoHTML);
+  }
+}
+
+function formatSidebarVideoHTML(video) {
+  const formattedHTML = `
+    <div class="video-preview">
+      <a href="/video/${video.id}">
+        <video class="sidebar-video" src="/videos/${video.videoURL}" volume="0.5">
+        </video>
+        <div id="svidinfo">
+          <h1>${video.title}</h1>
+          <h2>${video.uploader}</h2>
+          <h3>${video.viewCount}</h3>
+          <h3>${video.uploadDate}</h3>
+        </div>
+      </a>
+    </div>`
+    return formattedHTML;
+}
+
+
+
+
 function loginAlert(item, message) {
 
   //Make it pop up from the clicked element with a custom message
@@ -64,22 +153,11 @@ window.onload = initiatePage;
 
 function animateSidebarVideos() {
   sidebarVideos = document.querySelectorAll('.sidebar-video');
-
   for (let i = 0; i < sidebarVideos.length; i++) {
-
     $(sidebarVideos[i]).hover(function() {
-
-      console.log("Hovering over");
       sidebarVideos[i].play();
-
-
-
     }, function() {
-
-      console.log("You left :(");
       sidebarVideos[i].pause();
-
-
     })
   }
 
@@ -133,7 +211,7 @@ function postComment() {
   $.ajax({
       url, type: "POST", data,
       success: function(response) {
-        const commentFormatted = formatCommentHTML(response);
+        const commentFormatted = formatCommentHTML(response.comment, response.imageURL);
         $('#comments').prepend(commentFormatted);
         //Empty comment box
         $('#comment').val("");
@@ -169,23 +247,23 @@ function postReply(item) {
 
 }
 
-function formatCommentHTML(comment) {
+function formatCommentHTML(comment, imageURL) {
 
   const html = ` <div class="comment">
                     <div class="image">
-                      <a class="thumb-holder" href="/users/${comment.comment.user}"}>
-                        <img src="/images/user-thumbs/${comment.imageURL}">
+                      <a class="thumb-holder" href="/users/${comment.user}"}>
+                        <img src="/images/user-thumbs/${imageURL}">
                       </a>
                     </div>
                     <div class="comment-content">
                       <div class="comment-header">
-                        <a class="commentUsername" href="/users/${comment.comment.user}">${comment.comment.user}</a>
+                        <a class="commentUsername" href="/users/${comment.user}">${comment.user}</a>
                         <p> Posted Just now </p>
                       </div>
-                      <p class="commentBody">${comment.comment.comment}</p>
+                      <p class="commentBody">${comment.comment}</p>
                       <div class="comment-footer">
                         <div> 
-                          <p class="commentID">${comment.comment.id}</p>
+                          <p class="commentID">${comment.id}</p>
                         </div> 
                         <div>
                           <p class="commentLikes">0</p>
@@ -206,7 +284,7 @@ function formatCommentHTML(comment) {
                           <button onclick="editComment(this)">Edit</button>
                         </div>
                         <div>
-                          <button id=${comment.comment.id} onClick="deleteComment(this)"> Delete </button>
+                          <button id=${comment.id} onClick="deleteComment(this)"> Delete </button>
                         </div>
                       </div>
                     </div>
@@ -218,22 +296,22 @@ function formatCommentHTML(comment) {
   return html;
 }
 
-function formatReplyHTML(reply) {
+function formatReplyHTML(reply, imageURL) {
   const html = ` <div class="reply">
                   <div class="image">
                     <a class="thumb-holder" href="/users/${reply.user}"}>
-                      <img src="/images/user-thumbs/${reply.imageURL}">
+                      <img src="/images/user-thumbs/${imageURL}">
                     </a>
                   </div>
                   <div class="comment-content">
                     <div class="comment-header">
-                      <a class="commentUsername" href="/users/${reply.comment.user}">${reply.comment.user}</a>
+                      <a class="commentUsername" href="/users/${reply.user}">${reply.user}</a>
                       <p> Posted just now </p>
                     </div>
-                    <p class="commentBody">${reply.comment.comment}</p>
+                    <p class="commentBody">${reply.comment}</p>
                     <div class="comment-footer">
                       <div>
-                        <p class="commentID">${reply.comment.id}</p>
+                        <p class="commentID">${reply.id}</p>
                       </div> 
                       <div>
                         <p class="commentLikes">0</p>
@@ -251,7 +329,7 @@ function formatReplyHTML(reply) {
                           <button onclick="editComment(this)">Edit</button>
                       </div>
                       <div>
-                        <button id=${reply.comment.id} onClick="deleteComment(this)"> Delete </button>
+                        <button id=${reply.id} onClick="deleteComment(this)"> Delete </button>
                       </div>
                     </div>
                   </div>

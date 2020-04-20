@@ -41,33 +41,4 @@ function sortSubs() {
 
     //Now got all videos, need to sort by date
 
-
-
-}
-
-
-function loadOnScroll() {
-
-    //REMINDER. Change video specific to only give first
-    //10 comments and first 20 video recs
-
-    /**
-     * When scrolling on a video specific page, we want to
-     * load more content (video recs, comments)
-     * 
-     * When user tries to scroll at the bottom, the client will
-     * send an ajax request to the server to try and get some
-     * more comments
-     * 
-     * While we are loading more comments, load more video recs
-     * if they exist. However, if we are out of comments, do NOT
-     * load any more video recs
-     * 
-     * Create a timeout once the ajax request has been returned
-     * (2 seconds) should be good enough
-     * Just so that the server isn't being spammed with requests
-     */
-
-
-
 }

@@ -65,7 +65,7 @@
     flex-direction: row;
     justify-content: start;
     padding: 2px;
-    transform: 0.5s;
+    transition: 0.3s;
 }
 
 .video-preview a:hover {

@@ -312,7 +312,69 @@ async function deleteAccount(user) {
 
 }
 
+function convertCommentsAjax(comments) {
+
+  const formattedComments = []
+
+  for (comment of comments) {
+    
+    const formComment = {
+      id : comment.id,
+      user: comment.user,
+      videoID: comment.videoID,
+      comment: comment.comment,
+      replyID: comment.replyID,
+      commentLikes: comment.commentLikes,
+      commentDislikes: comment.commentDislikes,
+      edited: comment.edited,
+      replies: comment.replies,
+      imageURL: comment.imageURL  
+    }
+
+    const replies = comment.replies;
+    formComment.replies = [];
+    for (reply of replies) {
+    
+      const formReply = {
+        id : reply.id,
+        user: reply.user,
+        videoID: reply.videoID,
+        comment: reply.comment,
+        replyID: reply.replyID,
+        commentLikes: reply.commentLikes,
+        commentDislikes: reply.commentDislikes,
+        edited: reply.edited,
+        replies: reply.replies,
+        imageURL: reply.imageURL  
+      }
+      formComment.replies.push(formReply);
+    }
+    formattedComments.push(formComment);
+  }
+
+  return formattedComments;
+
+}
+
+function convertVideosAjax(videos) {
+
+  const formattedVideos = [];
+  for (video of videos) {
+    
+    const formattedVideo = {
+      id : video.id,
+      uploader: video.uploader,
+      title: video.title,
+      videoURL: video.videoURL,
+      uploadDate: formatTimeSince(video.createdAt),
+      viewCount: video.viewCount
+    }
+    formattedVideos.push(formattedVideo);
+  }
+  return formattedVideos
+}
 
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
-  deleteComments, deleteVideo, deleteAccount};
+  deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
+  convertVideosAjax};

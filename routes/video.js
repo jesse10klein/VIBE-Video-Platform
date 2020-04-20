@@ -35,7 +35,6 @@ router.get('/', tools.asyncHandler(async (req, res) => {
   res.render("videoViews/video", {videos, username});
 }));
 
-
 //Create new comment
 router.post('/:id/add-comment', tools.asyncHandler(async (req, res) => {
 
@@ -75,6 +74,7 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   let uploader = await UserInfo.findOne({
     where: {username: video.uploader}
   })
+
   if (uploader == null) {
     res.render("404", { message: "The uploader of the referenced video has recently deleted their account" });
   }
@@ -84,6 +84,11 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
 
   //Get videos for sidebar: for now just any videos
   let videos = await Video.findAll({order: [["createdAt", "DESC"]]});
+  //Only select first 10 videos
+  if (videos.length > 10) {
+    videos = videos.splice(0, 10);
+  }
+
 
   //FORMAT THESE VIDEOS (TITLE, VIEWS, UPLOAD)
   for (let i = 0; i < videos.length; i++) {
@@ -101,7 +106,12 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   const {username} = req.session;
 
   //Get comments
-  const comments = await tools.getCommentsForVideo(req.params.id, username);
+  let comments = await tools.getCommentsForVideo(req.params.id, username);
+  //Only give the first 5 comments
+  if (comments.length > 1) {
+    comments = comments.splice(0, 1);
+  }
+
 
   //Check if user is subscribed to the uploader
   let subscribed = false;
@@ -430,6 +440,63 @@ router.post('/:videoID/edit-comment/', tools.asyncHandler(async (req, res) => {
   await toUpdate.update({comment, edited: '1'});
 
   res.sendStatus(200);
+
+}));
+
+
+//Deliver more comments and video recs to user
+router.post('/:id/content-payload/', tools.asyncHandler(async (req, res) => {
+
+  console.log(req.body);
+  console.log("Content payload request recieved");
+
+  const { username } = req.session;
+
+  let comments = await tools.getCommentsForVideo(req.params.id, username);
+
+  //Loop through until find id
+  for (let i = 0; i < comments.length; i++) {
+    if (comments[i].id == req.body.lastCommentID) {
+      comments = comments.splice(i + 1);
+      break;
+    }
+    if (i == (comments.length - 1)) {
+      res.send({comments: null, videos: null});
+      return;
+    }
+  }
+
+  if (comments.length > 1) {
+    comments = comments.splice(0, 1);
+  }
+
+  //Get videos for sidebar: for now just any videos
+  let videos = await Video.findAll({order: [["createdAt", "DESC"]]});
+
+  //Loop through until find id
+  for (let i = 0; i < videos.length; i++) {
+    if (videos[i].id == req.body.lastVideoID) {
+      videos = videos.splice(i + 1);
+      break;
+    }
+
+    if (i == (videos.length + 1)) {
+      commentsToSend = tools.convertCommentsAjax(comments);
+      res.send({comments: commentsToSend, videos: null});
+      return;
+    }
+  }
+
+  if (videos.length > 3) {
+    videos = videos.splice(0, 3);
+  }
+
+  //Need to do weird conversion thing becuase sequelize is dumb dumb
+
+  commentsToSend = tools.convertCommentsAjax(comments);
+  videosToSend = tools.convertVideosAjax(videos);
+
+  res.send({comments: commentsToSend, videos: videosToSend})
 
 }));
 
