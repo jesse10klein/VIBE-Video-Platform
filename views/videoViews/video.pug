@@ -7,18 +7,16 @@ block content
       each video in videos  
         .video-preview
           a(href=`/video/${video.id}`)
-            h1= video.title
-            h2= video.uploader
-            video(src=`/videos/${video.videoURL}#t=10`)
-
-        //.video-preview
-          a(href=`/video/${vid.id}`)
-            video.sidebar-video(src=`/videos/${vid.videoURL}#t=10` volume=0.5)
-            #svidinfo
-              h1= vid.formattedTitle
-              h2= vid.uploader
-              h3= `${vid.formattedViews} Views`
-              h3= vid.formattedUploadDate
+            video.sidebar-video(src=`/videos/${video.videoURL}#t=10` muted)
+            h1.videoTitle= video.title
+            .userInfo
+              a(href=`/users/${video.uploader}`)
+                img.uploaderPhoto(src=`/images/user-thumbs/${video.imageURL}`)
+              .formatDiv
+                h2= video.uploader
+                .svidinfo
+                  h3= `${video.formattedViewCount} Views`
+                  h3= `Uploaded ${video.timeSince}`
 
   else
     h1#welcome= "No videos uploaded yet"
@@ -28,4 +26,5 @@ block style
   link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")
 
 block script
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
   script(src='/js/videos.js')

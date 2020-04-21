@@ -109,40 +109,14 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   if (user == null) {
     res.render('404', {message: "That user does not exist"})
   }
+  user.formattedSubCount = tools.formatViews(user.subscriberCount);
+
   let videos = await Video.findAll({ where: { uploader: user.username } });
   if (videos.length == 0) {
       videos = null;
   }
 
   res.render("userProfile/user-home", {message: `${user.username}'s Videos:`, videos, user, username: req.session.username});
-}));
-
-//GET ALL COMMENTS MADE BY THE USER
-router.get('/:user/comments', tools.asyncHandler(async (req, res) => {
-
-  console.log("Implement comments made maybe? users.js 123");
-  res.redirect("/");
-  return;
-
-  const user = await UserInfo.findOne({where: {username: req.params.user}});
-  if (user == null) {
-    res.render('404', {message: "That user does not exist"})
-  }
-
-  let comments = await Comments.findAll({ where: { user: user.username } });
-  
-  //Need to get each video the comment is on
-  //COULD DO THIS BY JOINING, BUT CAN'T FIGURE OUT SO JUST LOOP
-  for (let i = 0; i < comments.length; i++) {
-      const video = await Video.findOne({where: {id: comments[i].videoID}});
-      comments[i].video = video;
-  }
-
-  if (comments.length == 0) {
-      comments = null;
-  }
-
-  res.render('userProfile/comments', {comments, message: "Comments", emptyMessage: "No comments yet", user, username: req.session.username});
 }));
 
 
@@ -153,6 +127,7 @@ router.get('/:user/liked-videos', tools.asyncHandler(async (req, res) => {
   if (user == null) {
     res.render('404', {message: "That user does not exist"})
   }
+  user.formattedSubCount = tools.formatViews(user.subscriberCount);
 
   //GET UPVOTES
   let videos = await userHelp.getVotes(user.username, 1);
@@ -171,6 +146,7 @@ router.get('/:user/disliked-videos', tools.asyncHandler(async (req, res) => {
   if (user == null) {
     res.render('404', {message: "That user does not exist"})
   }
+  user.formattedSubCount = tools.formatViews(user.subscriberCount);
 
   //GET DOWNVOTES
   let videos = await userHelp.getVotes(user.username, 2);
@@ -189,6 +165,7 @@ router.get('/:user/subscribers', tools.asyncHandler(async (req, res) => {
   if (user == null) {
     res.render('404', {message: "That user does not exist"})
   }
+  user.formattedSubCount = tools.formatViews(user.subscriberCount);
 
   //GET SUBSCRIBERS
   const subs = await userHelp.getSubs(user.username, 1);
@@ -203,6 +180,7 @@ router.get('/:user/subscribed-to', tools.asyncHandler(async (req, res) => {
   if (user == null) {
     res.render('404', {message: "That user does not exist"})
   }
+  user.formattedSubCount = tools.formatViews(user.subscriberCount);
 
   //GET SUBSCRIBERS
   const subs = await userHelp.getSubs(user.username, 2);
@@ -219,6 +197,7 @@ router.get('/:user/bookmarked-videos', tools.asyncHandler(async (req, res) => {
   if (user == null) {
     res.render('404', {message: "That user does not exist"})
   }
+  user.formattedSubCount = tools.formatViews(user.subscriberCount);
 
   const bookmarks = await Bookmarks.findAll({where: {username: user.username}});
 

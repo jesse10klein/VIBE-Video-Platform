@@ -7,4 +7,4 @@
         img#uploaderPhoto(src=`/images/user-thumbs/${user.imageURL}`)
     #subdiv
         a#userName(href=`/users/${user.username}`)= `${user.username}`
-        p#subcount= `${user.subscriberCount} Subscriber`
+        p#subcount= `${user.formattedSubCount} Subscribers`

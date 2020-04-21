@@ -24,6 +24,8 @@ router.use(cookieParser());
 //Home VIDEO route
 router.get('/', tools.asyncHandler(async (req, res) => {
 
+  const { username } = req.session;
+
   let videos = await Video.findAll({ 
     order: [["uploadDate", "DESC"]]
   });
@@ -31,7 +33,14 @@ router.get('/', tools.asyncHandler(async (req, res) => {
     videos = null;
   }
 
-  const username = req.session.username;
+  for (video of videos) {
+    const user = await UserInfo.findOne({where: { username: video.uploader }});
+    video.imageURL = user.imageURL;
+    video.formattedViewCount = tools.formatViews(video.viewCount);
+    video.timeSince = tools.formatTimeSince(video.createdAt);
+  }
+
+
   res.render("videoViews/video", {videos, username});
 }));
 
