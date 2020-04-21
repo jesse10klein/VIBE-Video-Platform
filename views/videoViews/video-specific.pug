@@ -71,9 +71,18 @@ block content
       else
         h3= "You need to log in to be able to post comments"
     
+    //if numComments
+      #commentFiltering
+        h1= `${numComments} comments`
+        p= "Filter comments: "
+        select#filterOptions
+          option(value="new")= "Newest first"
+          option(value="top")= "Popular first"
+
     include comments
 
 block script
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
   script(src='/js/video-specific.js')
   script(src='/js/votes.js')
+  script(src='/js/comments.js')

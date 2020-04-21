@@ -31,36 +31,8 @@
           if comment.edited
             div
               p.edited= `(Edited)`
+    if comment.numReplies
+      button(class=`${comment.id}` onclick="loadReplies(this)")= `Load ${comment.numReplies} replies`
     .reply-form
       textarea.comment-reply(name='reply')
       button.post-reply(onClick="postReply(this)")= "Reply"
-        
-    each reply in comment.replies
-      .reply
-        .image
-          img(src=`/images/user-thumbs/${reply.imageURL}`)
-        .comment-content
-          .comment-header
-            a.commentUsername(href=`/users/${reply.user}`)= reply.user
-            p= `Posted ${reply.formattedDate}`
-            
-          p.commentBody= reply.comment
-          .comment-footer
-            div
-              p.commentID= `${reply.id}`
-            div
-              p.commentLikes= `${reply.commentLikes}`
-            div
-              button.upVote(onclick="processCommentVote(this)")= '👍'
-            div
-              p.commentDislikes= `${reply.commentDislikes}`
-            div
-              button.downVote(onclick="processCommentVote(this)")= `👎`
-            if reply.byUser
-              div
-                button(onclick="editComment(this)") Edit
-              div
-                button(id=`${reply.id}` onclick="deleteComment(this)") Delete
-            if reply.edited
-              div
-                p= `(Edited)`

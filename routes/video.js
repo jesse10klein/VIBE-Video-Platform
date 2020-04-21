@@ -107,6 +107,7 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
 
   //Get comments
   let comments = await tools.getCommentsForVideo(req.params.id, username);
+  const numComments = comments.length;
   //Only give the first 5 comments
   if (comments.length > 1) {
     comments = comments.splice(0, 1);
@@ -121,7 +122,7 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
     })
     subscribed = !(subscription == null);
   }
-  res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed, videos});
+  res.render("videoViews/video-specific", {video, comments, uploader, username, subscribed, videos, numComments});
 }));
 
 //Handle subbing/unsubbing
@@ -481,7 +482,7 @@ router.post('/:id/content-payload/', tools.asyncHandler(async (req, res) => {
     }
 
     if (i == (videos.length + 1)) {
-      commentsToSend = tools.convertCommentsAjax(comments);
+      commentsToSend = await tools.convertCommentsAjax(comments, username);
       res.send({comments: commentsToSend, videos: null});
       return;
     }
@@ -493,10 +494,24 @@ router.post('/:id/content-payload/', tools.asyncHandler(async (req, res) => {
 
   //Need to do weird conversion thing becuase sequelize is dumb dumb
 
-  commentsToSend = tools.convertCommentsAjax(comments);
+  commentsToSend = await tools.convertCommentsAjax(comments, username);
   videosToSend = tools.convertVideosAjax(videos);
 
   res.send({comments: commentsToSend, videos: videosToSend})
+
+}));
+
+//Deliver more comments and video recs to user
+router.post('/:id/reply-payload/', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  const comment = await Comments.findOne({where: {id: req.body.commentID}});
+
+
+  const replies = await tools.getRepliesForComment(comment, username);
+  console.log(replies);
+
+  res.send({replies});
 
 }));
 

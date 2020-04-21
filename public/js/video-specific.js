@@ -7,95 +7,6 @@ const subButton = document.getElementById('subscribeButton');
 
 let alerting = false;
 
-let scrollAlert = false;
-
-window.addEventListener('scroll', () => {
-  if (scrollAlert) return;
-
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  const scrolled = window.scrollY;
-
-  if (Math.abs(scrolled - scrollable) > 20) {
-    return;
-  }
-
-  scrollAlert = true;
-  setTimeout(function () { scrollAlert = false; }, 500);
-
-
-  const lastComment = $("#comments .comment").last();
-
-  if (lastComment.length == 0) {
-    console.log("No comments on this vid, nothing to load");
-    return;
-  }
-
-  const commentID = lastComment.find(".commentID").text();
-  const lastRec = $("#sidebar a").last();
-  videoID = lastRec.attr("href").split('/')[2];
-  data = {lastCommentID: commentID, lastVideoID: videoID};
-  url = window.location.pathname + "/content-payload";
-
-  console.log("About to send ajax");
-
-  $.ajax({
-    url, type: "POST", data, dataType: 'json',
-    success: function(response) {
-      console.log(response)
-      if (response.comments.length > 0 || response.videos.length > 0) {
-        addContent(response);
-      }
-      
-    }
-  })
-})
-
-function addContent(response) {
-
-  const { comments } = response;
-  const { videos } = response;
-
-  for (comment of comments) {
-
-    const commentHTML = formatCommentHTML(comment, comment.imageURL);
-
-    //Append comment
-    $("#comments").append(commentHTML);
-
-    const replies = comment.replies;
-    for (reply of replies) {
-      const replyHTML = formatReplyHTML(reply, reply.imageURL);
-      $("#comments").append(replyHTML);
-    }
-  }
-
-  for (video of videos) {
-    const videoHTML = formatSidebarVideoHTML(video);
-    console.log(videoHTML);
-    $("#sidebar").append(videoHTML);
-  }
-}
-
-function formatSidebarVideoHTML(video) {
-  const formattedHTML = `
-    <div class="video-preview">
-      <a href="/video/${video.id}">
-        <video class="sidebar-video" src="/videos/${video.videoURL}" volume="0.5">
-        </video>
-        <div id="svidinfo">
-          <h1>${video.title}</h1>
-          <h2>${video.uploader}</h2>
-          <h3>${video.viewCount}</h3>
-          <h3>${video.uploadDate}</h3>
-        </div>
-      </a>
-    </div>`
-    return formattedHTML;
-}
-
-
-
-
 function loginAlert(item, message) {
 
   //Make it pop up from the clicked element with a custom message
@@ -164,13 +75,10 @@ function animateSidebarVideos() {
 }
 
 function initiatePage() {
-
   const video = document.getElementById("video");
   video.volume = 0.25;
   resizeVideo();
-
   animateSidebarVideos();
-
 }
 
 function resizeVideo() {

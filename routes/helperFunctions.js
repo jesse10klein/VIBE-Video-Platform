@@ -167,10 +167,44 @@ async function signupErrors(username, email, password) {
 
 }
 
+async function getRepliesForComment(comment, username) {
+    
+  const convertedReplies = [];
+
+  //Get replies to this comment
+    let replies = await Comments.findAll({
+      order: [["createdAt", "ASC"]],
+      where: {replyID: comment.id}
+    });
+
+    for (reply of replies) {
+
+      //For each reply, get user for image url
+      const user = await UserInfo.findOne({where: {username: reply.user}});
+
+      const formComment = {
+        id : reply.id,
+        user: reply.user,
+        videoID: reply.videoID,
+        comment: reply.comment,
+        replyID: reply.replyID,
+        commentLikes: reply.commentLikes,
+        commentDislikes: reply.commentDislikes,
+        edited: reply.edited,
+        imageURL: user.imageURL, 
+        byUser: reply.user == username,
+        formattedDate: formatTimeSince(reply.createdAt)
+      }
+      convertedReplies.push(formComment);
+    }
+    return convertedReplies;
+}
+
 async function getCommentsForVideo(videoID, username) {
 
   let comments = await Comments.findAll({ 
-    order: [["createdAt", "DESC"]], where: {videoID, replyID: -1}});
+    order: [["createdAt", "DESC"]], where: {videoID, replyID: -1}
+  });
 
   //Need to format date for comments
   for (let i = 0; i < comments.length; i++) {
@@ -180,35 +214,16 @@ async function getCommentsForVideo(videoID, username) {
       comments[i].byUser = true;
     }
 
+    //get number of replies for each comment
+    const replies = await Comments.findAll({where: {replyID: comments[i].id}});
+    comments[i].numReplies = replies.length;
 
     comments[i].formattedDate = formatTimeSince(comments[i].createdAt);
     //For each comment, get user for image url
     const user = await UserInfo.findOne({where: {username: comments[i].user}});
     comments[i].imageURL = user.imageURL;
-
-    //Get replies to this comment
-    let replies = await Comments.findAll({
-      order: [["createdAt", "ASC"]],
-      where: {replyID: comments[i].id}
-    })
-
-    //Format date
-    for (let y = 0; y < replies.length; y++) {
-       //If current user made this comment, add thingo
-      if (replies[y].user == username) {
-        replies[y].byUser = true;
-      }
-      replies[y].formattedDate = formatTimeSince(replies[y].createdAt);
-
-      //For each reply, get user for image url
-      const user = await UserInfo.findOne({where: {username: replies[y].user}});
-      replies[y].imageURL = user.imageURL;
-
-    }
-
-    //Set the replies on the comment
-    comments[i].replies = replies;
   }
+
   return comments;
 }
 
@@ -312,12 +327,18 @@ async function deleteAccount(user) {
 
 }
 
-function convertCommentsAjax(comments) {
+async function convertCommentsAjax(comments, username) {
 
   const formattedComments = []
 
   for (comment of comments) {
     
+    //Need to get number of replies
+    const replies = await Comments.findAll({where: {replyID: comment.id}});
+    console.log(replies.length);
+ 
+    const byUser = (comment.user == username);
+
     const formComment = {
       id : comment.id,
       user: comment.user,
@@ -327,31 +348,14 @@ function convertCommentsAjax(comments) {
       commentLikes: comment.commentLikes,
       commentDislikes: comment.commentDislikes,
       edited: comment.edited,
-      replies: comment.replies,
-      imageURL: comment.imageURL  
-    }
-
-    const replies = comment.replies;
-    formComment.replies = [];
-    for (reply of replies) {
-    
-      const formReply = {
-        id : reply.id,
-        user: reply.user,
-        videoID: reply.videoID,
-        comment: reply.comment,
-        replyID: reply.replyID,
-        commentLikes: reply.commentLikes,
-        commentDislikes: reply.commentDislikes,
-        edited: reply.edited,
-        replies: reply.replies,
-        imageURL: reply.imageURL  
-      }
-      formComment.replies.push(formReply);
+      imageURL: comment.imageURL, 
+      numReplies: replies.length,
+      byUser,
+      formattedDate: formatTimeSince(comment.createdAt)
     }
     formattedComments.push(formComment);
   }
-
+  console.log(formattedComments);
   return formattedComments;
 
 }
@@ -360,14 +364,14 @@ function convertVideosAjax(videos) {
 
   const formattedVideos = [];
   for (video of videos) {
-    
+
     const formattedVideo = {
       id : video.id,
       uploader: video.uploader,
       title: video.title,
       videoURL: video.videoURL,
       uploadDate: formatTimeSince(video.createdAt),
-      viewCount: video.viewCount
+      viewCount: formatViews(video.viewCount)
     }
     formattedVideos.push(formattedVideo);
   }
@@ -377,4 +381,4 @@ function convertVideosAjax(videos) {
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
-  convertVideosAjax};
+  convertVideosAjax, getRepliesForComment};

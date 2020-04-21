@@ -151,4 +151,10 @@
 
 textarea {
     resize: none;
-  }
+}
+
+#commentFiltering {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
