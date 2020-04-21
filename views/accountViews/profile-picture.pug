@@ -2,13 +2,23 @@
 
 extends layout 
 
+block style
+  link(href="/style/profile-picture.css" rel="stylesheet")
+
 block content
         
+
+  #picture-div
+    h1= "Update Profile Picture"
+    img#picture(src=`${imageURL}`)
+
     form(enctype="multipart/form-data" action="/account/upload-pic" method="POST")
-        #video-upload
-            p= 'Video Path: '
-            input(type='file' name='fileName')
-        input#submit(type='submit' value='Upload Video')
+      #photo-upload
+        label(for="fileSelector" id="customLabel") Choose Photo to Upload
+        input(id="fileSelector" type='file' name='fileName')
+      input#submit(type='submit' value='Upload Photo')
+      if error
+        p.error= error
 
 
 block script

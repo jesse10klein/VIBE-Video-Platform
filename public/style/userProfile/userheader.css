@@ -3,9 +3,13 @@
 #banner {
     overflow: hidden;
     z-index: -1;
-    position: absolute; 
-    width: 100%; 
+    position: absolute;
     height: 250px;
+}
+
+#banner img {
+    min-height: 250px;
+    min-width: 500px;
 }
 
 #uploaderPhoto {

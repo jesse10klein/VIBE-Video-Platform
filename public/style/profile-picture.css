@@ -1,0 +1,50 @@
+
+
+#picture-div {
+    height: 700px;
+    width: 700px;
+    margin: auto;
+    border: 2px solid rgba(0, 0, 0, 1);
+    margin-top: 100px;
+    text-align: center;
+}
+
+#picture {
+    height: 450px;
+    width: 450px;
+    border: 2px solid black;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+#picture:hover {
+    border: 5px solid rgb(32, 32, 32);
+    width: 444px;
+    height: 444px;
+}
+
+#fileSelector {
+    display: none;
+}
+
+#photo-upload {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+    font-weight: 500;
+}
+
+#submit {
+    font-size: 1.3em;
+    font-family: 'Oxanium', cursive;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background-color: white;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}

@@ -84,36 +84,50 @@ router.get('/delete-account', tools.asyncHandler(async (req, res) => {
     res.redirect('/');
 }));
 
-router.get('/profile-picture', (req, res) => {
-    res.render("accountViews/profile-picture");
-})
+router.get('/profile-picture', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+    if (username == null) {
+        res.render("404", {message: "You need to be logged in"});
+    }
+    const user = await UserInfo.findOne({where: {username}});
+    const imageURL = "/images/user-thumbs/" + user.imageURL;
+
+    res.render("accountViews/profile-picture", {imageURL});
+   
+  }));
 
 //Handle uploading a user's profile picture
 router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
 
-   
-  const username = req.session.username;
-
+  const { username } = req.session;
+  if (username == null) {
+    res.render("404", {message: "You need to be logged in"});
+}
 
   if (!req.files) {
-      res.send("you must select a file");
+    const user = await UserInfo.findOne({where: {username}});
+    const imageURL = "/images/user-thumbs/" + user.imageURL;
+    const error = "Please select a file";
+    res.render("accountViews/profile-picture", {imageURL, error});
+    return
   } 
 
   const file = req.files.fileName
 
   if ((file.mimetype != "image/png") && (file.mimetype != "image/jpeg")) {
-      res.send("Please select a png or jpg file");
-      return
+    const user = await UserInfo.findOne({where: {username}});
+    const imageURL = "/images/user-thumbs/" + user.imageURL;
+    const error = "File must be PNG or JPG";
+    res.render("accountViews/profile-picture", {imageURL, error});
+    return
   }
 
   const name = file.name;
-
   const user = await UserInfo.findOne({where: {username}});
-
   var uploadpath = "../INFS3202/public/images/user-thumbs/" + user.id + ".png";
 
   await user.update({imageURL: (user.id + ".png")});
-
 
   file.mv(uploadpath, function(err){
       if(err) {
@@ -124,7 +138,7 @@ router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
       }
   });
 
-  res.send("uploaded");
+  res.redirect("/account/profile-picture");
  
 }));
 

@@ -10,6 +10,16 @@ block content
             h1= video.title
             h2= video.uploader
             video(src=`/videos/${video.videoURL}#t=10`)
+
+        //.video-preview
+          a(href=`/video/${vid.id}`)
+            video.sidebar-video(src=`/videos/${vid.videoURL}#t=10` volume=0.5)
+            #svidinfo
+              h1= vid.formattedTitle
+              h2= vid.uploader
+              h3= `${vid.formattedViews} Views`
+              h3= vid.formattedUploadDate
+
   else
     h1#welcome= "No videos uploaded yet"
 

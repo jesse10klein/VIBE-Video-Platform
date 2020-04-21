@@ -10,12 +10,15 @@ function resizeContent() {
   //Get video and change dimensions
   const content = document.getElementById("content");
 
-  const sidebar_width = 200 + 40; // padding
+  const sidebar_width = 200 + 20; // padding
 
    const width = window.innerWidth - sidebar_width;
    content.style.width = width + "px";
 
    const bannerDiv = document.getElementById("banner");
-   bannerDiv.style.width = width + "px";
+   //bannerDiv.style.width = "200px";
+
+   const bannerImage = document.getElementById("banner-image");
+   bannerImage.style.width = width + "px";
 
 };
