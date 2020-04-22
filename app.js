@@ -496,5 +496,9 @@ app.get('*', (req, res) => {
   res.render("404", {message: "You have requested an invalid route"});
 });
 
-app.listen(3000);
-console.log("Web server listening on port 3000");
+const port = 8081; //Has to be this for nginx
+
+app.set('trust proxy', 'loopback');
+
+app.listen(port);
+console.log( `Web server listening on port ${port}`);
