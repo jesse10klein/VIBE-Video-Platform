@@ -10,7 +10,7 @@ const { commentVotes } = db.models;
 const { Bookmarks } = db.models;
 const { Subscriptions} = db.models;
 
-const Op = require('Sequelize').Op;
+const Op = require('sequelize').Op;
 
 function asyncHandler(cb) {
     return async(req, res, next) => {
