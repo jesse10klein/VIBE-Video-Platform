@@ -122,7 +122,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'goodforyou.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "7526",
     upvotes: "45693",
@@ -135,7 +134,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'goodgrief.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "11645",
     upvotes: "45693",
@@ -148,7 +146,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'headcold.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "506",
     upvotes: "45693",
@@ -161,7 +158,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'Rocket League 2019.08.05 - 19.08.23.02.DVR.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "37",
     upvotes: "45693",
@@ -174,7 +170,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'seasonsgreetings.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "971",
     upvotes: "45693",
@@ -187,7 +182,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Catfish and the Bottlemen - 7 (Live From Manchester Arena)_s1n5R-FmHYw_240p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "572681",
     upvotes: "45693",
@@ -200,7 +194,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Catfish and the Bottlemen - Pacifier (Live From Manchester Arena)_EAO3OjF7eW8_240p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "157953",
     upvotes: "45693",
@@ -213,7 +206,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Clairo - 4EVER_tlGUom_AV4o_240p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "2458605",
     upvotes: "45693",
@@ -226,7 +218,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - CUCO x CLAIRO - DROWN (Official Audio)__1VyGyWpQpU_360p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "468245",
     upvotes: "45693",
@@ -239,7 +230,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Encore_ZV_5mWg_RhI_360p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "8052458",
     upvotes: "45693",
@@ -252,7 +242,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Middle Kids -  Edge of Town_cFWqLLaMOFs_360p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "57682",
     upvotes: "45693",
@@ -265,7 +254,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Mura Masa - Deal Wiv It with slowthai (Official Video)_F0uvt97Xn20_360p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "13572953",
     upvotes: "45693",
@@ -278,7 +266,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - San Cisco - Awkward_ukNOaKeUEQY_360p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "15762",
     upvotes: "45693",
@@ -291,7 +278,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: "y2mate.com - San Cisco 'Skin' (Official Music Video)_FHwFEE8od7M_360p.mp4",
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "65785",
     upvotes: "45693",
@@ -304,7 +290,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - TWO DOOR CINEMA CLUB _ UNDERCOVER MARTYN_LLK4oaXUuLg_360p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "23759862",
     upvotes: "45693",
@@ -317,7 +302,6 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Two Door Cinema Club- What You Know (Live) Reading Festival 2011_nIL36WfxVx0_240p.mp4',
-    uploadDate: '2020-04-04',
     tags: "NOTHING",
     views: "12578953",
     upvotes: "45693",
@@ -413,7 +397,6 @@ async function createShit() {
       title: video.title,
       description: video.description,
       videoURL: video.videoURL,
-      uploadDate: video.uploadDate,
       tags: video.tags,
       viewCount: video.views,
       upvotes: video.upvotes,

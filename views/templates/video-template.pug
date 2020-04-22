@@ -1,0 +1,11 @@
+.video-preview
+          a(href=`/video/${video.id}`)
+            video.sidebar-video(src=`/videos/${video.videoURL}#t=10` muted)
+            h1.videoTitle= video.title
+            .userInfo
+              a(href=`/users/${video.uploader}`)
+                img.uploaderPhoto(src=`/images/user-thumbs/${video.imageURL}`)
+              .formatDiv
+                h2= video.uploader
+                h3= `${video.formattedViewCount} Views`
+                h3= `Uploaded ${video.timeSince}`

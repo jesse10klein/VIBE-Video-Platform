@@ -90,8 +90,7 @@ router.post('/post-upload', tools.asyncHandler( async (req, res) => {
 
   const video = await Video.create({
     uploader: req.session.username,
-    title, description, tags, videoURL,
-    uploadDate: now.toISOString().slice(0, 10)
+    title, description, tags, videoURL
   });
   
   res.send(video);

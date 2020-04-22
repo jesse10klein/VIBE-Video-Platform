@@ -44,14 +44,25 @@ function formatDay(day) {
 }
   
 function formatDate(entry) {
-    let formattedDate = "";
-    var contents = entry.split('-');
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const month = months[parseInt(contents[1]) - 1];
-    const day = formatDay(parseInt(contents[2]));
-    const year = contents[0];
-    formattedDate += day + " " + month + " " + year;
-    return formattedDate;
+
+  const date = entry.toString().slice(4, 13);
+
+  let formattedDate = "";
+  var contents = date.split(' ');
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  finalMonth = null;
+  for (month of months) {
+    if (month.startsWith(contents[0])) {
+      finalMonth = month;
+      break;
+    }
+  }
+
+  const day = formatDay(parseInt(contents[1]));
+  const year = "20" + contents[2];
+  formattedDate += day + " " + finalMonth + " " + year;
+  return formattedDate;
 }
 
 function formatTimeSince(commentDate) {

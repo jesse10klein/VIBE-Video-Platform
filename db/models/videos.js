@@ -19,10 +19,6 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
-    uploadDate: {
-      type: Sequelize.DATEONLY,
-      allowNull: false
-    },
     viewCount: {
       type: Sequelize.INTEGER,
       allowNull: false,

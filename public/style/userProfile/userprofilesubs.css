@@ -38,6 +38,8 @@
 .userHeader {
     display: flex;
     flex-direction: row;
+    width: 500px;
+    margin: 25px;
 }
 
 .subdiv {

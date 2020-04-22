@@ -5,24 +5,14 @@ block content
     h1#welcome= `Videos:`
     #video-container
       each video in videos  
-        .video-preview
-          a(href=`/video/${video.id}`)
-            video.sidebar-video(src=`/videos/${video.videoURL}#t=10` muted)
-            h1.videoTitle= video.title
-            .userInfo
-              a(href=`/users/${video.uploader}`)
-                img.uploaderPhoto(src=`/images/user-thumbs/${video.imageURL}`)
-              .formatDiv
-                h2= video.uploader
-                .svidinfo
-                  h3= `${video.formattedViewCount} Views`
-                  h3= `Uploaded ${video.timeSince}`
+        include ../templates/video-template
 
   else
     h1#welcome= "No videos uploaded yet"
 
 block style
   link(href='/style/videos.css' rel='stylesheet')
+  link(href='/style/templates/video-template.css' rel='stylesheet')
   link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")
 
 block script

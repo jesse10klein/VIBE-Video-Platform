@@ -27,7 +27,7 @@ router.get('/', tools.asyncHandler(async (req, res) => {
   const { username } = req.session;
 
   let videos = await Video.findAll({ 
-    order: [["uploadDate", "DESC"]]
+    order: [["createdAt", "DESC"]]
   });
   if (videos.length == 0) {
     videos = null;
@@ -107,7 +107,7 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   }
 
   //Format date for video
-  video.formattedDate = tools.formatDate(video.uploadDate);
+  video.formattedDate = tools.formatDate(video.createdAt);
   video.formattedViews = tools.formatViews(video.viewCount);
   video.formattedUpvotes = tools.formatViews(video.upvotes);
   video.formattedDownvotes = tools.formatViews(video.downvotes);
