@@ -1,7 +1,7 @@
-const db = require('./db');
 
-//CREATE SAMPLE DATA FOR TESTING PURPOSES
+const path = require('path')
 
+const db = require(path.join(__dirname, 'db'));
 const {UserInfo} = db.models;
 const {Video} = db.models;
 const {Comments} = db.models;
@@ -9,6 +9,7 @@ const {Subscriptions} = db.models;
 const {Bookmarks} = db.models;
 const {videoVotes} = db.models;
 const {commentVotes} = db.models;
+
 
 //Need to use bcrypt
 const bcrypt = require('bcrypt');
@@ -451,20 +452,20 @@ app.use(expressSession({
 }));
 
 //Get Routes
-const userRoutes = require('./routes/users');
+const userRoutes = require(path.join(__dirname, 'routes/users'));
 app.use('/users', userRoutes);
-const videoRoutes = require('./routes/video');
+const videoRoutes = require(path.join(__dirname, 'routes/video'));
 app.use('/video', videoRoutes);
-const accountRoutes = require('./routes/account');
+const accountRoutes = require(path.join(__dirname, 'routes/account'));
 app.use('/account', accountRoutes);
-const uploadRoutes = require('./routes/upload');
+const uploadRoutes = require(path.join(__dirname, 'routes/upload'));
 app.use('/upload', uploadRoutes);
-const searchRoutes = require('./routes/search');
+const searchRoutes = require(path.join(__dirname, 'routes/search'));
 app.use('/search', searchRoutes);
 
 //Set view engine and tell express where to look for views
-app.use(express.static("public"));
-app.set('views', './views');
+app.use(express.static(path.join(__dirname, "public")));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require('cookie-parser');

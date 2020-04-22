@@ -2,15 +2,15 @@
 
 const express = require('express')
 const router = express.Router();
-
+const path = require('path');
 const fileUploader = require('express-fileupload');
 router.use(fileUploader());
 
-const db = require('../db');
+const db = require(path.join(__dirname, '../db'));
 const { Video } = db.models;
 
 //Require helper functions
-var tools = require('./helperFunctions');
+var tools = require(path.join(__dirname, 'helperFunctions'));
 
 //Require and use modules
 

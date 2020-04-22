@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
-
-const db = require('../db');
+const path = require('path');
+const db = require(path.join(__dirname, '../db'));
 const { Video } = db.models;
 const { Bookmarks } = db.models;
 const { Comments } = db.models;
@@ -11,7 +11,7 @@ const { videoVotes } = db.models;
 const { commentVotes } = db.models;
 
 //Require helper functions
-var tools = require('./helperFunctions');
+var tools = require(path.join(__dirname, 'helperFunctions'));
 
 //Require and use modules
 var bodyParser = require('body-parser');

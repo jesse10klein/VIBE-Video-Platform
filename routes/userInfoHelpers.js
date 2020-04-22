@@ -1,5 +1,7 @@
+const path = require('path');
 
-const db = require('../db');
+
+const db = require(path.join(__dirname, '../db'));
 const { Video } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;

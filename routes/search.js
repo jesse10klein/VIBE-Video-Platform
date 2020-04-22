@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
-
-const db = require('../db');
+const path = require('path');
+const db = require(path.join(__dirname, '../db'));
 const { Video } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
