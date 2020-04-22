@@ -25,7 +25,7 @@ body {
 
 #home-image {
     float: left;
-    margin-right: 25px;
+    margin-left: 40px;
 }
 
 #dd {
@@ -51,7 +51,9 @@ body {
     top: 0;
     z-index: 101;
     position: fixed;
-    height: 50px;
+    height: 40px;
+    margin-top: 5px;
+    width: auto;
     margin-left: 0px;
 }
 

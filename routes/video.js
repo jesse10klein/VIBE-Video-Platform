@@ -31,13 +31,13 @@ router.get('/', tools.asyncHandler(async (req, res) => {
   });
   if (videos.length == 0) {
     videos = null;
-  }
-
-  for (video of videos) {
-    const user = await UserInfo.findOne({where: { username: video.uploader }});
-    video.imageURL = user.imageURL;
-    video.formattedViewCount = tools.formatViews(video.viewCount);
-    video.timeSince = tools.formatTimeSince(video.createdAt);
+  } else {
+    for (video of videos) {
+      const user = await UserInfo.findOne({where: { username: video.uploader }});
+      video.imageURL = user.imageURL;
+      video.formattedViewCount = tools.formatViews(video.viewCount);
+      video.timeSince = tools.formatTimeSince(video.createdAt);
+    }
   }
 
 

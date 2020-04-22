@@ -9,7 +9,7 @@
 
 #banner img {
     min-height: 250px;
-    min-width: 500px;
+    object-fit: cover;
 }
 
 #uploaderPhoto {

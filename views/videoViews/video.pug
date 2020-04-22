@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   if videos
-    h1#welcome= `Videos:`
+    h1#welcome= `Recommended for today:`
     #video-container
       each video in videos  
         include ../templates/video-template

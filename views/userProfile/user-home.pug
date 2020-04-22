@@ -2,6 +2,7 @@ extends layout
 
 block style
   link(href="/style/userProfile/userprofilevideos.css" rel="stylesheet")
+  link(href="/style/templates/video-template.css" rel="stylesheet")
 
 block content
   h1= message
@@ -10,11 +11,8 @@ block content
     if videos
       each video in videos
         .video-preview
-          a(href=`/video/${video.id}`)
-            h1= video.title
-            h2= video.uploader
-            video(src=`/videos/${video.videoURL}#t=10`)
-            a(href=`/account/delete-video/${video.id}`)
+          include ../templates/video-template
+
     else
       h1= emptyMessage
 

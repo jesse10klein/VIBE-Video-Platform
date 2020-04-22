@@ -16,7 +16,7 @@ function resizeContent() {
    content.style.width = width + "px";
 
    const bannerDiv = document.getElementById("banner");
-   //bannerDiv.style.width = "200px";
+   //bannerDiv.style.width = width + "px";
 
    const bannerImage = document.getElementById("banner-image");
    bannerImage.style.width = width + "px";

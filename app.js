@@ -375,7 +375,7 @@ const comments = [
   }
 ]
 
-async function createShit() {
+async function fillDB() {
 
   for (user of users) {
     const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -421,7 +421,7 @@ async function createShit() {
 async function setUp() {
     try {
         await db.sequelize.sync({force: true});
-        await createShit();
+        //await fillDB();
     } catch (error) {
       console.log(error);
         console.log("Database unable to be synced");
@@ -472,7 +472,6 @@ app.use(cookieParser());
 
 
 app.use((req, res, next) => {
-  console.log("Check login middleware");
   if (!req.session.username) {
     if (req.cookies.username) {
       res.clearCookie("username");
