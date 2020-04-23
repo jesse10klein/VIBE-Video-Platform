@@ -39,8 +39,6 @@ router.get('/', tools.asyncHandler(async (req, res) => {
       video.timeSince = tools.formatTimeSince(video.createdAt);
     }
   }
-
-
   res.render("videoViews/video", {videos, username});
 }));
 

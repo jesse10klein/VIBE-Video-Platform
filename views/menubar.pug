@@ -2,9 +2,7 @@
   a#home-image(href='/')
     img(src='/images/main-menu/vibe.svg') 
 
-  //#icons
-    a#home(href='/video/home')
-      img(src='/images/main-menu/home.svg')
+  #icons
     a#hot(href='/video/hot')
       img(src='/images/main-menu/hot.svg')
     a#subs(href='/video/subscriptions')
@@ -16,7 +14,7 @@
 
   if username
     #dd
-      button#dropdown-button Account
+      a#dropdown-button Account
       #dropdown-content
         a(href='/upload') Upload
         a#username(href=`/account`)= `Account`

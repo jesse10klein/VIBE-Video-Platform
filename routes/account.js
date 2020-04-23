@@ -103,7 +103,7 @@ router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
   const { username } = req.session;
   if (username == null) {
     res.render("404", {message: "You need to be logged in"});
-}
+  }
 
   if (!req.files) {
     const user = await UserInfo.findOne({where: {username}});
@@ -125,21 +125,20 @@ router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
 
   const name = file.name;
   const user = await UserInfo.findOne({where: {username}});
-  var uploadpath = "../INFS3202/public/images/user-thumbs/" + user.id + ".png";
+  var uploadpath = path.join(__dirname, "../public/images/user-thumbs", (user.id + ".png"));
 
   await user.update({imageURL: (user.id + ".png")});
 
   file.mv(uploadpath, function(err){
       if(err) {
           console.log("File Upload Failed", name, err);
+          res.redirect("/account/profile-picture");
       }
       else {
           console.log("File Uploaded", name);
+          res.redirect("/account/profile-picture");
       }
   });
-
-  res.redirect("/account/profile-picture");
- 
 }));
 
 

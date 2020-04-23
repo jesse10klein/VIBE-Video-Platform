@@ -18,7 +18,7 @@ block content
       each vid in videos
         .video-preview
             a(href=`/video/${vid.id}`)
-              video.sidebar-video(src=`/videos/${vid.videoURL}#t=10` muted)
+              video.sidebar-video(src=`/videos/${vid.videoURL}` muted)
               #svidinfo
                 h1= vid.formattedTitle
                 h2= vid.uploader
@@ -82,7 +82,6 @@ block content
     include comments
 
 block script
-  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
   script(src='/js/video-specific.js')
   script(src='/js/votes.js')
   script(src='/js/comments.js')

@@ -32,8 +32,9 @@ function uploadVideo() {
         data: formData,
         processData: false,
         contentType: false,
-        success: function(data){
-            console.log('upload successful!\n' + data);
+        success: function(res){
+            console.log('upload successful!');
+            console.log(res);
             fileSize = 0;
             lastLoaded = 0;
             lastTime = 0;

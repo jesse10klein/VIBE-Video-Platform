@@ -422,7 +422,7 @@ async function fillDB() {
 async function setUp() {
     try {
         await db.sequelize.sync({force: true});
-        //await fillDB();
+        await fillDB();
     } catch (error) {
       console.log(error);
         console.log("Database unable to be synced");
@@ -483,7 +483,7 @@ app.use((req, res, next) => {
 });
 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   if (!req.session.username) {
     //req.session.username = "Spacey Jane";
     //res.cookie("username", "Spacey Jane");
@@ -496,7 +496,7 @@ app.get('*', (req, res) => {
   res.render("404", {message: "You have requested an invalid route"});
 });
 
-const port = 8081; //Has to be this for nginx
+const port = 3000; //Has to be this for nginx
 
 app.set('trust proxy', 'loopback');
 

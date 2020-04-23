@@ -95,7 +95,7 @@ router.post('/signup', tools.asyncHandler(async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       user = await UserInfo.create({ username, password: hashedPassword, email });
-      res.render("userViews/newuser");
+      res.redirect("/users/login");
       return;
     } 
  
@@ -115,11 +115,13 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   if (videos.length == 0) {
       videos = null;
   }
-  for (video of videos) {
-    const user = await UserInfo.findOne({where: { username: video.uploader }});
-    video.imageURL = user.imageURL;
-    video.formattedViewCount = tools.formatViews(video.viewCount);
-    video.timeSince = tools.formatTimeSince(video.createdAt);
+  if (videos != null) {
+    for (video of videos) {
+      const user = await UserInfo.findOne({where: { username: video.uploader }});
+      video.imageURL = user.imageURL;
+      video.formattedViewCount = tools.formatViews(video.viewCount);
+      video.timeSince = tools.formatTimeSince(video.createdAt);
+    }
   }
 
   res.render("userProfile/user-home", {message: `${user.username}'s Videos:`, videos, user, username: req.session.username});
@@ -136,13 +138,14 @@ router.get('/:user/liked-videos', tools.asyncHandler(async (req, res) => {
 
   //GET UPVOTES
   let videos = await userHelp.getVotes(user.username, 1);
-  for (video of videos) {
-    const user = await UserInfo.findOne({where: { username: video.uploader }});
-    video.imageURL = user.imageURL;
-    video.formattedViewCount = tools.formatViews(video.viewCount);
-    video.timeSince = tools.formatTimeSince(video.createdAt);
+  if (videos != null) {
+    for (video of videos) {
+      const user = await UserInfo.findOne({where: { username: video.uploader }});
+      video.imageURL = user.imageURL;
+      video.formattedViewCount = tools.formatViews(video.viewCount);
+      video.timeSince = tools.formatTimeSince(video.createdAt);
+    }
   }
-
   if (videos.length == 0) {
       videos = null;
   }
@@ -161,11 +164,13 @@ router.get('/:user/disliked-videos', tools.asyncHandler(async (req, res) => {
 
   //GET DOWNVOTES
   let videos = await userHelp.getVotes(user.username, 2);
-  for (video of videos) {
-    const user = await UserInfo.findOne({where: { username: video.uploader }});
-    video.imageURL = user.imageURL;
-    video.formattedViewCount = tools.formatViews(video.viewCount);
-    video.timeSince = tools.formatTimeSince(video.createdAt);
+  if (videos != null) {
+    for (video of videos) {
+      const user = await UserInfo.findOne({where: { username: video.uploader }});
+      video.imageURL = user.imageURL;
+      video.formattedViewCount = tools.formatViews(video.viewCount);
+      video.timeSince = tools.formatTimeSince(video.createdAt);
+    }
   }
 
   if (videos.length == 0) {

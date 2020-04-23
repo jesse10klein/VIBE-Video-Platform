@@ -40,6 +40,8 @@ router.get('/', (req, res) => {
 
 router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
 
+  console.log(req.get("content-length"));
+
   if (!req.files) {
     res.sendStatus(500);
     return;
@@ -47,7 +49,7 @@ router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
 
   const file = req.files.file1;
   const name = file.name;
-  const uploadpath = "../INFS3202/public/videos/" + file.name;
+  const uploadpath = path.join(__dirname, "../public/videos", file.name);
 
 
   file.mv(uploadpath, function(err) {
@@ -67,6 +69,8 @@ router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
 
 
 router.post('/post-upload', tools.asyncHandler( async (req, res) => {
+
+  console.log(req.get("content-length"));
 
   const username = req.session.username;
 
