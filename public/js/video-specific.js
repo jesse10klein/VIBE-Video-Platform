@@ -85,29 +85,49 @@ function resizeVideo() {
 
   //Get video and change dimensions
   const video = document.getElementById("video");
-  const other = document.getElementById("videocontent");
+  const other = document.getElementById("videoinfo");
+  const other1 = document.getElementById("videoTitle");
+
+  console.log(window.innerWidth);
 
   //Only resize if window width is greater than 1220
-  if (window.innerWidth < 1220)  {
-    return;
-  } else if (window.innerWidth > 1540) {
-    video.style.width = 1100 + "px";
-    video.style.minHeight = 1100 / 1.77 + "px";
-    video.style.maxHeight = 1100 / 1.77 + "px";
-    other.style.width = 1100 + "px";
-    other.style.marginLeft = "100px";
+  if (window.innerWidth < 900) {
+    const room = window.innerWidth - 100
+    video.style.width = room + "px";
+    video.style.minHeight = room / 1.77 + "px";
+    video.style.maxHeight = room / 1.77 + "px";
+    other.style.width = room + "px";
+    other1.style.marginLeft = 50 + "px";
     return;
   }
+  else if (window.innerWidth < 1220)  {
+    const room = 1220 - 350
+    video.style.width = room + "px";
+    video.style.minHeight = room / 1.77 + "px";
+    video.style.maxHeight = room / 1.77 + "px";
+    other.style.width = room + "px";
+    other.style.marginLeft = (window.innerWidth - 1220 - 350) / 2 + 350 + "px";
+    other1.style.marginLeft = (window.innerWidth - 1220 - 350) / 2 + 350 + "px";
+    return;
+  } else if (window.innerWidth > 1340) {
+    console.log("HERE");
+    const room = 1340 - 450;
+    video.style.width = room + "px";
+    video.style.minHeight = room / 1.77 + "px";
+    video.style.maxHeight = room / 1.77 + "px";
+    other.style.width = room + "px";
+    other.style.marginLeft = (window.innerWidth - 1340 - 450) / 2 + 250 + "px";
+    other1.style.marginLeft = (window.innerWidth - 1340 - 450) / 2 + 250 + "px";
+    return;
+  } 
   //Width - width of sidebar - 40px padding (20 each side)
   const roomForVideo = window.innerWidth - 400 - 40;
-
   video.style.width = roomForVideo + "px";
   //The 1.77 is based off popular video height/width ratios
   video.style.minHeight = roomForVideo / 1.77 + "px";
   video.style.maxHeight = roomForVideo / 1.77 + "px";
-
   other.style.width = roomForVideo + "px";
-  other.style.marginLeft = "0px";
+  other1.style.marginLeft = 20 + "px";
 };
 
 function postComment() {

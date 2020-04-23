@@ -33,13 +33,26 @@ router.get('/', tools.asyncHandler(async (req, res) => {
     videos = null;
   } else {
     for (video of videos) {
-      const user = await UserInfo.findOne({where: { username: video.uploader }});
-      video.imageURL = user.imageURL;
-      video.formattedViewCount = tools.formatViews(video.viewCount);
-      video.timeSince = tools.formatTimeSince(video.createdAt);
+      video = await tools.formatVideo(video);
     }
   }
   res.render("videoViews/video", {videos, username});
+}));
+
+//Send user the subs
+router.get('/subscriptions', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  
+  if (username == null) {
+    res.redirect('/users/login');
+    return;
+  }
+
+  const subVids = await tools.getSubVideos(username);
+
+  res.render("videoViews/subscriptions", {subVids});
+
 }));
 
 //Create new comment
@@ -521,6 +534,5 @@ router.post('/:id/reply-payload/', tools.asyncHandler(async (req, res) => {
   res.send({replies});
 
 }));
-
 
 module.exports = router;

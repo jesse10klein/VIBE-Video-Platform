@@ -35,10 +35,9 @@
 }
 
 #videoTitle {
-    margin: 0;
-    margin-left: 20px;
     font-size: 1.2em;
     text-align: left;
+    margin-top: -8px;
 }
 
 #uploaderPhoto {
@@ -111,9 +110,9 @@
 #videoinfo {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     margin: auto;
-    margin-top: 20px;
+    margin-top: -20px;
 }
 
 #subscribeButton {

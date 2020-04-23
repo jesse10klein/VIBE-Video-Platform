@@ -118,10 +118,5 @@
     #non-video {
         margin-right: 0;
     }
-
-    #videoTitle {
-        text-align: center !important;
-        margin-left: -250px !important;
-    }
 }
 

@@ -43,6 +43,15 @@ function formatDay(day) {
     return formatted;
 }
   
+async function formatVideo(video) {
+
+  const user = await UserInfo.findOne({where: { username: video.uploader }});
+  video.imageURL = user.imageURL;
+  video.formattedViewCount = formatViews(video.viewCount);
+  video.timeSince = formatTimeSince(video.createdAt);
+  return video;
+}
+
 function formatDate(entry) {
 
   const date = entry.toString().slice(4, 13);
@@ -389,7 +398,107 @@ function convertVideosAjax(videos) {
   return formattedVideos
 }
 
+function timeSince(commentDate) {
+
+  const sinceUpload = Date.now() - Date.parse(commentDate);
+  const days = Math.floor(sinceUpload / (1000 * 60 * 60 * 24));
+
+  if (Math.ceil(days) <= 7) {
+    return 0;
+  }
+  if (Math.ceil(days) <= 31) {
+    return 1;
+  }
+  return 2;
+}
+
+
+async function getSubVideos(username) {
+
+  const subscriptions = await Subscriptions.findAll({where: {subscriber: username}});
+
+  let subVideos = [];
+
+  for (let i = 0; i < subscriptions.length; i++) {
+      //Get uploader
+      const uploader = await UserInfo.findOne({where: {username: subscriptions[i].user}});
+
+      if (uploader == null) {
+          console.log("ERROR IN SUBS VIDS SECTION")
+          res.send("Error in subs woops");
+          return;
+      }
+
+      //Get any videos that user has uploaded in the past 90 days
+      const now = new Date()
+      now.setMonth(now.getMonth - 1);
+
+      const videos = await Video.findAll({where: {
+        uploader: uploader.username,
+        createdAt: {
+          [Op.lt]: new Date(),
+          [Op.gt]: new Date(new Date() - 3 * 30 * 24 * 60 * 60 * 1000)
+        }
+      }});
+
+      for (let i = 0; i < videos.length; i++) {
+          videos[i] = await formatVideo(videos[i]);
+          subVideos.push(videos[i]);
+      }
+  }
+
+  if (subVideos.length == 0) {
+    return null;
+  }
+
+  //Sort list by date
+  subVideos.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
+  
+  //Make object with list of videos and titles
+
+  let thisWeek = [];
+  let thisMonth = [];
+  let thisSeason = [];
+
+  for (let i = 0; i < subVideos.length; i++) {
+    time = timeSince(subVideos[i].createdAt);
+    if (time == 0) { //This week
+      thisWeek.push(subVideos[i]);
+    }
+    if (time == 1) { //This month
+      thisMonth.push(subVideos[i]);
+    }
+    if (time == 2) { //This season
+      thisSeason.push(subVideos[i]);
+    }
+  }
+
+  if (thisWeek.length == 0) {
+    thisWeek = null;
+  }
+  if (thisMonth.length == 0) {
+    thisMonth = null;
+  }
+  if (thisSeason.length == 0) {
+    thisSeason = null;
+  }
+
+  finalSubVideos = [{
+    title: "This Week",
+    videos: thisWeek
+  }, {
+    title: "This Month",
+    videos: thisMonth
+  }, {
+    title: "Past 90 days",
+    videos: thisSeason
+  }];
+  console.log(finalSubVideos);
+  return finalSubVideos;
+
+}
+
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
-  convertVideosAjax, getRepliesForComment};
+  convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo};

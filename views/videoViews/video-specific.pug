@@ -18,7 +18,7 @@ block content
       each vid in videos
         .video-preview
             a(href=`/video/${vid.id}`)
-              video.sidebar-video(src=`/videos/${vid.videoURL}` muted)
+              video.sidebar-video(src=`/videos/${vid.videoURL}#t=10` muted)
               #svidinfo
                 h1= vid.formattedTitle
                 h2= vid.uploader

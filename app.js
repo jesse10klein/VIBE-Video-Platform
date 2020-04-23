@@ -376,9 +376,16 @@ const comments = [
   }
 ]
 
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}   
+
 async function fillDB() {
 
   for (user of users) {
+    await sleep(1000);
     const hashedPassword = await bcrypt.hash(user.password, 10);
     const use = await UserInfo.create({
       id: user.id,
@@ -388,11 +395,11 @@ async function fillDB() {
       imageURL: user.imageURL,
       subscriberCount: user.subscriberCount
     });
-    //console.log(use);
   }
 
   for (video of videos) {
-    await Video.create({
+    await sleep(1000);
+    const use = await Video.create({
       id: video.id,
       uploader: video.uploader,
       title: video.title,
@@ -407,7 +414,8 @@ async function fillDB() {
 
   //Create comment for testing
   for (comment of comments) {
-    await Comments.create({
+    await sleep(1000);
+    const use = await Comments.create({
       id: comment.id,
       replyID: comment.replyID,
       comment: comment.comment,
@@ -415,14 +423,15 @@ async function fillDB() {
       videoID: comment.videoID
     });
   }
+  console.log("DONE");
 
 }
 
 //Try to sync database
 async function setUp() {
     try {
-        await db.sequelize.sync({force: true});
-        await fillDB();
+        await db.sequelize.sync({force: false});
+        //await fillDB();
     } catch (error) {
       console.log(error);
         console.log("Database unable to be synced");

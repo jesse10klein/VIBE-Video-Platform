@@ -1,6 +1,6 @@
 .video-preview
           a(href=`/video/${video.id}`)
-            video.sidebar-video(src=`/videos/${video.videoURL}` muted)
+            video.sidebar-video(src=`/videos/${video.videoURL}#t=10` muted)
             h1.videoTitle= video.title
             .userInfo
               a(href=`/users/${video.uploader}`)

@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+
+
+  if subVids
+    each filter in subVids
+      if filter.videos
+        h1.filterTitle= filter.title
+        .videoContainer
+          each video in filter.videos
+            include ../templates/video-template
+
+
+  else
+    h1= "No videos yet"
+
+block style
+  link(href='/style/subscriptions.css' rel='stylesheet')
+  link(href='/style/templates/video-template.css' rel='stylesheet')
+  link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")
+
+block script
+  script(src='/js/videos.js')
