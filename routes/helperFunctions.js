@@ -87,11 +87,11 @@ function formatTimeSince(commentDate) {
   const minutes =  Math.floor(sinceUpload / (1000 * 60));
 
   if (days >= 1) {
-    if (days == 1) timePassed = "Posted 1 day ago";
+    if (days == 1) timePassed = "1 day ago";
     else timePassed = days + " days ago";
   } else if (hours > 0) {
     if (hours == 1) timePassed = "1 hour ago";
-    else timePassed = "Posted " + hours + " hours ago";
+    else timePassed = hours + " hours ago";
   } else {
     if (minutes < 3) timePassed = "Just now";
     else timePassed = minutes + " minutes ago";
@@ -153,7 +153,7 @@ function checkForErrors(potentialErrors) {
   return error;
 }
 
-async function signupErrors(username, email, password) {
+async function signupErrors(username, email, password, verifyPassword) {
 
   let error = {};
   //Check for null
@@ -167,6 +167,9 @@ async function signupErrors(username, email, password) {
     error.password = "Password must be longer than 5 characters";
   } 
   
+  if (password != verifyPassword) {
+    error.passwordDup = "The two entered passwords don't match";
+  }
 
   //Check for valid email
   if (!validator.validate(email)) {

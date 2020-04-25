@@ -18,12 +18,12 @@ block content
       each vid in videos
         .video-preview
             a(href=`/video/${vid.id}`)
-              video.sidebar-video(src=`/videos/${vid.videoURL}#t=10` muted)
+              video.sidebar-video(src=`/videos/${vid.videoURL}#t=2` muted)
               #svidinfo
                 h1= vid.formattedTitle
                 h2= vid.uploader
                 h3= `${vid.formattedViews} Views`
-                h3= vid.formattedUploadDate
+                h3= `Uploaded ${vid.formattedUploadDate}`
   else
     h1= `No videos yet`
 

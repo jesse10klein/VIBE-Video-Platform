@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
   UserInfo.init({
     username: {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: false
     },
     password: {
       type: Sequelize.STRING,
@@ -23,6 +23,10 @@ module.exports = (sequelize) => {
     imageURL: {
       type: Sequelize.STRING,
       defaultValue: "default.png"
+    },
+    emailVerified: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     }
   }, { sequelize });
 

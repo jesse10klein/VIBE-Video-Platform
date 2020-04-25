@@ -9,7 +9,6 @@ block content
   #bg
     img(src="/images/login-background.jpg")
 
-
   #form-div
     #title= "Log in"
     form(action="/users/login" method="POST")
@@ -25,3 +24,5 @@ block content
     .signupQ
       p= "Not a user?"
       a#signup(href='/users/signup') Sign Up
+    .passwordRecovery
+      a#passwordReset(href='/users/password-recovery') Forgotten your password?

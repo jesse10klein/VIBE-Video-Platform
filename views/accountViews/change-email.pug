@@ -1,0 +1,28 @@
+extends ../layout
+
+block style
+  link(href="/style/login.css" rel="stylesheet")
+
+block content
+
+  #bg
+    img(src="/images/login-background.jpg")
+
+  #form-div
+    #title= "Change Your Email"
+    if error
+      p.error= error
+    form(action="/account/change-email" method="POST")
+      .form-element
+        p  Current Email: 
+        if fill
+          input(type='text' name='currentEmail' value=fill.currentEmail)
+        else
+          input(type='text' name='currentEmail')
+      .form-element
+        p  New Email: 
+        if fill
+          input(type='text' name='newEmail' value=fill.newEmail)
+        else
+          input(type='text' name='newEmail')
+      input#resetPassword(type='submit' value="Change Email")

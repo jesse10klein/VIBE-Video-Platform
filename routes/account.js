@@ -6,6 +6,10 @@ const { Video } = db.models;
 const { Bookmarks } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
+const { passwordVerify } = db.models;
+
+const bcrypt = require("bcrypt");
+const validator = require("email-validator");
 
 //Require and use modules
 var bodyParser = require('body-parser');
@@ -141,6 +145,131 @@ router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
   });
 }));
 
+//Get change email route
+router.get('/change-email', tools.asyncHandler(async (req, res) => {
+    const { username } = req.session;
+    if (username == null) {
+        res.redirect('/users/login');
+        return;
+    }
+
+    res.render("accountViews/change-email", {username});
+}))
+
+//Handle changing a user's email
+router.post('/change-email', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+
+    if (username == null) {
+        res.redirect('/');
+        return;
+    }
+
+    const { currentEmail, newEmail } = req.body;
+    const fill = {currentEmail, newEmail};
+
+    const user = await UserInfo.findOne({where: {username}});
+
+    if (user.email != currentEmail) {
+        res.render("accountViews/change-email", {error: "You entered your current email incorrectly", fill, username});
+    }
+
+    if (!validator.validate(newEmail)) {
+        res.render("accountViews/change-email", {error: "The email you have entered is not valid", fill, username});
+        return;
+    }
+
+    //Make sure email is not already in the system
+    const emailTaken = await UserInfo.findOne({where: {email: newEmail}});
+    if (emailTaken != null) {
+        res.render("accountViews/change-email", {error: "That email is already registered in the system", fill, username});
+        return;
+    }
+
+    //Here we can update email
+    await user.update({email: newEmail, emailVerified: false});
+    console.log("Email updated successfully");
+    res.redirect('/');
+
+}));
+
+//Get change password route
+router.get('/change-password', tools.asyncHandler(async (req, res) => {
+    const { username } = req.session;
+    if (username == null) {
+        res.redirect('/users/login');
+        return;
+    }
+
+    res.render("accountViews/change-password", {username});
+}))
+
+//Handle changing a user's password
+router.post('/change-password', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+    if (username == null) {
+        res.redirect('/');
+        return;
+    }
+
+    const { currentPass, newPass, newPassDup } = req.body;
+    
+    const user = await UserInfo.findOne({where: {username}});
+    if (!(await bcrypt.compare(currentPass, user.password))) {
+        res.render("accountViews/change-password", {error: "You have entered your current password wrong", username});
+        return;
+    }
+
+    if (newPass != newPassDup) {
+        res.render("accountViews/change-password", {error: "The entered passwords do not match", username});
+        return;
+    }
+
+    if (newPass.length <= 5) {
+        res.render("accountViews/change-password", {error: "Your password must be at least 6 characters long", username});
+        return;
+    }
+
+    //Use bcrypt to encrypt password 
+    const hashedPassword = await bcrypt.hash(newPass, 10);
+
+    await user.update({password: hashedPassword, emailVerified: false});
+    res.redirect("/");
+    return;
+   
+}));
+
+
+//Handle verifying a user's email
+router.get('/verify-email/:verifyID', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+    if (username == null) {
+        res.send('Please login to the website and then click on your validation link again');
+        return;
+    }
+
+    //Get user
+    const user = await UserInfo.findOne({where: {username}});
+
+    //Check the validation
+    const valid = await passwordVerify.findOne({where: {
+        username,
+        varifyID: req.params.verifyID
+    }})
+
+    if (valid == null) {
+        res.render("404", {message: "Couldn't find what you're looking for"});
+    }
+
+    //If we get here there is a valid verify request
+    await user.update({emailVerified: true});
+    await valid.destroy();
+    res.redirect("/account");
+
+}));
 
 
 module.exports = router;

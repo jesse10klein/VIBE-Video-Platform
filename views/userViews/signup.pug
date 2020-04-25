@@ -30,6 +30,12 @@ block content
             if error
               p.error= error.password
           input(name='password')
+        .form-element
+          .errors
+            p  Verify Password: 
+            if error
+              p.error= error.passwordDup
+          input(name='verifyPassword')
         input#createAccount(type='submit' value="Create Account")
   else
     #form-div

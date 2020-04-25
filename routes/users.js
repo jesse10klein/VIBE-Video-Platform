@@ -9,6 +9,7 @@ const { Bookmarks } = db.models;
 
 const bcrypt = require("bcrypt");
 
+const emailManager = require(path.join(__dirname, 'mail.js'));
 
 //Require helper functions
 var tools = require(path.join(__dirname, 'helperFunctions'));
@@ -23,6 +24,29 @@ router.use(cookieParser());
 router.get('/', (req, res) => {
   res.redirect('/');
 })
+
+router.get('/password-recovery', (req, res) => {
+  res.render('userViews/password-recovery');
+})
+
+router.post('/reset-password', tools.asyncHandler(async (req, res) => {
+
+  const { email } = req.body;
+
+  const user = await UserInfo.findOne({where: {email}});
+  
+  if (user == null) {
+    res.render("userViews/password-recovery", {error: "The email entered is not in the system"});
+    return;
+  }
+
+  emailManager.sendRecoveryEmail(user, "HEHEHAHA");
+
+  console.log(email);
+
+
+
+}))
 
 //Login page
 router.get('/login', (req, res) => {
@@ -82,11 +106,11 @@ router.get('/logout', (req, res) => {
 //CREATE NEW USER BASED ON SIGN UP DATA
 router.post('/signup', tools.asyncHandler(async (req, res) => {
   
-    let { username, email, password } = req.body;
+    let { username, email, password, verifyPassword } = req.body;
     const fill = { username, email }
     
-    let error = await tools.signupErrors(username, email, password);
-    if (!(error.username || error.email || error.password)) {
+    let error = await tools.signupErrors(username, email, password, verifyPassword);
+    if (!(error.username || error.email || error.password || error.passwordDup)) {
       error = null;
     }
 
