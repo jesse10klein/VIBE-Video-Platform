@@ -14,9 +14,9 @@ form(enctype="multipart/form-data" method="POST")
       textarea#description(name='description')
     .form-element
       .perror
-        p= 'Tags: '
+        p= 'Tags (comma seperated):'
         p#tagsError.error= ""
-      textarea#tags(name='tags')
+      ul#myTags
     #video-upload
       .perror
         p= 'Video Path: '

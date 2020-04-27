@@ -28,7 +28,8 @@ var fs = require('fs');
 router.get('/', (req, res) => {
 
     if (req.session.username == null) {
-      res.redirect('/login');
+      res.redirect('/users/login');
+      return;
     }
   
     const fillInfo = {};

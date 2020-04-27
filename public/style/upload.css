@@ -1,7 +1,5 @@
 
 
-
-
 #upload-form {
     width: 60%;
     height: 80%;
@@ -21,10 +19,6 @@
 
 #description {
     height: 150px;
-}
-
-#tags {
-    height: 40px;
 }
 
 #video-upload {

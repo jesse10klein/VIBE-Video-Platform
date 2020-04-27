@@ -111,6 +111,25 @@ function updateTime(amountLoaded, percentComplete) {
   return remaining;
 }
 
+function parseTags() {
+  const tags = $("#myTags").children();
+
+  let tagsString = "";
+
+  tags.each(function (index) {
+    let tag = $(this).text();
+    tag = tag.substring(0, tag.length - 2);
+    
+    if (index == 0) {
+      tagsString += tag;
+      return;
+    } 
+    tagsString += '`';
+    tagsString += tag;
+  })
+  return tagsString;
+}
+
 function parseFormData() {
 
   //Get form data and send to route... already set up
@@ -125,7 +144,7 @@ function parseFormData() {
 
 
   data.description = $('#description').val();
-  data.tags = $('#tags').val();
+  data.tags = parseTags();
   data.title = $('#title').val();
   data.videoURL = $("#file1").get(0).files[0].name;
   
