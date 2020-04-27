@@ -1,0 +1,13 @@
+extends ../layout
+
+block style
+  link(href="/style/login.css" rel="stylesheet")
+
+block content
+
+  #bg
+    img(src="/images/login-background.jpg")
+
+  #form-div
+    #title= `A password recovery link has been sent to ${email}. Please check your emails`
+    p= "You may have to check your spam folder!"

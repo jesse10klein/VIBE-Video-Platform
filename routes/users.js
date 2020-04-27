@@ -6,10 +6,19 @@ const { Video } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
 const { Bookmarks } = db.models;
+const { passwordVerify} = db.models;
+
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'vibevideoservice@gmail.com',    
+    pass: 'Ernas123'
+  }
+})
 
 const bcrypt = require("bcrypt");
-
-const emailManager = require(path.join(__dirname, 'mail.js'));
 
 //Require helper functions
 var tools = require(path.join(__dirname, 'helperFunctions'));
@@ -26,25 +35,49 @@ router.get('/', (req, res) => {
 })
 
 router.get('/password-recovery', (req, res) => {
-  res.render('userViews/password-recovery');
+  
+  const { username } = req.session;
+
+  if (username != null) {
+    res.redirect("/");
+    return;
+  }
+
+  res.render('userViews/password-recovery', {username});
 })
 
 router.post('/reset-password', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
 
   const { email } = req.body;
 
   const user = await UserInfo.findOne({where: {email}});
   
   if (user == null) {
-    res.render("userViews/password-recovery", {error: "The email entered is not in the system"});
+    res.render("userViews/password-recovery", {error: "The email entered is not in the system", username});
     return;
   }
 
-  emailManager.sendRecoveryEmail(user, "HEHEHAHA");
+  const generatedID = await tools.generateRandomString();
 
-  console.log(email);
-
-
+  const mailOptions = tools.getMailOptions(user, `http://localhost:3000/users/password-recovery/${generatedID}`);
+  transporter.sendMail(mailOptions, async (error, info) => {
+    if (error) {
+      res.render("userViews/password-recovery", {error: `An error occurred. Please try again later \n Error: ${error}`, username});
+      return;
+    } else {
+      //If there are any requests sitting there, delete them
+      const existingRequests = passwordVerify.findAll({where: {username: user.username}});
+      for (let i = 0; i < existingRequests.length; i++) {
+        await existingRequests[i].destroy();
+      }
+      //Add new request
+      await passwordVerify.create({username: user.username, verifyID: generatedID});
+      res.render("userViews/recovery-sent", {email: user.email, username});
+      return;
+    }
+  })
 
 }))
 
@@ -263,5 +296,60 @@ router.get('/:user/bookmarked-videos', tools.asyncHandler(async (req, res) => {
   res.render("userProfile/user-home", {message: "Bookmarked Videos", videos, emptyMessage: "No Bookmarked Videos Yet", user, username: req.session.username});
 }));
 
+//GET Requested password reset
+router.get('/password-recovery/:verifyID', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username != null) {
+    res.redirect("/");
+    return;
+  }
+
+  const match = await passwordVerify.findOne({where: {verifyID: req.params.verifyID}});
+  if (match == null) {
+    res.redirect('/');
+    return;
+  }
+
+  res.render("userViews/recovery-submit.pug", {recoveryUsername: match.username , username});
+
+}));
+
+//Reset password for user
+router.post('/password-recovery/:username', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username != null) {
+    res.redirect("/");
+    return;
+  }
+
+  const match = await passwordVerify.findOne({where: {username: req.params.username}});
+  console.log(req.params.verifyID);
+  if (match == null) {
+    res.redirect('/');
+    return;
+  }
+  const user = await UserInfo.findOne({where: {username: match.username}});
+
+  const { newPass, newPassConfirm } = req.body;
+
+  if (newPass != newPassConfirm) {
+    res.render("userViews/recovery-submit.pug", {recoveryUsername: user.username , username, error: "The two passwords don't match"});
+    return;
+  }
+
+  if (newPass.length <= 5) {
+    res.render("userViews/recovery-submit.pug", {recoveryUsername: user.username , username, error: "Password must be at least 6 characters long"});
+    return;
+  }
+
+  const hashedPassword = await bcrypt.hash(newPass, 10);
+  await user.update({password: hashedPassword});
+  await match.destroy();
+
+  res.redirect("/users/login");
+
+}));
 
 module.exports = router;

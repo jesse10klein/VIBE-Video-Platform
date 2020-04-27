@@ -1,0 +1,22 @@
+extends ../layout
+
+block style
+  link(href="/style/login.css" rel="stylesheet")
+
+block content
+
+  #bg
+    img(src="/images/login-background.jpg")
+
+  #form-div
+    #title= `Welcome ${recoveryUsername} please enter your new password`
+    if error
+        p.error= error
+    form(action=`/users/password-recovery/${recoveryUsername}` method="POST")
+      .form-element
+        p  New Password: 
+        input(type='text' name='newPass')
+      .form-element
+        p  Confirm New Password: 
+        input(type='text' name='newPassConfirm')
+      input#resetPassword(type='submit' value="Reset Password")

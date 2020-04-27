@@ -51,7 +51,7 @@ router.get('/subscriptions', tools.asyncHandler(async (req, res) => {
 
   const subVids = await tools.getSubVideos(username);
 
-  res.render("videoViews/subscriptions", {subVids});
+  res.render("videoViews/subscriptions", {subVids, username});
 
 }));
 

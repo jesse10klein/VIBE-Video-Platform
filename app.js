@@ -112,6 +112,54 @@ const users = [
     email: 'jesse3@gmail.com',
     imageURL: '82946664_487130125540844_4583167018970120192_n.jpg',
     subscriberCount: "696969"
+  },
+  {
+    id: '13',
+    username: 'Channel Tres',
+    password: 'channeltres',
+    email: 'channel@gmail.com',
+    imageURL: 'channel-tres-by-yazz-alali_wide-b033043fcb4bb7ba5a8b261a03adabd3e653212b-s800-c85.jpg',
+    subscriberCount: "696969"
+  },
+  {
+    id: '14',
+    username: 'Joji',
+    password: 'joji',
+    email: 'joji@gmail.com',
+    imageURL: 'BALLADS.jpg',
+    subscriberCount: "696969"
+  },
+  {
+    id: '15',
+    username: 'Oliver Tree',
+    password: 'olivertree',
+    email: 'oliver@gmail.com',
+    imageURL: 'maxresdefault.jpg',
+    subscriberCount: "696969"
+  },
+  {
+    id: '16',
+    username: 'Rex Orange County',
+    password: 'rexorange',
+    email: 'rexorange@gmail.com',
+    imageURL: 'Rex_Feature-1920x1200-c-default.jpg',
+    subscriberCount: "696969"
+  },
+  {
+    id: '17',
+    username: 'Rum Jungle',
+    password: 'rumjungle',
+    email: 'rumjungle@gmail.com',
+    imageURL: 'r0_0_4896_3264_w1200_h678_fmax.jpg',
+    subscriberCount: "696969"
+  },
+  {
+    id: '18',
+    username: 'Tame Impala',
+    password: 'tameimpala',
+    email: 'tameimpala@gmail.com',
+    imageURL: 'Tame-Impala-2019-Patience-press-shot-web-optimised-1000-CREDIT-Matt-Sav-1.jpg',
+    subscriberCount: "696969"
   }
 ]
 
@@ -307,6 +355,150 @@ const videos = [
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
+  },
+  {
+    id: '17',
+    uploader: 'Channel Tres',
+    title: 'Controller',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Channel Tres - Controller_EtNIMvyEIQA_360p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '18',
+    uploader: 'Channel Tres',
+    title: 'Topdown',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Channel Tres - Topdown (Official Video)_8pReEUxHxJM_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '19',
+    uploader: 'Joji',
+    title: 'Gimme Love',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Joji - Gimme Love (Official Video)_jPan651rVMs_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '20',
+    uploader: 'Joji',
+    title: 'Run',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Joji - Run (Official Video)_K09_5IsgGe8_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '21',
+    uploader: 'Joji',
+    title: 'Sanctuary',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Joji - Sanctuary (Official Video)_YWN81V7ojOE_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '22',
+    uploader: 'Oliver Tree',
+    title: 'Let Me Down',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Oliver Tree - Let Me Down [Official Music Video]_FxG-7AsbjeI_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '23',
+    uploader: 'Oliver Tree',
+    title: 'Miracle Man',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Oliver Tree - Miracle Man [Official Music Video]_EBLF26-Irdc_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '24',
+    uploader: 'Rex Orange County',
+    title: 'Loving is Easy',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Rex Orange County - Loving is Easy (feat. Benny Sings) [Official Video]_39IU7ADaXmQ_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '25',
+    uploader: 'Rex Orange County',
+    title: 'Sunflower',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Rex Orange County - Sunflower_Z9e7K6Hx_rY_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '26',
+    uploader: 'Rum Jungle',
+    title: 'Keep',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Rum Jungle - Keep_XGyJEPU5Rmw_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '27',
+    uploader: 'Tame Impala',
+    title: 'It Might be Time',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Tame Impala - It Might Be Time (Official Audio)_4hZ_wTx_kWg_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
+  },
+  {
+    id: '28',
+    uploader: 'Tame Impala',
+    title: 'Lost in Yesterday',
+    description: `What is Lorem Ipsum?
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
+    videoURL: 'y2mate.com - Tame Impala - Lost in Yesterday (Official Video)_utCjuKDXQsE_240p.mp4',
+    tags: "NOTHING",
+    views: "12578953",
+    upvotes: "45693",
+    downvotes: "462"
   }
 ]
 
@@ -373,13 +565,160 @@ const comments = [
     videoID: "12",
     comment: "Tell me something I don't know you two!!!",
     replyID: "7"
+  }, 
+  {
+    id: "10",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "11",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "12",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "13",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "14",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "15",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "16",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "17",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "18",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "19",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "20",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "21",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "22",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "23",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "24",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "25",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "26",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "27",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "28",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "29",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
+  }, 
+  {
+    id: "30",
+    user: "Jesse Ultra Chad",
+    videoID: "2",
+    comment: "Tell me something I don't know you two!!!",
+    replyID: "-1"
   }
 ]
 
 function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+  //return new Promise((resolve) => {
+    //setTimeout(resolve, ms);
+  //});
 }   
 
 async function fillDB() {

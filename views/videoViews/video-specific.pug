@@ -12,26 +12,16 @@ block style
 
 block content
 
-  //SIDE BAR FOR VIDEOS
-  if videos
-    #sidebar
-      each vid in videos
-        .video-preview
-            a(href=`/video/${vid.id}`)
-              video.sidebar-video(src=`/videos/${vid.videoURL}#t=2` muted)
-              #svidinfo
-                h1= vid.formattedTitle
-                h2= vid.uploader
-                h3= `${vid.formattedViews} Views`
-                h3= `Uploaded ${vid.formattedUploadDate}`
-  else
-    h1= `No videos yet`
+  include sidebar-videos
 
   #other-content
     if video
       video#video(src=`/videos/${video.videoURL}` autoplay controls)
       #videocontent
         p#videoTitle= video.title
+        #firstInfo
+          p#views= `${video.formattedViews} Views`
+          p#date= `Uploaded ${video.formattedDate}`
         #videoinfo
           #subinfo
             a(href=`/users/${uploader.username}`)
@@ -42,22 +32,21 @@ block content
                 p#subCount= `${uploader.formattedSubscriberCount} Subscriber`
               else
                 p#subCount= `${uploader.formattedSubscriberCount} Subscribers`
-          p= `${video.formattedViews} Views`
+            if subscribed
+              button#subscribeButton(onClick="processSubscribe()")= `Unsubscribe`
+            else
+              button#subscribeButton(onClick="processSubscribe()")= `Subscribe`
+          
+          button#bookmark(onClick="processBookmark()")= "Bookmark Video"
+          button#share(onClick="processShare()")= "Share"
           #voting
             p#upvoteCount= `${video.formattedUpvotes}`
             button#upVote(onclick="processVideoVote(this)")= '👍'
             p#downvoteCount= `${video.formattedDownvotes}`
             button#downVote(onclick="processVideoVote(this)")= `👎`
-          if subscribed
-            button#subscribeButton(onClick="processSubscribe()")= `Unsubscribe`
-          else
-            button#subscribeButton(onClick="processSubscribe()")= `Subscribe`
-          
-        button#bookmark(onClick="processBookmark()")= "Bookmark Video"
         
         button#descButton(onClick="toggleDescription()")= "Show Description"
         #description-info
-          h3#date= `Uploaded on ${video.formattedDate}`
           h3= `Description`
           p#description= video.description
           h3= `Tags`

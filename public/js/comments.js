@@ -15,15 +15,15 @@ window.addEventListener('scroll', () => {
     }
   
     scrollAlert = true;
-    setTimeout(function () { scrollAlert = false; }, 500);
+    setTimeout(function () { scrollAlert = false; }, 200);
   
   
     const lastComment = $("#comments .comment").last();
   
-    if (lastComment.length == 0) {
-      console.log("No comments on this vid, nothing to load");
-      return;
-    }
+    //if (lastComment.length == 0) {
+      //console.log("No comments on this vid, nothing to load");
+      //return;
+    //}
   
     const commentID = lastComment.find(".commentID").text();
     const lastRec = $("#sidebar a").last();
@@ -61,6 +61,7 @@ function addContent(response) {
       const videoHTML = formatSidebarVideoHTML(video);
       $("#sidebar").append(videoHTML);
     }
+    animateSidebarVideos();
 }
 
 function addReplies(element, response) {
@@ -125,7 +126,7 @@ function formatSidebarVideoHTML(video) {
     const formattedHTML = `
       <div class="video-preview">
         <a href="/video/${video.id}">
-          <video class="sidebar-video" src="/videos/${video.videoURL}" volume="0.5">
+          <video class="sidebar-video" src="/videos/${video.videoURL}" muted>
           </video>
           <div id="svidinfo">
             <h1>${video.title}</h1>

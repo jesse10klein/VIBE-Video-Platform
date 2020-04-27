@@ -9,6 +9,7 @@ const { videoVotes } = db.models;
 const { commentVotes } = db.models;
 const { Bookmarks } = db.models;
 const { Subscriptions} = db.models;
+const { passwordVerify } = db.models;
 
 const Op = require('sequelize').Op;
 
@@ -80,13 +81,22 @@ function formatTimeSince(commentDate) {
   const now = Date.now();
   const sinceUpload = now - date;
 
-  let timePassed = "NULL";
+  let timePassed = "Error not set";
 
   const days = Math.floor(sinceUpload / (1000 * 60 * 60 * 24));
+  const months = Math.floor(days / 30);
+  const years = Math.floor(days / 365)
   const hours = Math.floor(sinceUpload / (1000 * 60 * 60));
   const minutes =  Math.floor(sinceUpload / (1000 * 60));
 
-  if (days >= 1) {
+
+  if (years >= 1) {
+    if (years == 1) timePassed = "1 year ago";
+    else timePassed = years + " years ago";
+  } else if (months >= 1) {
+    if (months == 1) timePassed = "1 month ago";
+    else timePassed = months + " months ago";
+  } else if (days >= 1) {
     if (days == 1) timePassed = "1 day ago";
     else timePassed = days + " days ago";
   } else if (hours > 0) {
@@ -96,7 +106,6 @@ function formatTimeSince(commentDate) {
     if (minutes < 3) timePassed = "Just now";
     else timePassed = minutes + " minutes ago";
   } 
-  
   return timePassed;
 }
 
@@ -501,7 +510,39 @@ async function getSubVideos(username) {
 
 }
 
+async function generateRandomString() {
+
+  let randomString = "";
+  const acceptable = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+
+  for (let i = 0; i < 20; i++) {
+    randomString += acceptable.charAt(Math.random() * (acceptable.length - 1));
+  }
+
+  //Make sure its not already used
+  const match = await passwordVerify.findOne({where: {verifyID: randomString}});
+  if (match) {
+    generateRandomString();
+  } else {
+    return randomString;
+  }
+}
+
+function getMailOptions(user, link) {
+
+  const mailOptions = {
+    from: 'vibevideoservice@gmail.com',
+    to: user.email,
+    subject: `Password recovery request`,
+    text: `Dear ${user.username}. \n\n
+            You are recieving this email as you have recently requested that your password be reset. If you did not send this request please disregard this email and change your password on our website \n\n
+            If you did send this request, please click the following link to reset your password: ${link}`
+  }
+  return mailOptions;
+}
+
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
-  convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo};
+  convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo, getMailOptions,
+  generateRandomString};

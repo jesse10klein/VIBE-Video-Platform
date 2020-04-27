@@ -87,6 +87,9 @@ function resizeVideo() {
   const video = document.getElementById("video");
   const other = document.getElementById("videoinfo");
   const other1 = document.getElementById("videoTitle");
+  const last1 = document.getElementById("firstInfo");
+  const descButton = document.getElementById("descButton");
+  const description = document.getElementById("description-info");
 
   console.log(window.innerWidth);
 
@@ -97,7 +100,12 @@ function resizeVideo() {
     video.style.minHeight = room / 1.77 + "px";
     video.style.maxHeight = room / 1.77 + "px";
     other.style.width = room + "px";
+    other.style.marginLeft = 50 + "px";
+    description.style.width = room + "px";
+    description.style.marginLeft = 50 + "px";
     other1.style.marginLeft = 50 + "px";
+    descButton.style.marginLeft = 50 + 75 + "px";
+    last1.style.marginLeft = 50 + "px";
     return;
   }
   else if (window.innerWidth < 1220)  {
@@ -107,7 +115,12 @@ function resizeVideo() {
     video.style.maxHeight = room / 1.77 + "px";
     other.style.width = room + "px";
     other.style.marginLeft = (window.innerWidth - 1220 - 350) / 2 + 350 + "px";
+    description.style.width = room + "px";
+    description.style.marginLeft = (window.innerWidth - 1220 - 350) / 2 + 350 + "px";
     other1.style.marginLeft = (window.innerWidth - 1220 - 350) / 2 + 350 + "px";
+    descButton.style.marginLeft = (window.innerWidth - 1220 - 350) / 2 + 350 + 75  + "px";
+    last1.style.width = room + "px";
+    last1.style.marginLeft = (window.innerWidth - 1220 - 350) / 2 + 350 + "px";
     return;
   } else if (window.innerWidth > 1340) {
     console.log("HERE");
@@ -117,9 +130,15 @@ function resizeVideo() {
     video.style.maxHeight = room / 1.77 + "px";
     other.style.width = room + "px";
     other.style.marginLeft = (window.innerWidth - 1340 - 450) / 2 + 250 + "px";
+    description.style.width = room + "px";
+    description.style.marginLeft = (window.innerWidth - 1340 - 450) / 2 + 250 + "px";
     other1.style.marginLeft = (window.innerWidth - 1340 - 450) / 2 + 250 + "px";
+    descButton.style.marginLeft = (window.innerWidth - 1340 - 450) / 2 + 250 + 75  + "px";
+    last1.style.marginLeft = (window.innerWidth - 1340 - 450) / 2 + 250 + "px";
+    last1.style.marginLeft = (window.innerWidth - 1340 - 450) / 2 + 250 + "px";
     return;
   } 
+  console.log("Here");
   //Width - width of sidebar - 40px padding (20 each side)
   const roomForVideo = window.innerWidth - 400 - 40;
   video.style.width = roomForVideo + "px";
@@ -127,7 +146,12 @@ function resizeVideo() {
   video.style.minHeight = roomForVideo / 1.77 + "px";
   video.style.maxHeight = roomForVideo / 1.77 + "px";
   other.style.width = roomForVideo + "px";
+  other.style.marginLeft = 20 + "px";
+  description.style.width = roomForVideo + "px";
+  description.style.marginLeft = 20 + "px";
   other1.style.marginLeft = 20 + "px";
+  descButton.style.marginLeft = 20 + 75  + "px";
+  last1.style.marginLeft = 20 + "px";
 };
 
 function postComment() {
