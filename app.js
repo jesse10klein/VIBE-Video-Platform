@@ -22,7 +22,7 @@ const users = [
     username: 'Spacey Jane',
     password: 'spaceyjane',
     email: 'spaceyjane@gmail.com',
-    imageURL: 'SpaceyJane-By-CharlieHardy-3970-1.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -30,7 +30,7 @@ const users = [
     username: 'Clairo',
     password: 'clairo',
     email: 'clairo@gmail.com',
-    imageURL: 'merlin_138539625_2983f99c-a11b-4cf5-a47e-09b35992e12d-articleLarge.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -38,7 +38,7 @@ const users = [
     username: 'Catfish and the Bottlemen',
     password: 'catfish',
     email: 'catfish@gmail.com',
-    imageURL: 'MV5BNTZjMzY2YmEtMzQ1OC00Yjg0LThkNDgtNDdmNWJjMjcwZmUxXkEyXkFqcGdeQXVyNTI5NjIyMw@@._V1_.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   }, 
   {
@@ -46,7 +46,7 @@ const users = [
     username: 'Middle Kids',
     password: 'middlekids',
     email: 'middlekids@gmail.com',
-    imageURL: 'middle-kids-sign-with-mushroom-music-publishing.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -54,7 +54,7 @@ const users = [
     username: 'Two Door Cinema Club',
     password: 'twodoor',
     email: 'twodoor@gmail.com',
-    imageURL: '2_door_cinema_club_118.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -62,7 +62,7 @@ const users = [
     username: 'Mura Masa',
     password: 'muramasa',
     email: 'muramasa@gmail.com',
-    imageURL: '220px-Mura_Masa_album.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -70,7 +70,7 @@ const users = [
     username: 'San Cisco',
     password: 'sancisco',
     email: 'sancisco@gmail.com',
-    imageURL: 'dca7be54c8b05b97bb64fd771eee5977.jfif',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -78,7 +78,7 @@ const users = [
     username: 'Stella Donnelly',
     password: 'stella',
     email: 'stella@gmail.com',
-    imageURL: 'Stella_Donnelly_2__Chris_Almeida_1290_855.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -86,7 +86,7 @@ const users = [
     username: 'CrashingSwine05',
     password: 'yeetyeet',
     email: 'jesse@gmail.com',
-    imageURL: '2.png',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -94,7 +94,7 @@ const users = [
     username: 'Jesse Ultra Chad',
     password: 'yeetyeet',
     email: 'jesse1@gmail.com',
-    imageURL: '71224105_685382588635802_3829665034665984000_n.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -102,7 +102,7 @@ const users = [
     username: 'Roy Beta Simp (and proud)',
     password: 'yeetyeet',
     email: 'jesse2@gmail.com',
-    imageURL: '67440715_570898303314451_1700881631323095040_n.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -110,7 +110,7 @@ const users = [
     username: 'HWhipped Willie',
     password: 'yeetyeet',
     email: 'jesse3@gmail.com',
-    imageURL: '82946664_487130125540844_4583167018970120192_n.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -118,7 +118,7 @@ const users = [
     username: 'Channel Tres',
     password: 'channeltres',
     email: 'channel@gmail.com',
-    imageURL: 'channel-tres-by-yazz-alali_wide-b033043fcb4bb7ba5a8b261a03adabd3e653212b-s800-c85.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -126,7 +126,7 @@ const users = [
     username: 'Joji',
     password: 'joji',
     email: 'joji@gmail.com',
-    imageURL: 'BALLADS.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -134,7 +134,7 @@ const users = [
     username: 'Oliver Tree',
     password: 'olivertree',
     email: 'oliver@gmail.com',
-    imageURL: 'maxresdefault.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -142,7 +142,7 @@ const users = [
     username: 'Rex Orange County',
     password: 'rexorange',
     email: 'rexorange@gmail.com',
-    imageURL: 'Rex_Feature-1920x1200-c-default.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -150,7 +150,7 @@ const users = [
     username: 'Rum Jungle',
     password: 'rumjungle',
     email: 'rumjungle@gmail.com',
-    imageURL: 'r0_0_4896_3264_w1200_h678_fmax.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   },
   {
@@ -158,7 +158,7 @@ const users = [
     username: 'Tame Impala',
     password: 'tameimpala',
     email: 'tameimpala@gmail.com',
-    imageURL: 'Tame-Impala-2019-Patience-press-shot-web-optimised-1000-CREDIT-Matt-Sav-1.jpg',
+    imageURL: 'default.png',
     subscriberCount: "696969"
   }
 ]
@@ -826,6 +826,10 @@ app.use((req, res, next) => {
       res.clearCookie("username");
       console.log("Login cookie cleared");
     }  
+  } else {
+    if (!req.cookies.username) {
+      res.cookie("username", req.session.username);
+    }
   }
   next();
 });

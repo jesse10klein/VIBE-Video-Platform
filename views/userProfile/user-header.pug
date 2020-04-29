@@ -8,3 +8,6 @@
     #subdiv
         a#userName(href=`/users/${user.username}`)= `${user.username}`
         p#subcount= `${user.formattedSubCount} Subscribers`
+    
+if user.username==username
+    a#accountRedirect(href="/account")= "View your account"

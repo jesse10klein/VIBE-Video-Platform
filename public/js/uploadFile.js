@@ -103,7 +103,16 @@ function updateTime(amountLoaded, percentComplete) {
 
   const timeRemaining = amountLeft / speed;
 
-  const remaining = "Time Remaining: " + Math.ceil(timeRemaining) + " seconds";
+  const remaining;
+  if (timeRemaining > 60) {
+    if (timeRemaining < 120) {
+      remaining = "Time Remaining: " + Math.ceil(timeRemaining / 60) + " minute";
+    } else {
+    remaining = "Time Remaining: " + Math.ceil(timeRemaining / 60) + " minutes";
+    }
+  } else {
+    remaining = "Time Remaining: " + Math.ceil(timeRemaining) + " seconds";
+  }
 
   lastLoaded = amountLoaded;
   lastTime = now;
@@ -118,7 +127,7 @@ function parseTags() {
 
   tags.each(function (index) {
     let tag = $(this).text();
-    tag = tag.substring(0, tag.length - 2);
+    tag = tag.substring(0, tag.length - 1);
     
     if (index == 0) {
       tagsString += tag;

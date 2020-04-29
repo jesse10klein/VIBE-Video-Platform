@@ -50,7 +50,17 @@ block content
           h3= `Description`
           p#description= video.description
           h3= `Tags`
-          p#tags= video.tags
+          ul#tags
+            each tag in video.formattedTags
+              li.tag= `${tag}`
+
+      if numComments
+        #commentFiltering
+          h1= `${numComments} comments`
+          p= "Filter comments: "
+          select#filterOptions
+            option(value="new")= "Newest first"
+            option(value="top")= "Popular first"
 
       if username
         #comment-form
@@ -60,13 +70,7 @@ block content
       else
         h3= "You need to log in to be able to post comments"
     
-    //if numComments
-      #commentFiltering
-        h1= `${numComments} comments`
-        p= "Filter comments: "
-        select#filterOptions
-          option(value="new")= "Newest first"
-          option(value="top")= "Popular first"
+  
 
     include comments
 
@@ -74,3 +78,5 @@ block script
   script(src='/js/video-specific.js')
   script(src='/js/votes.js')
   script(src='/js/comments.js')
+  script(src='/js/video-specific.js')
+  script(src='/js/loginAlert.js')

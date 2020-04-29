@@ -1,8 +1,23 @@
 
 
-
-
 let scrollAlert = false;
+
+var currentFilter = "new";
+
+var commentFilters = document.getElementById('filterOptions');
+commentFilters.addEventListener("change", function () {
+
+ 
+  if (currentFilter == commentFilters.value) {
+    return;
+  }
+  
+  currentFilter = commentFilters.value;
+  //Delete all comments
+  $("#comments").empty();
+  
+
+});
 
 window.addEventListener('scroll', () => {
     if (scrollAlert) return;
@@ -19,19 +34,22 @@ window.addEventListener('scroll', () => {
   
   
     const lastComment = $("#comments .comment").last();
-  
-    //if (lastComment.length == 0) {
-      //console.log("No comments on this vid, nothing to load");
-      //return;
-    //}
-  
-    const commentID = lastComment.find(".commentID").text();
+    var commentID = lastComment.find(".commentID").text();
     const lastRec = $("#sidebar a").last();
-    videoID = lastRec.attr("href").split('/')[2];
-    data = {lastCommentID: commentID, lastVideoID: videoID};
-    url = window.location.pathname + "/content-payload";
+    var videoID = lastRec.attr("href").split('/')[2];
+
+    if (lastComment.length == 0) {
+      commentID = null;
+    }
+    if (lastRec.length == 0) {
+      videoID = null;
+    }
   
-    console.log("About to send ajax");
+    data = {lastCommentID: commentID, lastVideoID: videoID};
+    const sortingType = $("#filterOptions").val();
+    url = window.location.pathname + "/content-payload/" + sortingType;
+    console.log(url);
+    console.log(data);
   
     $.ajax({
       url, type: "POST", data, dataType: 'json',
@@ -108,9 +126,11 @@ function loadReplies(element) {
     return;
   }
 
+  
+  const sortingType = $("#filterOptions").val();
 
   const commentID = element.classList[0];
-  const url = window.location.pathname + '/reply-payload';
+  const url = window.location.pathname + '/reply-payload/' + sortingType;
   const data = {commentID};
 
   $.ajax({
@@ -158,13 +178,13 @@ function formatPayloadComment(comment, imageURL) {
                           <p class="commentID">${comment.id}</p>
                         </div> 
                         <div>
-                          <p class="commentLikes">0</p>
+                          <p class="commentLikes">${comment.commentLikes}</p>
                         </div> 
                         <div>
                           <button class="upVote" onclick="processCommentVote(this)">👍</button>
                         </div> 
                         <div>
-                          <p class="commentDislikes">0</p>
+                          <p class="commentDislikes">${comment.commentDislikes}</p>
                         </div> 
                         <div>
                           <button class="downVote" onclick="processCommentVote(this)">👎</button>
@@ -224,13 +244,13 @@ function formatPayloadReply(reply, imageURL) {
                         <p class="commentID">${reply.id}</p>
                       </div> 
                       <div>
-                        <p class="commentLikes">0</p>
+                        <p class="commentLikes">${reply.commentLikes}</p>
                       </div> 
                       <div>
                         <button class="upVote" onclick="processCommentVote(this)">👍</button>
                       </div> 
                       <div>
-                        <p class="commentDislikes">0</p>
+                        <p class="commentDislikes">${reply.commentDislikes}</p>
                       </div> 
                       <div>
                         <button class="downVote" onclick="processCommentVote(this)">👎</button>

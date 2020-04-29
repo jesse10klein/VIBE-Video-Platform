@@ -1,0 +1,19 @@
+
+
+#title {
+    margin-top: 15px;
+    text-align: center;
+    margin-left: 0;
+}
+
+#accountOptions li {
+    list-style: none;
+    margin-top: 15px;
+}
+
+#accountOptions a {
+    text-decoration: none;
+    color: black;
+    font-size: 25px;
+    
+}

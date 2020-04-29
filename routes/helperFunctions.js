@@ -44,6 +44,14 @@ function formatDay(day) {
     return formatted;
 }
   
+function parseTags(tagString) {
+  const tags = tagString.split("`");
+  if (tags[tags.length - 1] == "") {
+    tags.pop(tags.length - 1);
+  }
+  return tags;
+}
+
 async function formatVideo(video) {
 
   const user = await UserInfo.findOne({where: { username: video.uploader }});
@@ -199,44 +207,61 @@ async function signupErrors(username, email, password, verifyPassword) {
 
 }
 
-async function getRepliesForComment(comment, username) {
+async function getRepliesForComment(comment, username, type) {
     
   const convertedReplies = [];
 
   //Get replies to this comment
-    let replies = await Comments.findAll({
+  let replies;
+  if (type == "new") {
+    replies = await Comments.findAll({
       order: [["createdAt", "ASC"]],
       where: {replyID: comment.id}
     });
+  } else {
+    replies = await Comments.findAll({
+      order: [["commentLikes", "DESC"]],
+      where: {replyID: comment.id}
+    });
+  }
 
-    for (reply of replies) {
+  for (reply of replies) {
 
-      //For each reply, get user for image url
-      const user = await UserInfo.findOne({where: {username: reply.user}});
+    //For each reply, get user for image url
+    const user = await UserInfo.findOne({where: {username: reply.user}});
 
-      const formComment = {
-        id : reply.id,
-        user: reply.user,
-        videoID: reply.videoID,
-        comment: reply.comment,
-        replyID: reply.replyID,
-        commentLikes: reply.commentLikes,
-        commentDislikes: reply.commentDislikes,
-        edited: reply.edited,
-        imageURL: user.imageURL, 
-        byUser: reply.user == username,
-        formattedDate: formatTimeSince(reply.createdAt)
-      }
-      convertedReplies.push(formComment);
+    const formComment = {
+      id : reply.id,
+      user: reply.user,
+      videoID: reply.videoID,
+      comment: reply.comment,
+      replyID: reply.replyID,
+      commentLikes: reply.commentLikes,
+      commentDislikes: reply.commentDislikes,
+      edited: reply.edited,
+      imageURL: user.imageURL, 
+      byUser: reply.user == username,
+      formattedDate: formatTimeSince(reply.createdAt)
     }
-    return convertedReplies;
+    convertedReplies.push(formComment);
+  }
+  return convertedReplies;
 }
 
-async function getCommentsForVideo(videoID, username) {
+async function getCommentsForVideo(videoID, username, type) {
 
-  let comments = await Comments.findAll({ 
-    order: [["createdAt", "DESC"]], where: {videoID, replyID: -1}
-  });
+  let comments;
+  if (type == "new") {
+    console.log("Fetching comments in new order");
+    comments = await Comments.findAll({ 
+      order: [["createdAt", "DESC"]], where: {videoID, replyID: -1}
+    });
+  } else {
+    console.log("Fetching comments in popular order");
+    comments = await Comments.findAll({ 
+      order: [["commentLikes", "DESC"]], where: {videoID, replyID: -1}
+    });
+  }
 
   //Need to format date for comments
   for (let i = 0; i < comments.length; i++) {
@@ -255,7 +280,7 @@ async function getCommentsForVideo(videoID, username) {
     const user = await UserInfo.findOne({where: {username: comments[i].user}});
     comments[i].imageURL = user.imageURL;
   }
-
+  
   return comments;
 }
 
@@ -424,7 +449,6 @@ function timeSince(commentDate) {
   return 2;
 }
 
-
 async function getSubVideos(username) {
 
   const subscriptions = await Subscriptions.findAll({where: {subscriber: username}});
@@ -545,4 +569,4 @@ module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTi
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
   convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo, getMailOptions,
-  generateRandomString};
+  generateRandomString, parseTags};

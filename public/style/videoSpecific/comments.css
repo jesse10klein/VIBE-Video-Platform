@@ -156,5 +156,28 @@ textarea {
 #commentFiltering {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: left;
+    margin-left: 50px;
+}
+
+#commentFiltering h1 {
+    font-size: 1.4em;
+    margin-right: 50px;
+}
+
+#commentFiltering p {
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+#filterOptions {
+    font-family: 'Oxanium', cursive;
+    background-color: rgb(204, 235, 235);
+    border: 1px solid grey;
+    padding: none;
+    margin: none;
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 18px;
+    height: 23px;
 }

@@ -5,34 +5,6 @@ const div = document.getElementById("description-info");
 const descButton = document.getElementById("descButton");
 const subButton = document.getElementById('subscribeButton');
 
-let alerting = false;
-
-function loginAlert(item, message) {
-
-  //Make it pop up from the clicked element with a custom message
-
-  console.log(item);
-  console.log(message);
-  return;
-
-  const html = `
-  
-    <h2> ${message.title} </h2>
-    <p> ${message.body} </p>
-    <a href="/users/login"> Log in </a>
-  
-  `
-
-  /*
-  setTimeout(() => {
-    loginAlert.addClass("hidden");
-    alerting = false;
-  }, 4000);
-  */
-
-
-}
-
 function formatNumber(number) {
   if (number < 1000) {
     return number;
@@ -293,7 +265,6 @@ function toggleReplyBox(item) {
 
   if (getCookie("username") == "") {
     loginAlert($(item), {message: "You must login to reply to comments"});
-    window.location.pathname = '/users/login';
     return;
   }
 
@@ -315,8 +286,7 @@ function processSubscribe() {
   const subs = document.getElementById("subCount");
 
   if (getCookie("username") == "") {
-    loginAlert($('#subscribeButton'), {message: "Please login to subscribe"});
-    window.location.pathname = '/users/login';
+    loginAlert($('#subscribeButton'), "Please login to subscribe");
     return;
   }
 
@@ -452,8 +422,7 @@ function deleteComment(element) {
 function processBookmark() {
   
   if (getCookie("username") == "") {
-    loginAlert($('#bookmark'), {message: "Please log in to bookmard this video"});
-    window.location.pathname = '/users/login';
+    loginAlert($('#bookmark'), "Please log in to bookmark this video");
     return;
   }
   const path = window.location.pathname + '/bookmark-video';

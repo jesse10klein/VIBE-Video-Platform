@@ -1,3 +1,5 @@
+console.log("userProfile.js");
+
 
 window.onresize = resizeContent;
 window.onload = resizeContent; 

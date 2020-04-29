@@ -26,7 +26,7 @@ function votePostRequest(pathname, primary, secondary) {
         primary.innerText = parseInt(primary.innerText) + 1;
       }
       if (!(sNum == 'K' || sNum == 'M')) {
-        primary.innerText = parseInt(primary.innerText) + 1;
+        secondary.innerText = parseInt(secondary.innerText) - 1;
       }
       return;
     }   
@@ -53,8 +53,7 @@ function processVideoVote(item) {
 
   //Check if user is logged in
   if (getCookie("username") == "") {
-    loginAlert($(item), {message: "You must login to vote on a video"});
-    window.location.pathname = '/users/login';
+    loginAlert($(item), "You must login to vote on a video");
     return;
   }
   votePostRequest(pathname, primary, secondary)
@@ -64,8 +63,7 @@ function processCommentVote(item) {
 
   //Check if user is logged in
   if (getCookie("username") == "") {
-    loginAlert($(item), {message: "You must login to vote on a comment"});
-    window.location.pathname = '/users/login';
+    loginAlert($(item), "You must login to vote on a comment");
     return;
   }
 
@@ -87,6 +85,5 @@ function processCommentVote(item) {
     secondary = item.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.firstElementChild;
     pathname = window.location.pathname + "/addCommentDislike/" + commentID;
   }
-
   votePostRequest(pathname, primary, secondary);
 }

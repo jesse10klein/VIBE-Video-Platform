@@ -1,13 +1,13 @@
 extends layout 
 
+block style
+  link(href="/style/account-home.css" rel="stylesheet")
 
 block content
 
-  include account-header
+  h1#title= `Welcome to your account ${user.username}`
 
-  h1= "Welcome to your account"
-
-  ul
+  ul#accountOptions
     li
       a(href="/account/profile-picture")= "Change Profile Picture"
     li
@@ -20,8 +20,6 @@ block content
       a(href="")= "Delete Account"
 
 
-    
-
-
 block script
   script(src='/js/account.js')
+  script(src='/js/userProfile.js')

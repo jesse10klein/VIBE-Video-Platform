@@ -88,6 +88,9 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   if (video == null) {
     res.render("404", {message: "The video you have requested does not exist"});
   }
+
+  video.formattedTags = tools.parseTags(video.tags);
+
   const newViewCount = video.viewCount + 1;
   await video.update({ viewCount: newViewCount });
 
@@ -126,12 +129,20 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   const {username} = req.session;
 
   //Get comments
-  let comments = await tools.getCommentsForVideo(req.params.id, username);
-  const numComments = comments.length;
+  let comments = await tools.getCommentsForVideo(req.params.id, username, "new");
+  let numComments = comments.length;
+
+  //Count comments
+  for (let i = 0; i < comments.length; i++) {
+    const replies = await Comments.findAll({where: {replyID: comments[i].id}});
+    numComments += replies.length;
+  }
+
   //Only give the first 5 comments
   if (comments.length > 1) {
     comments = comments.splice(0, 1);
   }
+
 
 
   //Check if user is subscribed to the uploader
@@ -466,25 +477,21 @@ router.post('/:videoID/edit-comment/', tools.asyncHandler(async (req, res) => {
 
 
 //Deliver more comments and video recs to user
-router.post('/:id/content-payload/', tools.asyncHandler(async (req, res) => {
-
-  console.log(req.body);
-  console.log("Content payload request recieved");
+router.post('/:id/content-payload/:type/', tools.asyncHandler(async (req, res) => {
 
   const { username } = req.session;
 
-  let comments = await tools.getCommentsForVideo(req.params.id, username);
-
+  let comments = await tools.getCommentsForVideo(req.params.id, username, req.params.type);
   //Loop through until find id
   for (let i = 0; i < comments.length; i++) {
     if (comments[i].id == req.body.lastCommentID) {
       comments = comments.splice(i + 1);
       break;
     }
-    if (i == (comments.length - 1)) {
-      res.send({comments: null, videos: null});
-      return;
-    }
+    //if (i == (comments.length - 1) && req.body.lastCommentID != null) {
+      //res.send({comments: null, videos: null});
+      //return;
+    //}
   }
 
   if (comments.length > 1) {
@@ -522,14 +529,12 @@ router.post('/:id/content-payload/', tools.asyncHandler(async (req, res) => {
 }));
 
 //Deliver more comments and video recs to user
-router.post('/:id/reply-payload/', tools.asyncHandler(async (req, res) => {
+router.post('/:id/reply-payload/:type/', tools.asyncHandler(async (req, res) => {
 
   const { username } = req.session;
   const comment = await Comments.findOne({where: {id: req.body.commentID}});
 
-
-  const replies = await tools.getRepliesForComment(comment, username);
-  console.log(replies);
+  const replies = await tools.getRepliesForComment(comment, username, req.params.type);
 
   res.send({replies});
 

@@ -199,3 +199,21 @@
 #firstInfo p {
     margin-right: 15px;
 }
+
+#tags {
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    max-width: 500px;
+}
+
+.tag {
+    margin: 2px;
+    padding: 2px;
+    text-decoration: none;
+    background-color: #F6F6F6;
+    border: 1px solid rgb(211, 206, 206);
+    color: #0073EA;
+}

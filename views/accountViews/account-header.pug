@@ -1,11 +1,13 @@
 
+#banner
+    img#banner-image(src='/images/user-banners/default.jpg')
 
 #userHeader
     a(href=`/users/${user.username}`)
         img#uploaderPhoto(src=`/images/user-thumbs/${user.imageURL}`)
     #subdiv
         a#userName(href=`/users/${user.username}`)= `${user.username}`
-        p#subcount= `${user.subscriberCount} Subscriber`
-    a(href=`/account/video-manager`)= "Video Manager"
-    a(href=`/users/${user.username}`)= "View as User"
+        p#subcount= `${user.formattedSubCount} Subscribers`
 
+
+a#accountRedirect(href=`/users/${user.username}`)= `View as user`

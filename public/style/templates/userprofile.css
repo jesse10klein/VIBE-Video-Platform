@@ -23,7 +23,6 @@ body {
     color: black;
     text-decoration: none;
     font-size: 1.5em;
-
 }
 
 #sidebar a:hover {
@@ -32,10 +31,18 @@ body {
     font-size: 1.6em;
 }
 #content {
-    margin-left: 10px;
+    margin-left: 0;
 }
 
 #userHeader {
     width: 400px;
     margin: auto;
+}
+
+#title {
+    margin-left: 20px;
+}
+
+#video-container {
+    margin-top: -65px;
 }

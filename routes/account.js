@@ -35,6 +35,7 @@ router.get('/', tools.asyncHandler(async (req, res) => {
     const username = req.session.username;
 
     const user = await UserInfo.findOne({where:{username}});
+    user.formattedSubCount = tools.formatViews(user.subscriberCount);
 
     if (username == null) {
         res.send("You don't exist in the system.. wtf?");
