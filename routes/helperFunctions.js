@@ -565,8 +565,61 @@ function getMailOptions(user, link) {
   return mailOptions;
 }
 
+function scoreVideo(searchTerm, video) {
+
+  //Score using tags, uploader name, slight subscriber and view weight
+  let tags = video.tags.toLowerCase().split("`");
+  if (tags[tags.length - 1] == "") {
+    tags.pop(tags.length - 1);
+  }
+
+  let tagMatch = 0;
+  let additionalMatches = 0;
+
+  console.log('----------------------');
+  console.log(video.title + " By: " + video.uploader);
+
+  let terms = searchTerm.toLowerCase().split(" ");
+  let titleTerms = video.title.toLowerCase().split(" ");
+  for (word of terms) {
+    for (tag of tags) {
+      if (word.length < 3 || tag.length < 3) {
+        continue;
+      }
+      if (word == tag || word.includes(tag) || tag.includes(word)) {
+        if (tagMatch) {
+          additionalMatches += 100;
+        } else {
+          tagMatch = 1000;
+        }
+      }
+    }
+    for (term of titleTerms) {
+      if (word.length < 3 || term.length < 3) {
+        continue;
+      }
+      if (word == term || word.includes(term) || term.includes(word)) {
+        if (tagMatch) {
+          additionalMatches += 100;
+        } else {
+          tagMatch = 1000;
+        }
+      }
+    }
+  }
+
+
+  const viewRating = (video.viewCount / 1000000);
+  const likeRating = (video.upvotes / 100000); 
+
+  const rating = tagMatch + additionalMatches + viewRating + likeRating;
+  console.log(rating);
+  console.log("----------------------")
+  return rating;
+}
+
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
   convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo, getMailOptions,
-  generateRandomString, parseTags};
+  generateRandomString, parseTags, scoreVideo};

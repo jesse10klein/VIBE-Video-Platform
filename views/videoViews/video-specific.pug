@@ -54,13 +54,12 @@ block content
             each tag in video.formattedTags
               li.tag= `${tag}`
 
-      if numComments
-        #commentFiltering
-          h1= `${numComments} comments`
-          p= "Filter comments: "
-          select#filterOptions
-            option(value="new")= "Newest first"
-            option(value="top")= "Popular first"
+      #commentFiltering
+        h1= `${numComments} comments`
+        p= "Filter comments: "
+        select#filterOptions
+          option(value="new")= "Newest first"
+          option(value="top")= "Popular first"
 
       if username
         #comment-form

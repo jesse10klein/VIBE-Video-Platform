@@ -6,6 +6,24 @@ let lastTime = 0;
 let infoTimer = 0;
 let lastInfoTime = 0;
 
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+
+
 function uploadVideo() {
 
     var file = document.getElementById("file1").files[0];
@@ -103,12 +121,12 @@ function updateTime(amountLoaded, percentComplete) {
 
   const timeRemaining = amountLeft / speed;
 
-  const remaining;
+  let remaining = null;
   if (timeRemaining > 60) {
     if (timeRemaining < 120) {
-      remaining = "Time Remaining: " + Math.ceil(timeRemaining / 60) + " minute";
+      remaining = "Time Remaining: " + Math.floor(timeRemaining / 60) + " minute";
     } else {
-    remaining = "Time Remaining: " + Math.ceil(timeRemaining / 60) + " minutes";
+      remaining = "Time Remaining: " + Math.floor(timeRemaining / 60) + " minutes";
     }
   } else {
     remaining = "Time Remaining: " + Math.ceil(timeRemaining) + " seconds";
@@ -136,6 +154,8 @@ function parseTags() {
     tagsString += '`';
     tagsString += tag;
   })
+  tagsString += '`';
+  tagsString += getCookie("username");
   return tagsString;
 }
 

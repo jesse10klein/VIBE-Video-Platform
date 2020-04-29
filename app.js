@@ -171,7 +171,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'goodforyou.mp4',
-    tags: "NOTHING",
+    tags: "video`live`laneway`music`indie`australian`spacey jane",
     views: "7526",
     upvotes: "45693",
     downvotes: "462"
@@ -183,7 +183,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'goodgrief.mp4',
-    tags: "NOTHING",
+    tags: "video`live`laneway`music`indie`australian`spacey jane",
     views: "11645",
     upvotes: "45693",
     downvotes: "462"
@@ -195,20 +195,8 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'headcold.mp4',
-    tags: "NOTHING",
+    tags: "video`music`indie`spacey jane`australian",
     views: "506",
-    upvotes: "45693",
-    downvotes: "462"
-  },
-  {
-    id: '4',
-    uploader: 'CrashingSwine05',
-    title: 'Rocket League Clip',
-    description: `What is Lorem Ipsum?
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
-    videoURL: 'Rocket League 2019.08.05 - 19.08.23.02.DVR.mp4',
-    tags: "NOTHING",
-    views: "37",
     upvotes: "45693",
     downvotes: "462"
   },
@@ -219,7 +207,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'seasonsgreetings.mp4',
-    tags: "NOTHING",
+    tags: "video`live`music`indie`stella donnelly`australian",
     views: "971",
     upvotes: "45693",
     downvotes: "462"
@@ -231,7 +219,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Catfish and the Bottlemen - 7 (Live From Manchester Arena)_s1n5R-FmHYw_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`live`manchester`arena`english`catfish and the bottlemen",
     views: "572681",
     upvotes: "45693",
     downvotes: "462"
@@ -243,7 +231,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Catfish and the Bottlemen - Pacifier (Live From Manchester Arena)_EAO3OjF7eW8_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`live`manchester`arena`english`catfish and the bottlemen",
     views: "157953",
     upvotes: "45693",
     downvotes: "462"
@@ -255,7 +243,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Clairo - 4EVER_tlGUom_AV4o_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`clairo",
     views: "2458605",
     upvotes: "45693",
     downvotes: "462"
@@ -267,7 +255,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - CUCO x CLAIRO - DROWN (Official Audio)__1VyGyWpQpU_360p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`clairo",
     views: "468245",
     upvotes: "45693",
     downvotes: "462"
@@ -279,7 +267,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Encore_ZV_5mWg_RhI_360p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`encore`catfish and the bottlemen",
     views: "8052458",
     upvotes: "45693",
     downvotes: "462"
@@ -291,7 +279,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Middle Kids -  Edge of Town_cFWqLLaMOFs_360p.mp4',
-    tags: "NOTHING",
+    tags: "`video`music`indie`middle kids`",
     views: "57682",
     upvotes: "45693",
     downvotes: "462"
@@ -303,7 +291,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Mura Masa - Deal Wiv It with slowthai (Official Video)_F0uvt97Xn20_360p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`english`mura masa",
     views: "13572953",
     upvotes: "45693",
     downvotes: "462"
@@ -315,7 +303,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - San Cisco - Awkward_ukNOaKeUEQY_360p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`indie`australian`san cisco",
     views: "15762",
     upvotes: "45693",
     downvotes: "462"
@@ -327,7 +315,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: "y2mate.com - San Cisco 'Skin' (Official Music Video)_FHwFEE8od7M_360p.mp4",
-    tags: "NOTHING",
+    tags: "video`music`indie`australian`san cisco",
     views: "65785",
     upvotes: "45693",
     downvotes: "462"
@@ -339,7 +327,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - TWO DOOR CINEMA CLUB _ UNDERCOVER MARTYN_LLK4oaXUuLg_360p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`english`two door cinema club",
     views: "23759862",
     upvotes: "45693",
     downvotes: "462"
@@ -351,7 +339,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Two Door Cinema Club- What You Know (Live) Reading Festival 2011_nIL36WfxVx0_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`english`two door cinema club",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -363,7 +351,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Channel Tres - Controller_EtNIMvyEIQA_360p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`american`channel tres",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -375,7 +363,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Channel Tres - Topdown (Official Video)_8pReEUxHxJM_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`american`channel tres",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -387,7 +375,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Joji - Gimme Love (Official Video)_jPan651rVMs_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`american`joji",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -399,7 +387,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Joji - Run (Official Video)_K09_5IsgGe8_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`american`joji",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -411,7 +399,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Joji - Sanctuary (Official Video)_YWN81V7ojOE_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`american`joji",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -423,7 +411,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Oliver Tree - Let Me Down [Official Music Video]_FxG-7AsbjeI_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`american`oliver tree",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -435,7 +423,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Oliver Tree - Miracle Man [Official Music Video]_EBLF26-Irdc_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`american`oliver tree",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -447,7 +435,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Rex Orange County - Loving is Easy (feat. Benny Sings) [Official Video]_39IU7ADaXmQ_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`english`rex orange county",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -459,7 +447,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Rex Orange County - Sunflower_Z9e7K6Hx_rY_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`english`rex orange county",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -471,7 +459,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Rum Jungle - Keep_XGyJEPU5Rmw_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`australia`rum jungle",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -483,7 +471,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Tame Impala - It Might Be Time (Official Audio)_4hZ_wTx_kWg_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`australian`tame impala",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"
@@ -495,7 +483,7 @@ const videos = [
     description: `What is Lorem Ipsum?
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Tame Impala - Lost in Yesterday (Official Video)_utCjuKDXQsE_240p.mp4',
-    tags: "NOTHING",
+    tags: "video`music`australian`tame impala",
     views: "12578953",
     upvotes: "45693",
     downvotes: "462"

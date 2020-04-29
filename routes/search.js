@@ -14,9 +14,35 @@ const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
 
+var tools = require(path.join(__dirname, 'helperFunctions'));
+
+
 //GET ALL VIDEOS MADE BY THE USER
-router.post('/', (req, res) => {
-    res.send("SEARCHING HAS NOT YET BEEN IMPLEMENTS");
-});
+router.post('/', tools.asyncHandler( async (req, res) => {
+
+    const { username } = req.session;
+    const { searchTerm } = req.body;
+
+    let videos = await Video.findAll();
+    for (let i = 0; i < videos.length; i++) {
+        videos[i].rating = tools.scoreVideo(searchTerm, videos[i]);
+    }
+
+    
+    videos.sort((a, b) => (a.rating < b.rating) ? 1 : -1);
+    for (let i = 0; i < videos.length; i++) {
+        videos[i] = await tools.formatVideo(videos[i]);
+        if (videos[i].rating < 100) {
+            videos = videos.slice(0, i);
+            break;
+        }
+    }
+
+    if (videos.length == 0) {
+        videos = null;
+    }
+
+    res.render("search", {videos, username, searchTerm});
+}));
 
 module.exports = router;

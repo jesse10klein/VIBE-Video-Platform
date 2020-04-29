@@ -1,0 +1,18 @@
+
+
+extends layout
+
+block style
+  link(href="/style/templates/video-template.css" rel="stylesheet")
+  link(href="/style/search.css" rel="stylesheet")
+
+block content
+
+  if videos
+    h1#welcome= `Search Results: `
+    #video-container
+      each video in videos  
+        include templates/video-template
+
+  else
+    h1#welcome= "Nothing matched your search"

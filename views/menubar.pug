@@ -9,7 +9,10 @@
       img(src='/images/main-menu/subs.svg')
 
   form#search-bar(action="/search" method="POST")
-    input#search-query(type='text' name='title')
+    if searchTerm
+      input#search-query(type='text' name='searchTerm' value=`${searchTerm}`)
+    else
+      input#search-query(type='text' name='searchTerm')
     input#submit(type='submit' value='Search')
 
   if username
