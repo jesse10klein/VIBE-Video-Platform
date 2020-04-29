@@ -1,8 +1,8 @@
 
 
 #picture-div {
-    height: 600px;
-    width: 700px;
+    height: 450px;
+    width: 600px;
     margin: auto;
     border: 2px solid rgba(0, 0, 0, 1);
     margin-top: 100px;
@@ -10,18 +10,12 @@
 }
 
 #picture {
-    height: 350px;
-    width: 350px;
+    height: 250px;
+    width: 250px;
     border: 2px solid black;
     object-fit: cover;
     border-radius: 50%;
     transition: 0.2s;
-}
-
-#picture:hover {
-    border: 5px solid rgb(32, 32, 32);
-    width: 344px;
-    height: 344px;
 }
 
 #fileSelector {

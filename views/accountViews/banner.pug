@@ -3,16 +3,16 @@
 extends ../layout 
 
 block style
-  link(href="/style/profile-picture.css" rel="stylesheet")
+  link(href="/style/banner.css" rel="stylesheet")
 
 block content
         
 
   #picture-div
-    h1= "Update Profile Picture"
-    img#picture(src=`${imageURL}`)
+    h1= "Update Banner"
+    img#picture(src=`${bannerURL}`)
 
-    form(enctype="multipart/form-data" action="/account/upload-pic" method="POST")
+    form(enctype="multipart/form-data" action="/account/upload-banner" method="POST")
       #photo-upload
         label(for="fileSelector" id="customLabel") Choose Photo to Upload
         input(id="fileSelector" type='file' name='fileName')

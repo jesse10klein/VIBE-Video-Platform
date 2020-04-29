@@ -29,7 +29,8 @@ var userHelp = require(path.join(__dirname, 'userInfoHelpers'));
 router.get('/', tools.asyncHandler(async (req, res) => {
 
     if (req.session.username == null) {
-        res.redirect('/');
+        res.redirect('/users/login');
+        return;
     }
 
     const username = req.session.username;
@@ -44,7 +45,6 @@ router.get('/', tools.asyncHandler(async (req, res) => {
 
     res.render("accountViews/account-home", {username, user});
 }));
-
 
 //Handle deleting a video
 router.get('/:id/deletevideo', tools.asyncHandler(async (req, res) => {
@@ -93,14 +93,30 @@ router.get('/profile-picture', tools.asyncHandler(async (req, res) => {
 
     const { username } = req.session;
     if (username == null) {
-        res.render("404", {message: "You need to be logged in"});
+        res.redirect("/users/login");
+        return;
     }
     const user = await UserInfo.findOne({where: {username}});
     const imageURL = "/images/user-thumbs/" + user.imageURL;
 
-    res.render("accountViews/profile-picture", {imageURL});
+    res.render("accountViews/profile-picture", {imageURL, user, username});
    
-  }));
+}));
+
+router.get('/banner', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+    if (username == null) {
+        res.redirect("/users/login");
+        return;
+    }
+    const user = await UserInfo.findOne({where: {username}});
+    const bannerURL = "/images/user-banners/" + user.bannerURL;
+    console.log(bannerURL);
+
+    res.render("accountViews/banner", {bannerURL, user, username});
+   
+}));
 
 //Handle uploading a user's profile picture
 router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
@@ -145,6 +161,50 @@ router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
       }
   });
 }));
+
+//Handle uploading a user's banner
+router.post('/upload-banner', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+    if (username == null) {
+      res.render("404", {message: "You need to be logged in"});
+    }
+  
+    if (!req.files) {
+      const user = await UserInfo.findOne({where: {username}});
+      const bannerURL = "/images/user-banners/" + user.bannerURL;
+      const error = "Please select a file";
+      res.render("accountViews/banner", {bannerURL, error});
+      return
+    } 
+  
+    const file = req.files.fileName
+  
+    if ((file.mimetype != "image/png") && (file.mimetype != "image/jpeg")) {
+      const user = await UserInfo.findOne({where: {username}});
+      const bannerURL = "/images/user-banners/" + user.bannerURL;
+      const error = "File must be PNG or JPG";
+      res.render("accountViews/banner", {bannerURL, error});
+      return
+    }
+  
+    const name = file.name;
+    const user = await UserInfo.findOne({where: {username}});
+    var uploadpath = path.join(__dirname, "../public/images/user-banners", (user.id + ".png"));
+  
+    await user.update({bannerURL: (user.id + ".png")});
+  
+    file.mv(uploadpath, function(err){
+        if(err) {
+            console.log("File Upload Failed", name, err);
+            res.redirect("/account/banner");
+        }
+        else {
+            console.log("File Uploaded", name);
+            res.redirect("/account/banner");
+        }
+    });
+  }));
 
 //Get change email route
 router.get('/change-email', tools.asyncHandler(async (req, res) => {
@@ -271,6 +331,5 @@ router.get('/verify-email/:verifyID', tools.asyncHandler(async (req, res) => {
     res.redirect("/account");
 
 }));
-
 
 module.exports = router;

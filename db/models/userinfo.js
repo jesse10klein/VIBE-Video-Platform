@@ -24,6 +24,10 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       defaultValue: "default.png"
     },
+    bannerURL: {
+      type: Sequelize.STRING,
+      defaultValue: "default.jpg"
+    },
     emailVerified: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
