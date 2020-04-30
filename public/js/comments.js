@@ -6,75 +6,94 @@ var currentFilter = "new";
 
 var commentFilters = document.getElementById('filterOptions');
 commentFilters.addEventListener("change", function () {
-
- 
   if (currentFilter == commentFilters.value) {
     return;
   }
-  
   currentFilter = commentFilters.value;
   //Delete all comments
   $("#comments").empty();
-  
-
 });
 
 window.addEventListener('scroll', () => {
-    if (scrollAlert) return;
-  
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    const scrolled = window.scrollY;
-  
-    if (Math.abs(scrolled - scrollable) > 20) {
-      return;
-    }
-  
-    scrollAlert = true;
-    setTimeout(function () { scrollAlert = false; }, 200);
-  
-  
-    const lastComment = $("#comments .comment").last();
-    var commentID = lastComment.find(".commentID").text();
-    const lastRec = $("#sidebar a").last();
-    var videoID = lastRec.attr("href").split('/')[2];
 
-    if (lastComment.length == 0) {
-      commentID = null;
+  if (scrollAlert) return;
+
+  const scrolled = window.scrollY + window.innerHeight;
+
+  scrollAlert = true;
+  setTimeout(function () { scrollAlert = false; }, 500);
+
+
+  const lastComment = $("#comments .comment").last();
+  var commentID = lastComment.find(".commentID").text();
+  const lastRec = $("#sidebar a").last();
+  var videoID = lastRec.attr("href").split('/')[2];
+
+  if (!(lastComment.length == 0)) {
+    var commentBottom = lastComment.get(0).getBoundingClientRect().bottom;
+    console.log(scrolled);
+    console.log(commentBottom);
+    if ((commentBottom - scrolled) < 20) {
+      console.log("Getting comments");
+      getComments({lastCommentID: commentID});
     }
-    if (lastRec.length == 0) {
-      videoID = null;
+  }
+
+  if (!(lastRec.length == 0) && (window.innerWidth > 1220)) {
+    const vidsBottom = lastRec.get(0).getBoundingClientRect().bottom;
+    if ((vidsBottom - scrolled) < 20) {
+      getSidebarVideos({lastVideoID: videoID});
     }
+  }
   
-    data = {lastCommentID: commentID, lastVideoID: videoID};
-    const sortingType = $("#filterOptions").val();
-    url = window.location.pathname + "/content-payload/" + sortingType;
-    console.log(url);
-    console.log(data);
+})
   
-    $.ajax({
-      url, type: "POST", data, dataType: 'json',
-      success: function(response) {
-        console.log(response)
-        if (response.comments.length > 0 || response.videos.length > 0) {
-          addContent(response);
-        }
-        
+function getSidebarVideos(data) {
+
+  url = window.location.pathname + "/video-payload/";
+  console.log(url);
+  console.log(data);
+  $.ajax({
+    url, type: "POST", data, dataType: 'json',
+    success: function(response) {
+      console.log(response)
+      if (response.videos.length > 0) {
+        addVideos(response);
       }
-    })
-  })
-  
-function addContent(response) {
-  
-    const { comments } = response;
-    const { videos } = response;
-  
-    for (comment of comments) {
-  
-      const commentHTML = formatPayloadComment(comment, comment.imageURL);
-      //Append comment
-      $("#comments").append(commentHTML);
+      
     }
+  })
+}
+
+function getComments(data) {
+  const sortingType = $("#filterOptions").val();
+  url = window.location.pathname + "/comment-payload/" + sortingType;
+  console.log(url);
+  console.log(data);
+  $.ajax({
+    url, type: "POST", data, dataType: 'json',
+    success: function(response) {
+      console.log(response)
+      if (response.comments.length > 0) {
+        addComments(response);
+      }
+      
+    }
+  })
+}
+
+function addComments(response) {
+  const { comments } = response;
+  for (comment of comments) {
+    const commentHTML = formatPayloadComment(comment, comment.imageURL);
+    //Append comment
+    $("#comments").append(commentHTML);
+  }
+}
+
+function addVideos(response) {
   
+    const { videos } = response;
     for (video of videos) {
       const videoHTML = formatSidebarVideoHTML(video);
       $("#sidebar").append(videoHTML);

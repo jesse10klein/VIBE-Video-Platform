@@ -476,27 +476,8 @@ router.post('/:videoID/edit-comment/', tools.asyncHandler(async (req, res) => {
 }));
 
 
-//Deliver more comments and video recs to user
-router.post('/:id/content-payload/:type/', tools.asyncHandler(async (req, res) => {
-
-  const { username } = req.session;
-
-  let comments = await tools.getCommentsForVideo(req.params.id, username, req.params.type);
-  //Loop through until find id
-  for (let i = 0; i < comments.length; i++) {
-    if (comments[i].id == req.body.lastCommentID) {
-      comments = comments.splice(i + 1);
-      break;
-    }
-    //if (i == (comments.length - 1) && req.body.lastCommentID != null) {
-      //res.send({comments: null, videos: null});
-      //return;
-    //}
-  }
-
-  if (comments.length > 1) {
-    comments = comments.splice(0, 1);
-  }
+//Deliver more sidebar videos
+router.post('/:id/video-payload/', tools.asyncHandler(async (req, res) => {
 
   //Get videos for sidebar: for now just any videos
   let videos = await Video.findAll({order: [["createdAt", "DESC"]]});
@@ -507,24 +488,38 @@ router.post('/:id/content-payload/:type/', tools.asyncHandler(async (req, res) =
       videos = videos.splice(i + 1);
       break;
     }
-
-    if (i == (videos.length + 1)) {
-      commentsToSend = await tools.convertCommentsAjax(comments, username);
-      res.send({comments: commentsToSend, videos: null});
-      return;
-    }
   }
 
   if (videos.length > 3) {
     videos = videos.splice(0, 3);
   }
 
-  //Need to do weird conversion thing becuase sequelize is dumb dumb
-
-  commentsToSend = await tools.convertCommentsAjax(comments, username);
   videosToSend = tools.convertVideosAjax(videos);
 
-  res.send({comments: commentsToSend, videos: videosToSend})
+  res.send({videos: videosToSend})
+}));
+
+//Deliver more comments
+router.post('/:id/comment-payload/:type/', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+
+  let comments = await tools.getCommentsForVideo(req.params.id, username, req.params.type);
+  //Loop through until find id
+  for (let i = 0; i < comments.length; i++) {
+    if (comments[i].id == req.body.lastCommentID) {
+      comments = comments.splice(i + 1);
+      break;
+    }
+  }
+
+  if (comments.length > 3) {
+    comments = comments.splice(0, 3);
+  }
+  //Need to do weird conversion thing becuase sequelize is dumb dumb
+  commentsToSend = await tools.convertCommentsAjax(comments, username);
+
+  res.send({comments: commentsToSend})
 
 }));
 
