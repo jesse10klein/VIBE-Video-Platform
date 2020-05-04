@@ -176,6 +176,8 @@ function parseFormData() {
   data.tags = parseTags();
   data.title = $('#title').val();
   data.videoURL = $("#file1").get(0).files[0].name;
+  console.log($("#file1").get(0).files[0]);
+  return;
   
   const url = window.location.pathname + "/post-upload";
 

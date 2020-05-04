@@ -26,5 +26,6 @@ db.models.Bookmarks = require(path.join(__dirname, 'models/bookmarks.js'))(seque
 db.models.videoVotes = require(path.join(__dirname, 'models/videoVotes.js'))(sequelize);
 db.models.commentVotes = require(path.join(__dirname, 'models/commentVotes.js'))(sequelize);
 db.models.passwordVerify = require(path.join(__dirname, 'models/passwordVerify.js'))(sequelize);
+db.models.Message = require(path.join(__dirname, 'models/message.js'))(sequelize);
 
 module.exports = db;

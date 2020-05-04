@@ -31,10 +31,7 @@ window.addEventListener('scroll', () => {
 
   if (!(lastComment.length == 0)) {
     var commentBottom = lastComment.get(0).getBoundingClientRect().bottom;
-    console.log(scrolled);
-    console.log(commentBottom);
     if ((commentBottom - scrolled) < 20) {
-      console.log("Getting comments");
       getComments({lastCommentID: commentID});
     }
   }
@@ -51,12 +48,9 @@ window.addEventListener('scroll', () => {
 function getSidebarVideos(data) {
 
   url = window.location.pathname + "/video-payload/";
-  console.log(url);
-  console.log(data);
   $.ajax({
     url, type: "POST", data, dataType: 'json',
     success: function(response) {
-      console.log(response)
       if (response.videos.length > 0) {
         addVideos(response);
       }
@@ -68,12 +62,9 @@ function getSidebarVideos(data) {
 function getComments(data) {
   const sortingType = $("#filterOptions").val();
   url = window.location.pathname + "/comment-payload/" + sortingType;
-  console.log(url);
-  console.log(data);
   $.ajax({
     url, type: "POST", data, dataType: 'json',
     success: function(response) {
-      console.log(response)
       if (response.comments.length > 0) {
         addComments(response);
       }

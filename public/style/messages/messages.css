@@ -1,0 +1,63 @@
+
+
+/* SIDEBAR */
+body {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+
+#sidebar {
+    height: 90vh;
+    width: 250px;
+    text-align: center;
+    border-right: 3px solid black;
+}
+
+#searchTitle {
+    margin: 0;
+    padding: 0;
+}
+
+#search-bar {
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+/* Messages */
+
+.convoMessage p {
+    font-size: 20px;
+    border: 1px solid;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.sentByUser {  
+    margin-left: 20px;
+    display: inline-block;
+    clear: both;
+    float: left;
+    background-color: blue;
+    color: white;
+}
+
+.sentByOther {
+    margin-right: 20px;
+    display: inline-block;
+    clear: both;
+    float: right;
+    background-color: red;
+    color: white;
+}
+
+.messageSendTime {
+    display: none;
+}
+
+/*
+.sentByUser:hover + .messageSendTime, .sentByOther:hover + .messageSendTime {
+    display: inline-block;
+}
+*/

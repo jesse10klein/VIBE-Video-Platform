@@ -798,6 +798,8 @@ const uploadRoutes = require(path.join(__dirname, 'routes/upload'));
 app.use('/upload', uploadRoutes);
 const searchRoutes = require(path.join(__dirname, 'routes/search'));
 app.use('/search', searchRoutes);
+const messageRoutes = require(path.join(__dirname, 'routes/messages'));
+app.use('/messages', messageRoutes);
 
 //Set view engine and tell express where to look for views
 app.use(express.static(path.join(__dirname, "public")));
@@ -825,9 +827,9 @@ app.use((req, res, next) => {
 
 app.get('/', async (req, res) => {
   if (!req.session.username) {
-    //req.session.username = "Spacey Jane";
-    //res.cookie("username", "Spacey Jane");
-    //req.session.save();
+    req.session.username = "Spacey Jane";
+    res.cookie("username", "Spacey Jane");
+    req.session.save();
   }
   res.redirect('video');
 });

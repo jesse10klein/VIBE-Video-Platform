@@ -1,0 +1,21 @@
+
+extends layout
+
+block content
+
+  if messages
+    each message in messages
+      if message.sentByUser
+        .convoMessage
+          p.sentByUser= message.message
+          p.messageSendTime= `Sent ${message.formattedTimeSince}`
+      else 
+        .convoMessage
+          p.sentByOther= message.message
+          p.messageSendTime= `Sent ${message.formattedTimeSince}`
+
+  else
+    h1= "Click on a sidebar message to view the conversation or search for a conversation"
+
+block script
+  script(src="/js/messages.js")

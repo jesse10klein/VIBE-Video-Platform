@@ -10,6 +10,7 @@ const { commentVotes } = db.models;
 const { Bookmarks } = db.models;
 const { Subscriptions} = db.models;
 const { passwordVerify } = db.models;
+const { Message } = db.models;
 
 const Op = require('sequelize').Op;
 
@@ -252,12 +253,10 @@ async function getCommentsForVideo(videoID, username, type) {
 
   let comments;
   if (type == "new") {
-    console.log("Fetching comments in new order");
     comments = await Comments.findAll({ 
       order: [["createdAt", "DESC"]], where: {videoID, replyID: -1}
     });
   } else {
-    console.log("Fetching comments in popular order");
     comments = await Comments.findAll({ 
       order: [["commentLikes", "DESC"]], where: {videoID, replyID: -1}
     });
@@ -392,7 +391,6 @@ async function convertCommentsAjax(comments, username) {
     
     //Need to get number of replies
     const replies = await Comments.findAll({where: {replyID: comment.id}});
-    console.log(replies.length);
  
     const byUser = (comment.user == username);
 
@@ -412,7 +410,6 @@ async function convertCommentsAjax(comments, username) {
     }
     formattedComments.push(formComment);
   }
-  console.log(formattedComments);
   return formattedComments;
 
 }
@@ -529,7 +526,6 @@ async function getSubVideos(username) {
     title: "Past 90 days",
     videos: thisSeason
   }];
-  console.log(finalSubVideos);
   return finalSubVideos;
 
 }
@@ -576,9 +572,6 @@ function scoreVideo(searchTerm, video) {
   let tagMatch = 0;
   let additionalMatches = 0;
 
-  console.log('----------------------');
-  console.log(video.title + " By: " + video.uploader);
-
   let terms = searchTerm.toLowerCase().split(" ");
   let titleTerms = video.title.toLowerCase().split(" ");
   for (word of terms) {
@@ -613,13 +606,59 @@ function scoreVideo(searchTerm, video) {
   const likeRating = (video.upvotes / 100000); 
 
   const rating = tagMatch + additionalMatches + viewRating + likeRating;
-  console.log(rating);
-  console.log("----------------------")
   return rating;
+}
+
+async function getRecentMessages(username) {
+
+  //Get conversations with user, and the last message sent and time
+  //Here need Op.or, sender or reciever
+  let messages = await Message.findAll({
+    order: [["createdAt", "DESC"]],
+    where: {
+      [Op.or]: {
+        sender: username,
+        recipient: username
+      }
+    }
+  });
+
+  const usersToFill = 5;
+  let usersFilled = [];
+  let recentMessages = [];
+
+  for (let i = 0; i < messages.length; i++) {
+    const user = messages[i].sender == username ? messages[i].recipient : messages[i].sender;
+    if (usersFilled.includes(user)) {
+      continue;
+    }
+    usersFilled.push(user);
+    recentMessages.push(messages[i]);
+    if (usersFilled.length >= usersToFill) {
+      break;
+    }
+  }
+
+  //Time to format messages
+  for (let i = 0; i < recentMessages.length; i++) {
+    const user = recentMessages[i].sender == username ? recentMessages[i].recipient : recentMessages[i].sender;
+    const userProfile = await UserInfo.findOne({where: {username: user}});
+    recentMessages[i].imageURL = userProfile.imageURL;
+    recentMessages[i].formattedTimeSince = formatTimeSince(recentMessages[i].createdAt);
+    recentMessages[i].sentByUser = (username == recentMessages[i].sender);
+    recentMessages[i].toUser = user;
+  }
+
+  //Only return 5 most recent messages
+  if (recentMessages.length < 5) {
+    recentMessages = recentMessages.slice(0, 5);
+  }
+  return recentMessages;
+
 }
 
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
   convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo, getMailOptions,
-  generateRandomString, parseTags, scoreVideo};
+  generateRandomString, parseTags, scoreVideo, getRecentMessages};

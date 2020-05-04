@@ -1,0 +1,31 @@
+#sidebar
+  
+  h3#searchTitle= "Search for conversations"
+  form#search-bar(action="/search" method="POST")
+    input#search-query(type='text' name='searchTerm')
+    input#submit(type='submit' value='Search')
+
+  if recentMessages
+    #messages
+      each message in recentMessages
+        a.message(href=`/messages/${message.toUser}`)
+          if message.read
+            .flexDiv
+          else
+            .flexDiv.unopened
+              img.pp(src=`/images/user-thumbs/${message.imageURL}`, alt="Image couldn't be found")
+              .messageInfo
+                h1= message.toUser
+                h3= message.message
+                if message.sentByUser
+                  p= `Sent ${message.formattedTimeSince}`
+                else
+                  p= `Recieved ${message.formattedTimeSince}`
+  else
+    h1= "No messages recieved yet"
+
+
+
+
+
+        
