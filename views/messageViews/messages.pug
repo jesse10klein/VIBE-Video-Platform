@@ -4,16 +4,25 @@ extends layout
 block content
 
   if messages
+
+    a#userInfo(href=`/users/${findUser.username}`)
+      img(src=`/images/user-thumbs/${findUser.imageURL}`)
+      h1= findUser.username
+
+    #message-form
+        textarea#message(name='comment')
+        button#post-message(onClick="sendMessage()")= "Send Message"
+
     each message in messages
       if message.sentByUser
         .convoMessage
           p.sentByUser= message.message
-          p.messageSendTime= `Sent ${message.formattedTimeSince}`
+          p.messageID= message.id
       else 
         .convoMessage
           p.sentByOther= message.message
-          p.messageSendTime= `Sent ${message.formattedTimeSince}`
-
+          p.messageID= message.id
+          
   else
     h1= "Click on a sidebar message to view the conversation or search for a conversation"
 

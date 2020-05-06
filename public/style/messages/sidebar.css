@@ -1,5 +1,65 @@
+/****AUTOCOMPLETE DROPDOWN****/
 
+input {
+    font-family: 'Oxanium', cursive;
+}  
 
+#search-term {
+    width: 170px;
+}
+
+#search-submit {
+
+}
+
+#search-dropdown {
+  display: none;
+  position: absolute;
+  margin-left: 10px;
+  padding-top: 5px;
+  width: 170px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.autocomplete-tag {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    color: black;
+    text-decoration: none;
+    height: 50px;
+    width: 170px;
+    text-overflow: ellipsis;
+}
+
+.autocomplete-tag img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 1px solid black;
+    object-fit: cover;
+    margin-left: 5px;
+    margin-top: 5px;
+    padding: 0;
+}
+
+.autocomplete-tag p {
+    margin-left: 10px;
+}
+
+.unopened {
+    background-color: blue;
+}
+
+#search-users:hover + #search-dropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+/******/
 
 .flexDiv {
     margin-bottom: 20px;

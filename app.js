@@ -22,7 +22,8 @@ const users = [
     username: 'Spacey Jane',
     password: 'spaceyjane',
     email: 'spaceyjane@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'spaceyjane.jpg',
+    bannerURL: 'spaceyjane.jpg',
     subscriberCount: "696969"
   },
   {
@@ -30,7 +31,8 @@ const users = [
     username: 'Clairo',
     password: 'clairo',
     email: 'clairo@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'clairo.jpg',
+    bannerURL: 'clairo.jpg',
     subscriberCount: "696969"
   },
   {
@@ -38,7 +40,8 @@ const users = [
     username: 'Catfish and the Bottlemen',
     password: 'catfish',
     email: 'catfish@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'catfish.jpg',
+    bannerURL: 'catfish.png',
     subscriberCount: "696969"
   }, 
   {
@@ -46,7 +49,8 @@ const users = [
     username: 'Middle Kids',
     password: 'middlekids',
     email: 'middlekids@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'middlekids.jpg',
+    bannerURL: 'middlekids.jpg',
     subscriberCount: "696969"
   },
   {
@@ -54,7 +58,8 @@ const users = [
     username: 'Two Door Cinema Club',
     password: 'twodoor',
     email: 'twodoor@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'twodoor.jpg',
+    bannerURL: 'twodoor.png',
     subscriberCount: "696969"
   },
   {
@@ -62,7 +67,8 @@ const users = [
     username: 'Mura Masa',
     password: 'muramasa',
     email: 'muramasa@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'muramasa.jpg',
+    bannerURL: 'muramasa.jpg',
     subscriberCount: "696969"
   },
   {
@@ -70,7 +76,8 @@ const users = [
     username: 'San Cisco',
     password: 'sancisco',
     email: 'sancisco@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'sancisco.jpg',
+    bannerURL: 'sancisco.jpg',
     subscriberCount: "696969"
   },
   {
@@ -78,7 +85,8 @@ const users = [
     username: 'Stella Donnelly',
     password: 'stella',
     email: 'stella@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'stella.jpg',
+    bannerURL: 'stella.jpg',
     subscriberCount: "696969"
   },
   {
@@ -87,6 +95,7 @@ const users = [
     password: 'yeetyeet',
     email: 'jesse@gmail.com',
     imageURL: 'default.png',
+    bannerURL: 'default.jpg',
     subscriberCount: "696969"
   },
   {
@@ -95,6 +104,7 @@ const users = [
     password: 'yeetyeet',
     email: 'jesse1@gmail.com',
     imageURL: 'default.png',
+    bannerURL: 'default.jpg',
     subscriberCount: "696969"
   },
   {
@@ -103,6 +113,7 @@ const users = [
     password: 'yeetyeet',
     email: 'jesse2@gmail.com',
     imageURL: 'default.png',
+    bannerURL: 'default.jpg',
     subscriberCount: "696969"
   },
   {
@@ -111,6 +122,7 @@ const users = [
     password: 'yeetyeet',
     email: 'jesse3@gmail.com',
     imageURL: 'default.png',
+    bannerURL: 'default.jpg',
     subscriberCount: "696969"
   },
   {
@@ -118,7 +130,8 @@ const users = [
     username: 'Channel Tres',
     password: 'channeltres',
     email: 'channel@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'channel.jpg',
+    bannerURL: 'channel.png',
     subscriberCount: "696969"
   },
   {
@@ -126,7 +139,8 @@ const users = [
     username: 'Joji',
     password: 'joji',
     email: 'joji@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'joji.jpg',
+    bannerURL: 'joji.jpg',
     subscriberCount: "696969"
   },
   {
@@ -134,7 +148,8 @@ const users = [
     username: 'Oliver Tree',
     password: 'olivertree',
     email: 'oliver@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'oliver.jpg',
+    bannerURL: 'oliver.jpg',
     subscriberCount: "696969"
   },
   {
@@ -142,7 +157,8 @@ const users = [
     username: 'Rex Orange County',
     password: 'rexorange',
     email: 'rexorange@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'rex.jpg',
+    bannerURL: 'rex.jpg',
     subscriberCount: "696969"
   },
   {
@@ -150,7 +166,8 @@ const users = [
     username: 'Rum Jungle',
     password: 'rumjungle',
     email: 'rumjungle@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'rumjungle.jpg',
+    bannerURL: 'rumjungle.jpg',
     subscriberCount: "696969"
   },
   {
@@ -158,7 +175,8 @@ const users = [
     username: 'Tame Impala',
     password: 'tameimpala',
     email: 'tameimpala@gmail.com',
-    imageURL: 'default.png',
+    imageURL: 'tame.jpg',
+    bannerURL: 'tame.jpg',
     subscriberCount: "696969"
   }
 ]
@@ -720,6 +738,7 @@ async function fillDB() {
       password: hashedPassword,
       email: user.email,
       imageURL: user.imageURL,
+      bannerURL: user.bannerURL,
       subscriberCount: user.subscriberCount
     });
   }

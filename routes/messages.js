@@ -16,23 +16,7 @@ const { UserInfo } = db.models;
 const { Message } = db.models;
 const Op = require('sequelize').Op;
 
-//Get messages for user
-router.get("/", tools.asyncHandler(async (req, res) => {
-
-  console.log("HELLO");
-
-  const { username } = req.session;
-  if (username == null) {
-    res.redirect("/");
-    return;
-  }
-
-  const recentMessages = await tools.getRecentMessages(username);
-
-  res.render("messageViews/messages", {recentMessages, username});
-}));
-
-//Placeholder
+//Get messages with a specific user
 router.get('/:user', tools.asyncHandler(async (req, res) => {
 
   const { username } = req.session;
@@ -42,8 +26,12 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   }
 
   const { user } = req.params;
-  console.log(user);
-  console.log(username);
+
+  if (user == "home") {
+    const recentMessages = await tools.getRecentMessages(username);
+    res.render("messageViews/messages", {recentMessages, username});
+    return;
+  }
   
   const findUser = await UserInfo.findOne({where: {username: user}});
   if (findUser == null) {
@@ -73,17 +61,138 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
       }
     }
   });
+  //Update most recent message to read
 
   messages = messages.concat(messages2);
-  messages.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1);
+  messages.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
+
 
   //Format messages
   for (let i = 0; i < messages.length; i++) {
     messages[i].formattedTimeSince = tools.formatTimeSince(messages[i].createdAt);
     messages[i].sentByUser = (username == messages[i].sender);
+    
+    if (!messages[i].read) {
+      console.log("Updating read status");
+      await messages[i].update({read: true});
+    }
   }
 
-  res.render("messageViews/messages", {username, recentMessages, messages});
+  //Make sure opened message is read
+  for (let i = 0; i < recentMessages.length; i++) {
+    if (recentMessages[i].sender == req.params.user) {
+      recentMessages[i].read = true;
+    }
+  }
+
+
+  res.render("messageViews/messages", {username, recentMessages, messages, findUser});
+}));
+
+//Add a message to the system
+router.post('/:user/add-message', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  const { message } = req.body;
+  const messageSent = await Message.create({message, sender: username, recipient: req.params.user, read: false});
+
+  res.send({ messageSent });
+}));
+
+//Process user search autocomplete
+router.post('/:user/process-autocomplete', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  const { searchTerm } = req.body;
+
+  const matches = await UserInfo.findAll({
+    where: {
+      username: {[Op.startsWith]: searchTerm}
+    }
+  });
+
+  res.send({matches});
+
+}));
+
+//Poll for new messages
+router.post('/:user/poll-for-messages', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  const { lastRecievedID } = req.body;
+
+  const messages = await Message.findAll({
+    where: {sender: req.params.user, recipient: username},
+    order: [["createdAt", "DESC"]]
+  });
+
+  let newMessages = [];
+
+  for (let i = 0; i < messages.length; i++) {
+    if (messages[i].id == lastRecievedID) {
+      break;
+    }
+    newMessages.push(messages[i]);
+  }
+  res.send({newMessages});
+}));
+
+//Poll for all messages
+router.post('/:user/poll-for-all-messages', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  const messages = await Message.findAll({
+    where: {
+      recipient: username,
+      createdAt: {
+        [Op.gt]: new Date(new Date() - 10 * 1000) //Last 10 seconds
+      }
+    },
+    order: [["createdAt", "DESC"]],
+  });
+
+  const filtered = []
+  const filteredMessages = [];
+  //Make sure there are no duplicates ( Case where two send in same poll )
+  for (let i = 0; i < messages.length; i++) {
+    if (filtered.includes(messages[i].sender)) {
+      continue;
+    }
+    const user = await UserInfo.findOne({where: {username: messages[i].sender}});
+    const formatted = {
+      createdAt: messages[i].createdAt,
+      id: messages[i].id,
+      message: messages[i].message,
+      read: messages[i].read,
+      recipient: messages[i].recipient,
+      sender: messages[i].sender,
+      imageURL: user.imageURL
+    }
+    filteredMessages.push(formatted);
+    filtered.push(messages[i].sender);
+  }
+
+  res.send({messages: filteredMessages});
 }));
 
 module.exports = router;

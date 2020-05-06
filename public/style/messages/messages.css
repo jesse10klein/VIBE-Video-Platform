@@ -43,6 +43,10 @@ body {
     color: white;
 }
 
+.unopened {
+    background-color: blue;
+}
+
 .sentByOther {
     margin-right: 20px;
     display: inline-block;
@@ -56,8 +60,79 @@ body {
     display: none;
 }
 
+.messageID {
+    display: none;
+}
+
 /*
 .sentByUser:hover + .messageSendTime, .sentByOther:hover + .messageSendTime {
     display: inline-block;
 }
 */
+
+#comment-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-left: 50px;
+}
+
+#comment-form textarea {
+    margin-left: 20px;
+    width: 350px;
+    height: 35px;
+    font-size: 17px;
+    margin-bottom: 30px;
+    resize: none;
+}
+
+#comment-form button {
+    height: 40px;
+}
+
+#userInfo {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    margin-bottom: 20px;
+    border-bottom: 2px solid black;
+}
+
+
+#userInfo img {
+    margin-left: 50px;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 2px solid black;
+    object-fit: cover;
+}
+
+#userInfo h1 {
+    margin-left: 25px;
+    color: black;
+}
+
+/****Message Form***/
+
+#message-form {
+   display: flex;
+   flex-direction: row; 
+}
+
+#message {
+    margin-left: 25px;
+    width: 500px;
+    resize: none;
+    height: 40px;
+    font-size: 17px;
+    font-family: 'Oxanium', cursive;
+}
+
+#post-message {
+    font-family: 'Oxanium', cursive;
+}
+
+
+
+/********/
