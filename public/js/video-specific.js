@@ -17,7 +17,6 @@ function animateSidebarVideos() {
       sidebarVideos[i].pause();
     })
   }
-
 }
 
 function initiatePage() {

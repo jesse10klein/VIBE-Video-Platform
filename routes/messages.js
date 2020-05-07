@@ -43,8 +43,6 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
     return;
   }
 
-  const recentMessages = await tools.getRecentMessages(username);
-
   //Get messages to and from user
   let messages = await Message.findAll({
     order: [["createdAt", "DESC"]],
@@ -82,13 +80,7 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
     }
   }
 
-  //Make sure opened message is read
-  for (let i = 0; i < recentMessages.length; i++) {
-    if (recentMessages[i].sender == req.params.user) {
-      recentMessages[i].read = true;
-    }
-  }
-
+  const recentMessages = await tools.getRecentMessages(username);
 
   res.render("messageViews/messages", {username, recentMessages, messages, findUser});
 }));
@@ -153,6 +145,12 @@ router.post('/:user/poll-for-messages', tools.asyncHandler(async (req, res) => {
     }
     newMessages.push(messages[i]);
   }
+
+  //Since the user has the tab opened, mark them as read right away
+  for (let i = 0; i < newMessages.length; i++) {
+    await newMessages[i].update({read: true});
+  }
+
   res.send({newMessages});
 }));
 
@@ -179,9 +177,10 @@ router.post('/:user/poll-for-all-messages', tools.asyncHandler(async (req, res) 
   const filteredMessages = [];
   //Make sure there are no duplicates ( Case where two send in same poll )
   for (let i = 0; i < messages.length; i++) {
-    if (filtered.includes(messages[i].sender)) {
+    if (filtered.includes(messages[i].sender) || messages[i].sender == req.params.user) {
       continue;
     }
+    
     const user = await UserInfo.findOne({where: {username: messages[i].sender}});
     const formatted = {
       createdAt: messages[i].createdAt,

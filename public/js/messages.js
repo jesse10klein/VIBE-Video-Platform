@@ -189,7 +189,6 @@ function pollAllMessages() {
 
         updateSidebarMessageUtility(messages[i], "unopened");
       }
-
       setTimeout(pollAllMessages, 10000);
     }
   });
@@ -220,8 +219,6 @@ $("#search-users").on('keyup', function () {
       updateAutoComplete(response);
     }
   })
-
-
 });
 
 function formatAutocompleteTag(tag) {
@@ -237,7 +234,6 @@ function formatAutocompleteTag(tag) {
 function updateAutoComplete(response) {
 
   const { matches } = response;
-
   const dropdown = $("#search-dropdown");
   dropdown.empty();
 
@@ -254,7 +250,4 @@ function updateAutoComplete(response) {
     const dd = $("#search-dropdown");
     dd.css("display", "none");
   }, 10000);
-
-
-
 }

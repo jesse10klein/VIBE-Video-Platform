@@ -9,7 +9,7 @@ if recentMessages
   #messages
     each message in recentMessages
       a.message(href=`/messages/${message.toUser}`)
-        if message.read 
+        if message.displayRead 
           .flexDiv
             img.pp(src=`/images/user-thumbs/${message.imageURL}`, alt="Image couldn't be found")
             .messageInfo
@@ -20,26 +20,15 @@ if recentMessages
               else
                 p= `Recieved ${message.formattedTimeSince}`
         else
-          if message.sentByUser
-              .flexDiv
-                img.pp(src=`/images/user-thumbs/${message.imageURL}`, alt="Image couldn't be found")
-                .messageInfo
-                  h1= message.toUser
-                  h3= message.message
-                  if message.sentByUser
-                    p= `Sent ${message.formattedTimeSince}`
-                  else
-                    p= `Recieved ${message.formattedTimeSince}`
-          else
-            .flexDiv.unopened
-                img.pp(src=`/images/user-thumbs/${message.imageURL}`, alt="Image couldn't be found")
-                .messageInfo
-                  h1= message.toUser
-                  h3= message.message
-                  if message.sentByUser
-                    p= `Sent ${message.formattedTimeSince}`
-                  else
-                    p= `Recieved ${message.formattedTimeSince}`
+          .flexDiv.unopened
+            img.pp(src=`/images/user-thumbs/${message.imageURL}`, alt="Image couldn't be found")
+            .messageInfo
+              h1= message.toUser
+              h3= message.message
+              if message.sentByUser
+                p= `Sent ${message.formattedTimeSince}`
+              else
+                p= `Recieved ${message.formattedTimeSince}`
 
 
 

@@ -18,6 +18,10 @@ module.exports = (sequelize) => {
     contentID: {
       type: Sequelize.INTEGER,
       allowNull: false
+    },
+    read: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     }
   }, { sequelize });
 

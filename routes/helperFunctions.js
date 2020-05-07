@@ -647,6 +647,11 @@ async function getRecentMessages(username) {
     recentMessages[i].formattedTimeSince = formatTimeSince(recentMessages[i].createdAt);
     recentMessages[i].sentByUser = (username == recentMessages[i].sender);
     recentMessages[i].toUser = user;
+    console.log("------------");
+    console.log(recentMessages[i].sentByUser);
+    console.log(recentMessages[i].read);
+    console.log("------------");
+    recentMessages[i].displayRead = recentMessages[i].sentByUser || recentMessages[i].read;
   }
 
   //Only return 5 most recent messages
