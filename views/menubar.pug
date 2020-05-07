@@ -17,8 +17,10 @@
 
   #icons-right
     a#messagesIcon(href='/messages/home')
+      p#messageNumber= "0"
       img(src='/images/main-menu/messages.svg')
     #notificationDiv 
+      p#notificationNumber= "10"
       button#notifications(onclick="fetchNotifications()")
         img(src='/images/main-menu/notifications.svg') 
       #notificationContainer

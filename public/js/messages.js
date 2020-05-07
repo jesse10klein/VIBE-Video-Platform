@@ -102,7 +102,6 @@ function formatSidebarMessage(message, type) {
       </div>
     </a>
   `;
-  console.log(HTML);
   return HTML;
 }
 
@@ -124,7 +123,6 @@ function pollForMessages() {
   $.ajax({
     url, type: "POST", data,
     success: function(response) {
-      console.log(response);
       updateMessages(response);
       setTimeout(pollForMessages, 1000);
     }
@@ -154,7 +152,6 @@ function updateMessages(response) {
 }
 
 function updateSidebarMessageUtility(message, option) {
-  console.log("Updating sidebar");
 
   //Loop through messages and find same sendUser
   const sidebarMessages = document.querySelectorAll("#messages .message");
@@ -178,7 +175,6 @@ function pollAllMessages() {
   $.ajax({
     url, type: "POST", data,
     success: function(response) {
-      console.log(response);
 
       const { messages } = response;
       for (let i = 0; i < messages.length; i++) {
@@ -189,7 +185,7 @@ function pollAllMessages() {
 
         updateSidebarMessageUtility(messages[i], "unopened");
       }
-      setTimeout(pollAllMessages, 10000);
+      setTimeout(pollAllMessages, 2000);
     }
   });
 }

@@ -15,8 +15,8 @@ block content
     form(action=`/users/password-recovery/${recoveryUsername}` method="POST")
       .form-element
         p  New Password: 
-        input(type='text' name='newPass')
+        input(type='password' name='newPass' autocomplete="off")
       .form-element
         p  Confirm New Password: 
-        input(type='text' name='newPassConfirm')
+        input(type='password' name='newPassConfirm' autocomplete="off")
       input#resetPassword(type='submit' value="Reset Password")

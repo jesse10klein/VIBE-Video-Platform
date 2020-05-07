@@ -9,6 +9,7 @@ const { Bookmarks } = db.models;
 const { passwordVerify } = db.models;
 const { Notifications } = db.models;
 const { Subscriptions } = db.models;
+const { Message } = db.models;
 
 const nodemailer = require("nodemailer");
 
@@ -154,6 +155,8 @@ router.post('/signup', tools.asyncHandler(async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       user = await UserInfo.create({ username, password: hashedPassword, email });
+      const message = `Welcome to Vibe Videos ${username}!\n\n We hope you enjoy your stay :)`
+      await Message.create({message, sender: "CrashingSwine05", recipient: username, read: false});
       res.redirect("/users/login");
       return;
     } 
@@ -410,28 +413,36 @@ router.post('/fetch-notifications', tools.asyncHandler(async (req, res) => {
     return;
   }
 
-  const userNotifications = await Notifications.findAll({where: {recipient: username}});
+  const userNotifications = await Notifications.findAll({
+    order: [["createdAt", "DESC"]],
+    where: {recipient: username
+  }});
   const notifications = [];
 
   //Provide more info for some notification types
   //Need to reformat cause stupid sequelize
   for (let i = 0; i < userNotifications.length; i++) {
     const user = await UserInfo.findOne({where: {username: userNotifications[i].user}});
-    if (userNotifications[i].notificationType == "Comment" || userNotifications[i].notificationType == "Upload") {
+    if (userNotifications[i].notificationType != "Subscribe") {
       const video = await Video.findOne({where: {id: userNotifications[i].contentID}});
       console.log(video);
       const notif = {
+        read: userNotifications[i].read,
+        id: userNotifications[i].id,
         recipient: userNotifications[i].recipient,
         notificationType: userNotifications[i].notificationType,
         user: userNotifications[i].user,
         contentID: userNotifications[i].contentID,
         imageURL: user.imageURL,
         videoTitle: video.title,
-        videoURL: video.videoURL
+        videoURL: video.videoURL,
+        uploader: video.uploader
       }
       notifications.push(notif);
     } else {
       const notif = {
+        read: userNotifications[i].read,
+        id: userNotifications[i].id,
         recipient: userNotifications[i].recipient,
         notificationType: userNotifications[i].notificationType,
         user: userNotifications[i].user,
@@ -445,6 +456,30 @@ router.post('/fetch-notifications', tools.asyncHandler(async (req, res) => {
   res.send(notifications);
 }));
 
+//Fetch notifications for user
+router.get('/notifications/:notificationID', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("users/login");
+    return;
+  }
+
+  const notification = await Notifications.findOne({where: {id: req.params.notificationID}});
+  if (notification == null) {
+    res.render('404', {message: "That notification does not exist"});
+  }
+
+  const type = notification.notificationType;
+  await notification.update({read: true});
+  if (type == "Subscribe") {
+    res.redirect(`/users/${notification.user}`);
+    return;
+  } else {
+    res.redirect(`/video/${notification.contentID}`);
+    return;
+  }
+}));
 
 //Handle subbing/unsubbing
 router.post('/:user/handle-sub', tools.asyncHandler(async (req, res) => {
@@ -487,6 +522,40 @@ router.post('/:user/handle-sub', tools.asyncHandler(async (req, res) => {
     await uploader.update({ subscriberCount: newSubCount });
     res.status(200).send({subscribers: newSubCount, subscribeStatus: "Subscribe"});
   }
+
+}));
+
+//Update notification and message read numbers
+router.post('/update-notifications', tools.asyncHandler(async (req, res) => {
+
+  //Make sure user is logged in
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  //Get number of unread messages
+  
+  let messages = await Message.findAll({where: {recipient: username, read: false}});
+  let usersFilled = [];
+  let recentMessages = [];
+  //Get rid of duplicates
+  for (let i = 0; i < messages.length; i++) {
+    const user = messages[i].sender == username ? messages[i].recipient : messages[i].sender;
+    if (usersFilled.includes(user)) {
+      continue;
+    }
+    usersFilled.push(user);
+    recentMessages.push(messages[i]);
+  }
+  const unreadMessages = recentMessages.length;
+
+  //Get number of unread notifications
+  const notifications = await Notifications.findAll({where: {recipient: username, read: false}});
+  const unreadNotifications = notifications.length;
+
+  res.send({unreadMessages, unreadNotifications});
 
 }));
 

@@ -31,14 +31,46 @@ function getCookie(cname) {
   return "";
 }
 
+//Polls for updates to the notification and message read numbers
+function pollForUpdates() {
 
-function pollForNotifications() {
-  console.log("Need to implement notification polling");
+  console.log("Polling for updates");
+
+  //Make sure user is logged way
+  if (getCookie("username") == "") {
+    return;
+  }
+
+  //Don't need any data..
+  const data = {};
+  const url = "/users/update-notifications"
+ 
+  $.ajax({
+    url, type: "POST", data,
+    success: function(response) {
+
+      const { unreadMessages, unreadNotifications } = response;
+
+      $("#messageNumber").text(unreadMessages);
+      if (unreadMessages > 0) {
+        $("#messageNumber").css("display", "block");
+      } else {
+        $("#messageNumber").css("display", "none");
+      }
+
+      $("#notificationNumber").text(unreadNotifications);
+      if (unreadNotifications > 0) {
+        $("#notificationNumber").css("display", "block");
+      } else {
+        $("#notificationNumber").css("display", "none");
+      }
+
+      setTimeout(pollForUpdates, 2000);
+    }
+  });
 }
 
-function pollForMessages() {
-  console.log("Need to implement message polling");
-}
+pollForUpdates();
 
 function fetchNotifications() {
 
@@ -47,7 +79,6 @@ function fetchNotifications() {
     $("#notificationContainer").css("display", "none");
     return;
   }
-
   $("#notificationContainer").empty();
 
   if (getCookie("username") == "") {
@@ -72,6 +103,13 @@ function displayNotifications(response) {
     const notification = response[i];
     $("#notificationContainer").append(formatNotificationHTML(notification));
   }
+  if (response.length == 0) {
+    $("#notificationContainer").append(`
+      <div class="notification">
+        <p>No notifications for you yet</p>
+      </div>
+    `);
+  }
   $("#notificationContainer").css("display", "flex");
   $("#notificationContainer").css("flex-direction", "column");
 }
@@ -81,25 +119,28 @@ function formatNotificationHTML(notification) {
   //SKELETON
   HTML = `
     <div class="notification">
-      <a href="/users/${notification.user}"> 
+      <a class="${notification.notificationType} `
+      if (!notification.read) {
+        HTML += `unopened`;
+      }
+      HTML += `" href="/users/notifications/${notification.id}"> 
         <img class="notpp" src="/images/user-thumbs/${notification.imageURL}"> </img>
-      </a>
-      <h1>`;
+      <p>`;
       if (notification.notificationType == "Subscribe") {
-        HTML += `${notification.user} Has subscribed to you</h1>`;
+        HTML += `${notification.user} has subscribed to you</p>`;
       } else if (notification.notificationType == "Reply") {
-        HTML += `${notification.user} Has replied to your comment</h1>`;
+        HTML += `${notification.user} Has replied to your comment on ${notification.uploader}'s video</p>
+        <video class="notification-video" src="/videos/${notification.videoURL}#t=2" muted></video>`;
       } else if (notification.notificationType == "Comment") {
-        HTML += `${notification.user} Has commented on your video: ${notification.videoTitle}</h1>
-        <a href="/video/${notification.contentID}">
-        <video class="notification-video" src="/videos/${notification.videoURL}#t=2" muted></video></a>`;
+        HTML += `${notification.user} Has commented on your video: ${notification.videoTitle}</p>
+        <video class="notification-video" src="/videos/${notification.videoURL}#t=2" muted></video>`;
       } else { //Someone has uploaded a new video
-        HTML += `${notification.user} Has uploaded a new video: ${notification.videoTitle}</h1>
-        <a href="/video/${notification.contentID}">
-        <video class="notification-video" src="/videos/${notification.videoURL}#t=2" muted></video></a>`;
+        HTML += `${notification.user} Has uploaded a new video: ${notification.videoTitle}</p>
+        <video class="notification-video" src="/videos/${notification.videoURL}#t=2" muted></video><`;
       }
       
     HTML += `  
+      </a>
     </div>  
   `;
   return HTML;

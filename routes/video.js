@@ -353,7 +353,6 @@ router.post('/:videoID/addCommentLike/:commentID', tools.asyncHandler(async (req
   res.status(200).send({voteStatus: 2});
 }));
 
-
 //Add downvote to comment
 router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (req, res) => {
 
@@ -401,7 +400,6 @@ router.post('/:videoID/addCommentDislike/:commentID', tools.asyncHandler(async (
   res.status(200).send({voteStatus: 2});
 }));
 
-
 //Add a reply to a comment
 router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res) => {
 
@@ -430,7 +428,7 @@ router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res
       user: username,
       notificationType: "Reply",
       recipient: initialComment.user,
-      contentID: comment.id
+      contentID: video.id
     });
   }
 
@@ -487,7 +485,6 @@ router.post('/:videoID/bookmark-video', tools.asyncHandler(async (req, res) => {
   }
 }));
 
-
 //Handle editing a comment
 router.post('/:videoID/edit-comment/', tools.asyncHandler(async (req, res) => {
 
@@ -511,7 +508,6 @@ router.post('/:videoID/edit-comment/', tools.asyncHandler(async (req, res) => {
   res.sendStatus(200);
 
 }));
-
 
 //Deliver more sidebar videos
 router.post('/:id/video-payload/', tools.asyncHandler(async (req, res) => {

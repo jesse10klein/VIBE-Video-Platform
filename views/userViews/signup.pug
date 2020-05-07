@@ -17,25 +17,25 @@ block content
             p  Username: 
             if error
               p.error= error.username
-          input(type='text' name='username' value=`${fill.username}`)
+          input(type='text' name='username' value=`${fill.username}` autocomplete="off")
         .form-element
           .errors
             p  Email: 
             if error
               p.error= error.email
-          input(type='text' name='email' value=`${fill.email}`)
+          input(type='text' name='email' value=`${fill.email}` autocomplete="off")
         .form-element
           .errors
             p  Password: 
             if error
               p.error= error.password
-          input(name='password')
+          input(type='password' name='password' autocomplete="off")
         .form-element
           .errors
             p  Verify Password: 
             if error
               p.error= error.passwordDup
-          input(name='verifyPassword')
+          input(type='password' name='verifyPassword' autocomplete="off")
         input#createAccount(type='submit' value="Create Account")
   else
     #form-div
