@@ -9,6 +9,7 @@ const { UserInfo } = db.models;
 const { Subscriptions } = db.models;
 const { videoVotes } = db.models;
 const { commentVotes } = db.models;
+const { Notifications } = db.models;
 
 //Require helper functions
 var tools = require(path.join(__dirname, 'helperFunctions'));
@@ -58,27 +59,37 @@ router.get('/subscriptions', tools.asyncHandler(async (req, res) => {
 //Create new comment
 router.post('/:id/add-comment', tools.asyncHandler(async (req, res) => {
 
-    //Check that the video exists
-    const video = await Video.findOne({where: {id: req.params.id}});
-    if (video == null) {
-      res.render("404", {message: "The video that you have requested does not exist"});
-    }
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
 
-    if (req.session.username == null) {
-        res.render("404", {message: "Resource not found"});
-    }
+  //Check that the video exists
+  const video = await Video.findOne({where: {id: req.params.id}});
+  if (video == null) {
+    res.render("404", {message: "The video that you have requested does not exist"});
+  }
 
-    const comment = await Comments.create({
-        user: req.session.username,
-        videoID: req.params.id,
-        comment: req.body.comment
-    });
+  const comment = await Comments.create({
+      user: req.session.username,
+      videoID: req.params.id,
+      comment: req.body.comment
+  });
 
-    //Get user's profile pic and attach it
-    const user = await UserInfo.findOne({where: {username: req.session.username}});
-    const imageURL = user.imageURL
+  //Notify uploader that their video has been commented on
+  await Notifications.create({
+    user: username,
+    notificationType: "Comment",
+    recipient: video.uploader,
+    contentID: video.id
+  });
 
-    res.send({comment, imageURL});
+  //Get user's profile pic and attach it
+  const user = await UserInfo.findOne({where: {username}});
+  const imageURL = user.imageURL
+
+  res.send({comment, imageURL});
 }));
 
 //Sorting comments under video
@@ -160,7 +171,8 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
 router.post('/:videoID/handle-sub', tools.asyncHandler(async (req, res) => {
 
   //Make sure user is logged in
-  if (req.session.username == null) {
+  const { username } = req.session;
+  if (username == null) {
     res.end();
   }
 
@@ -170,13 +182,26 @@ router.post('/:videoID/handle-sub', tools.asyncHandler(async (req, res) => {
 
   //Check if user is subscribed
   const subscription = await Subscriptions.findOne({
-    where: {subscriber: req.session.username, user: uploader.username}});
+    where: {subscriber: username, user: uploader.username}});
   
 
   if (subscription == null) { 
-    await Subscriptions.create({user, subscriber: req.session.username});
+    const sub = await Subscriptions.create({user, subscriber: username});
     const newSubCount = uploader.subscriberCount + 1;
     await uploader.update({ subscriberCount: newSubCount });
+
+    //Notify user that they have been subbed to
+    //Make sure there isn't a sub notification yet
+    const alreadyExists = await Notifications.findOne({where: {user, recipient: username, notificationType: "Subscribe"}});
+    if (alreadyExists == null && user != username) {
+      await Notifications.create({
+        user: username,
+        notificationType: "Subscribe",
+        recipient: user,
+        contentID: sub.id
+      });
+    }
+
     res.status(200).send({subscribers: newSubCount, subscribeStatus: "Unsubscribe"});
   } else {
     await subscription.destroy();
@@ -386,7 +411,8 @@ router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res
     res.render("404", {message: "The video that you have requested does not exist"});
   }
 
-  if (req.session.username == null) {
+  const { username } = req.session;
+  if (username == null) {
       res.render("404", {message: "Resource not found"});
   }
 
@@ -397,8 +423,19 @@ router.post('/:videoID/add-reply/:commentID', tools.asyncHandler(async (req, res
       replyID: req.params.commentID
   });
 
+  //Notify commenter that their comment has been replied to
+  const initialComment = await Comments.findOne({where: {id: req.params.commentID}});
+  if (username != initialComment.user) {
+    await Notifications.create({
+      user: username,
+      notificationType: "Reply",
+      recipient: initialComment.user,
+      contentID: comment.id
+    });
+  }
+
   //Get user's profile pic and attach it
-  const user = await UserInfo.findOne({where: {username: req.session.username}});
+  const user = await UserInfo.findOne({where: {username}});
   const imageURL = user.imageURL;
 
   res.send({comment, imageURL});

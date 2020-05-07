@@ -8,6 +8,8 @@ router.use(fileUploader());
 
 const db = require(path.join(__dirname, '../db'));
 const { Video } = db.models;
+const { Notifications } = db.models;
+const { Subscriptions } = db.models;
 
 //Require helper functions
 var tools = require(path.join(__dirname, 'helperFunctions'));
@@ -68,12 +70,15 @@ router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
 
 }));
 
-
 router.post('/post-upload', tools.asyncHandler( async (req, res) => {
 
   console.log(req.get("content-length"));
 
   const username = req.session.username;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
 
   const {title} = req.body;
   const {description} = req.body;
@@ -90,13 +95,21 @@ router.post('/post-upload', tools.asyncHandler( async (req, res) => {
 
   //If we get to here everything is fine
   //Create video and send video to user
-
-  const now = new Date();
-
   const video = await Video.create({
-    uploader: req.session.username,
+    uploader: username,
     title, description, tags, videoURL
   });
+
+  //Need to notify all subscribers that the user has uploaded
+  const subs = await Subscriptions.findAll({where: {user: username}});
+  for (let i = 0; i < subs.length; i++) {
+    await Notifications.create({
+      user: username, 
+      notificationType: "Upload", 
+      recipient: subs[i].subscriber, 
+      contentID: video.id
+    });
+  }
   
   res.send(video);
 

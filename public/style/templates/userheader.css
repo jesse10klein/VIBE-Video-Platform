@@ -12,6 +12,27 @@
     object-fit: cover;
 }
 
+#subscribeButton {
+    font-family: 'Oxanium', cursive;
+    width: 135px;
+    text-decoration: none;
+    color: black;
+    font-size: 0.9em;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(204, 235, 235);
+    border-radius: 5px;
+    border: 3px solid black;
+    height: 30px;
+    transition: 0.4s;
+    margin-top: 10px;
+    margin-left: 25px;
+}
+
+#subscribeButton:hover {
+    font-size: 0.95em;
+}
+
 #uploaderPhoto {
     height: 125px;
     width: 125px;
@@ -32,11 +53,14 @@
     color: black;
     font-weight: bold;
     font-size: 1.5em;
+    margin: 0;
 }
 
 #subcount {
     font-weight: bold;
     font-size: 1.5em;
+    margin: 0;
+    margin-top: 10px;
 }
 
 #userHeader {

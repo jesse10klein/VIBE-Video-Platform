@@ -5,32 +5,6 @@ const div = document.getElementById("description-info");
 const descButton = document.getElementById("descButton");
 const subButton = document.getElementById('subscribeButton');
 
-function formatNumber(number) {
-  if (number < 1000) {
-    return number;
-  } else if (number < 1000000) {
-    return Math.floor(number / 1000) + "K";
-  } else {
-    return Math.floor(number / 1000000) + "M";
-  }
-}
-
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
 window.onresize = resizeVideo;
 window.onload = initiatePage; 
 
@@ -161,8 +135,8 @@ function postReply(item) {
         const toggleReplyButton = $(replyComment).find(".replyButton");
         toggleReplyBox(toggleReplyButton.get(0));
 
-
-        const replyFormatted = formatReplyHTML(response);
+        console.log(response);
+        const replyFormatted = formatReplyHTML(response.comment, response.imageURL);
         const node = $($.parseHTML(replyFormatted))
         const comment = $(replyComment.nextElementSibling);
         (node).insertAfter(comment);
@@ -268,7 +242,6 @@ function toggleReplyBox(item) {
     return;
   }
 
-  
   const form = item.parentNode.parentNode.parentNode.parentNode.nextElementSibling;
 
   if (form.style.display == 'flex') {

@@ -27,5 +27,6 @@ db.models.videoVotes = require(path.join(__dirname, 'models/videoVotes.js'))(seq
 db.models.commentVotes = require(path.join(__dirname, 'models/commentVotes.js'))(sequelize);
 db.models.passwordVerify = require(path.join(__dirname, 'models/passwordVerify.js'))(sequelize);
 db.models.Message = require(path.join(__dirname, 'models/message.js'))(sequelize);
+db.models.Notifications = require(path.join(__dirname, 'models/notifications.js'))(sequelize);
 
 module.exports = db;

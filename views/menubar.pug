@@ -2,12 +2,11 @@
   a#home-image(href='/')
     img(src='/images/main-menu/vibe.svg') 
 
-  #icons
+  #icons-left
     a#hot(href='/video/hot')
       img(src='/images/main-menu/hot.svg')
     a#subs(href='/video/subscriptions')
       img(src='/images/main-menu/subs.svg')
-    a(href='/messages/home')= "CLICK ME CLICK ME"
 
   form#search-bar(action="/search" method="POST")
     if searchTerm
@@ -15,6 +14,14 @@
     else
       input#search-query(type='text' name='searchTerm')
     input#submit(type='submit' value='Search')
+
+  #icons-right
+    a#messagesIcon(href='/messages/home')
+      img(src='/images/main-menu/messages.svg')
+    #notificationDiv 
+      button#notifications(onclick="fetchNotifications()")
+        img(src='/images/main-menu/notifications.svg') 
+      #notificationContainer
 
   if username
     #dd

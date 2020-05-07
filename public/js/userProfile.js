@@ -24,3 +24,32 @@ function resizeContent() {
    bannerImage.style.width = width + "px";
 
 };
+
+function processSubscribe() {
+
+  const subs = document.getElementById("subCount");
+  const subButton = document.getElementById('subscribeButton');
+
+  if (getCookie("username") == "") {
+    window.location = "/users/login";
+  }
+
+  fetch( window.location.pathname + '/handle-sub', {method: 'POST'})
+    .then( response =>  {
+      if(response.ok) {
+        return response.json();
+      }
+      throw new Error('Request failed.');
+    }).then( data => {
+
+      //Data sent will be sub status and sub count
+      subButton.textContent = data.subscribeStatus;
+      subs.textContent = `${formatNumber(data.subscribers)} Subscribers`
+     
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+
+

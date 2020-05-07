@@ -1,13 +1,17 @@
 
 #banner
-    img#banner-image(src=`/images/user-banners/${user.bannerURL}`)
+  img#banner-image(src=`/images/user-banners/${user.bannerURL}`)
 
 #userHeader
-    a(href=`/users/${user.username}`)
-        img#uploaderPhoto(src=`/images/user-thumbs/${user.imageURL}`)
-    #subdiv
-        a#userName(href=`/users/${user.username}`)= `${user.username}`
-        p#subcount= `${user.formattedSubCount} Subscribers`
-    
+  a(href=`/users/${user.username}`)
+    img#uploaderPhoto(src=`/images/user-thumbs/${user.imageURL}`)
+  #subdiv
+    a#userName(href=`/users/${user.username}`)= `${user.username}`
+    p#subcount= `${user.formattedSubCount} Subscribers`
+    if subscribed
+      button#subscribeButton(onClick="processSubscribe()")= `Unsubscribe`
+    else
+      button#subscribeButton(onClick="processSubscribe()")= `Subscribe`
+      
 if user.username==username
-    a#accountRedirect(href="/account")= "View your account"
+  a#accountRedirect(href="/account")= "View your account"

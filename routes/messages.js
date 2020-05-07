@@ -16,6 +16,10 @@ const { UserInfo } = db.models;
 const { Message } = db.models;
 const Op = require('sequelize').Op;
 
+router.get("/", (req, res) => {
+  res.redirect("/messages/home");
+})
+
 //Get messages with a specific user
 router.get('/:user', tools.asyncHandler(async (req, res) => {
 

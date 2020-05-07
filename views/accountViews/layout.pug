@@ -14,12 +14,13 @@ body
   include ../menubar
 
 
-#sidebar
-  include account-sidebar
+  #sidebar
+    include account-sidebar
 
-#content
-  include account-header
-  block content
+  #content
+    include account-header
+    block content
 
-  
-block script
+
+  script(src="/js/universal.js")
+  block script

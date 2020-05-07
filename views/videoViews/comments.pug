@@ -31,8 +31,11 @@
           if comment.edited
             div
               p.edited= `(Edited)`
-    if comment.numReplies
-      button(class=`${comment.id}` onclick="loadReplies(this)")= `Load ${comment.numReplies} replies`
+
     .reply-form
       textarea.comment-reply(name='reply')
       button.post-reply(onClick="postReply(this)")= "Reply"
+
+    if comment.numReplies
+      button(class=`${comment.id}` onclick="loadReplies(this)")= `Load ${comment.numReplies} replies`
+      

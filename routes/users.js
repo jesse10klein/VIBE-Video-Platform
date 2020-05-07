@@ -6,7 +6,9 @@ const { Video } = db.models;
 const { Comments } = db.models;
 const { UserInfo } = db.models;
 const { Bookmarks } = db.models;
-const { passwordVerify} = db.models;
+const { passwordVerify } = db.models;
+const { Notifications } = db.models;
+const { Subscriptions } = db.models;
 
 const nodemailer = require("nodemailer");
 
@@ -162,6 +164,8 @@ router.post('/signup', tools.asyncHandler(async (req, res) => {
 //GET ALL VIDEOS MADE BY THE USER
 router.get('/:user', tools.asyncHandler(async (req, res) => {
   
+  const { username } = req.session;
+
   const user = await UserInfo.findOne({where: {username: req.params.user}});
   if (user == null) {
     res.render('404', {message: "That user does not exist"})
@@ -181,11 +185,19 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
     }
   }
 
-  res.render("userProfile/user-home", {message: `${user.username}'s Videos:`, videos, user, username: req.session.username});
+  let subscribed = false;
+  if (username != null) {
+    const subscription = await Subscriptions.findOne({where: {subscriber: username, user: req.params.user}});
+    subscribed = !(subscription == null);
+  }
+
+  res.render("userProfile/user-home", {subscribed, message: `${user.username}'s Videos:`, videos, user, username: req.session.username});
 }));
 
 //GET ALL VIDEOS UPVOTED BY THE USER
 router.get('/:user/liked-videos', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
 
   const user = await UserInfo.findOne({where: {username: req.params.user}});
   if (user == null) {
@@ -207,11 +219,19 @@ router.get('/:user/liked-videos', tools.asyncHandler(async (req, res) => {
       videos = null;
   }
 
-  res.render("userProfile/user-home", {message: "Liked Videos", videos, emptyMessage: "No liked videos yet", user, username: req.session.username});
+  let subscribed = false;
+  if (username != null) {
+    const subscription = await Subscriptions.findOne({where: {subscriber: username, user: req.params.user}});
+    subscribed = !(subscription == null);
+  }
+
+  res.render("userProfile/user-home", {subscribed, message: "Liked Videos", videos, emptyMessage: "No liked videos yet", user, username: req.session.username});
 }));
 
 //GET ALL VIDEOS DOWNVOTED BY THE USER
 router.get('/:user/disliked-videos', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
 
   const user = await UserInfo.findOne({where: {username: req.params.user}});
   if (user == null) {
@@ -234,11 +254,19 @@ router.get('/:user/disliked-videos', tools.asyncHandler(async (req, res) => {
       videos = null;
   }
 
-  res.render("userProfile/user-home", {message: "Disliked Videos", videos, emptyMessage: "No disliked videos yet", user, username: req.session.username});
+  let subscribed = false;
+  if (username != null) {
+    const subscription = await Subscriptions.findOne({where: {subscriber: username, user: req.params.user}});
+    subscribed = !(subscription == null);
+  }
+
+  res.render("userProfile/user-home", {subscribed, message: "Disliked Videos", videos, emptyMessage: "No disliked videos yet", user, username: req.session.username});
 }));
 
 //GET ALL SUBSCRIBERS
 router.get('/:user/subscribers', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
 
   const user = await UserInfo.findOne({where: {username: req.params.user}});
   if (user == null) {
@@ -249,11 +277,19 @@ router.get('/:user/subscribers', tools.asyncHandler(async (req, res) => {
   //GET SUBSCRIBERS
   const subs = await userHelp.getSubs(user.username, 1);
 
-  res.render("userProfile/subscribe", {message: "Subscribers", emptyMessage: "No subscribers", subs, user, username: req.session.username});
+  let subscribed = false;
+  if (username != null) {
+    const subscription = await Subscriptions.findOne({where: {subscriber: username, user: req.params.user}});
+    subscribed = !(subscription == null);
+  }
+
+  res.render("userProfile/subscribe", {subscribed, message: "Subscribers", emptyMessage: "No subscribers", subs, user, username: req.session.username});
 }));
 
 //GET ALL SUBSCRIBED TO
 router.get('/:user/subscribed-to', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
 
   const user = await UserInfo.findOne({where: {username: req.params.user}});
   if (user == null) {
@@ -264,14 +300,21 @@ router.get('/:user/subscribed-to', tools.asyncHandler(async (req, res) => {
   //GET SUBSCRIBERS
   const subs = await userHelp.getSubs(user.username, 2);
 
-  res.render("userProfile/subscribe", {message: "Subscribed to", emptyMessage: "Not subscribed to anyone", subs, user, username: req.session.username});
+  let subscribed = false;
+  if (username != null) {
+    const subscription = await Subscriptions.findOne({where: {subscriber: username, user: req.params.user}});
+    subscribed = !(subscription == null);
+  }
+
+  res.render("userProfile/subscribe", {subscribed, message: "Subscribed to", emptyMessage: "Not subscribed to anyone", subs, user, username: req.session.username});
 }));
 
 //GET ALL BOOKMARKS
 router.get('/:user/bookmarked-videos', tools.asyncHandler(async (req, res) => {
 
-  //GET BOOKMARKED
+  const { username } = req.session;
 
+  //GET BOOKMARKED
   const user = await UserInfo.findOne({where: {username: req.params.user}});
   if (user == null) {
     res.render('404', {message: "That user does not exist"})
@@ -293,7 +336,13 @@ router.get('/:user/bookmarked-videos', tools.asyncHandler(async (req, res) => {
       videos = null;
   }
 
-  res.render("userProfile/user-home", {message: "Bookmarked Videos", videos, emptyMessage: "No Bookmarked Videos Yet", user, username: req.session.username});
+  let subscribed = false;
+  if (username != null) {
+    const subscription = await Subscriptions.findOne({where: {subscriber: username, user: req.params.user}});
+    subscribed = !(subscription == null);
+  }
+
+  res.render("userProfile/user-home", {subscribed, message: "Bookmarked Videos", videos, emptyMessage: "No Bookmarked Videos Yet", user, username: req.session.username});
 }));
 
 //GET Requested password reset
@@ -349,6 +398,95 @@ router.post('/password-recovery/:username', tools.asyncHandler(async (req, res) 
   await match.destroy();
 
   res.redirect("/users/login");
+
+}));
+
+//Fetch notifications for user
+router.post('/fetch-notifications', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("users/login");
+    return;
+  }
+
+  const userNotifications = await Notifications.findAll({where: {recipient: username}});
+  const notifications = [];
+
+  //Provide more info for some notification types
+  //Need to reformat cause stupid sequelize
+  for (let i = 0; i < userNotifications.length; i++) {
+    const user = await UserInfo.findOne({where: {username: userNotifications[i].user}});
+    if (userNotifications[i].notificationType == "Comment" || userNotifications[i].notificationType == "Upload") {
+      const video = await Video.findOne({where: {id: userNotifications[i].contentID}});
+      console.log(video);
+      const notif = {
+        recipient: userNotifications[i].recipient,
+        notificationType: userNotifications[i].notificationType,
+        user: userNotifications[i].user,
+        contentID: userNotifications[i].contentID,
+        imageURL: user.imageURL,
+        videoTitle: video.title,
+        videoURL: video.videoURL
+      }
+      notifications.push(notif);
+    } else {
+      const notif = {
+        recipient: userNotifications[i].recipient,
+        notificationType: userNotifications[i].notificationType,
+        user: userNotifications[i].user,
+        contentID: userNotifications[i].contentID,
+        imageURL: user.imageURL
+      }
+      notifications.push(notif);
+    }
+  }
+
+  res.send(notifications);
+}));
+
+
+//Handle subbing/unsubbing
+router.post('/:user/handle-sub', tools.asyncHandler(async (req, res) => {
+
+  //Make sure user is logged in
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  const uploader = await UserInfo.findOne({where: { username: req.params.user }})
+
+  //Check if user is subscribed
+  const subscription = await Subscriptions.findOne({
+    where: {subscriber: username, user: uploader.username}});
+  
+
+  if (subscription == null) { 
+    const sub = await Subscriptions.create({user: uploader.username, subscriber: username});
+    const newSubCount = uploader.subscriberCount + 1;
+    await uploader.update({ subscriberCount: newSubCount });
+
+    //Notify user that they have been subbed to
+    //Make sure there isn't a sub notification yet
+    const alreadyExists = await Notifications.findOne({where: {user: uploader.username, recipient: username, notificationType: "Subscribe"}});
+    if (alreadyExists == null && uploader.username != username) {
+      await Notifications.create({
+        user: username,
+        notificationType: "Subscribe",
+        recipient: uploader.username,
+        contentID: sub.id
+      });
+    }
+
+    res.status(200).send({subscribers: newSubCount, subscribeStatus: "Unsubscribe"});
+  } else {
+    await subscription.destroy();
+    const newSubCount = uploader.subscriberCount - 1;
+    await uploader.update({ subscriberCount: newSubCount });
+    res.status(200).send({subscribers: newSubCount, subscribeStatus: "Subscribe"});
+  }
 
 }));
 

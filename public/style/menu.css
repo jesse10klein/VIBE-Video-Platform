@@ -6,6 +6,8 @@ body {
     font-family: 'Oxanium', cursive;
 }
 
+button:focus {outline:0;}
+
 #menu-bar {
     z-index: 100;
     position: fixed;
@@ -19,20 +21,34 @@ body {
 }
 
 #search-bar {
-    padding-top: 15px;
+    padding-top: 10px;
     margin-left: 100px;
-    width: 250px;
-    margin: auto;
+    margin-left: 32vw;
+    display: flex;
+    flex-direction: row;
+}
+
+#search-query {
+    width: 30vw;
+    height: 25px;
+    font-family: 'Oxanium', cursive;
+    font-size: 20px;
+}
+
+#submit {
+    height: 30px;
+    width: 6vw;
+    font-family: 'Oxanium', cursive;
 }
 
 #home-image {
     float: left;
-    margin-left: 40px;
+    margin-left: 10px;
 }
 
 #dd {
     float: right;
-    margin-right: 50px;
+    margin-right: 20px;
     margin-top: -25px;
 }
 
@@ -42,7 +58,7 @@ body {
 
 #login {
     margin-top: -25px;
-    margin-right: 50px;
+    margin-right: 20px;
     float: right;
     line-height: 200%;
     color: black;
@@ -89,15 +105,45 @@ body {
 #dd:hover #dropdown-content {display: block;}
 #dropdown:hover #dropdown-button {background-color: #3e8e41;}
 
-#icons {
+#icons-left {
     position: fixed;
     display: flex;
     flex-direction: row;
-    margin-left: 130px;
+    margin-left: 100px;
 }
 
-#icons img {
+#icons-left img {
     margin-left: 15px;
+    width: 50px;
+    height: 50px;
+}
+
+#notificationDiv {
+    display: flex;
+    flex-direction: column;
+    width: 50px;
+}
+
+#icons-right {
+    position: absolute;
+    width: 120px;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    margin-right: 130px;
+}
+
+#icons-right button {
+    width: 50px;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+#icons-right img {
+    margin-right: 15px;
     width: 50px;
     height: 50px;
 }
@@ -112,3 +158,43 @@ body {
     }
 
 }
+
+#notificationContainer {
+    display: none;
+    position: relative;
+    width: 340px;
+    top: -2px;
+    left: -290px;
+    background-color: white;
+    border: 2px solid rgb(100, 100, 100);
+}
+
+.notification {
+  display: flex;
+  flex-direction: row;
+}
+
+.notification h1 {
+    font-size: 12px;
+}
+
+.notification-video {
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+    width: 100px;
+    height: 56.6px;
+    background-color: black;
+    border: 1px solid black;
+}
+
+.notpp {
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 50px;
+    height: 50px;
+    border: 2px solid black;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
