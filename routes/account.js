@@ -112,7 +112,6 @@ router.get('/banner', tools.asyncHandler(async (req, res) => {
     }
     const user = await UserInfo.findOne({where: {username}});
     const bannerURL = "/images/user-banners/" + user.bannerURL;
-    console.log(bannerURL);
 
     res.render("accountViews/banner", {bannerURL, user, username});
    
@@ -250,7 +249,6 @@ router.post('/change-email', tools.asyncHandler(async (req, res) => {
 
     //Here we can update email
     await user.update({email: newEmail, emailVerified: false});
-    console.log("Email updated successfully");
     res.redirect('/');
 
 }));

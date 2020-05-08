@@ -83,8 +83,7 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
     messages[i].formattedTimeSince = tools.formatTimeSince(messages[i].createdAt);
     messages[i].sentByUser = (username == messages[i].sender);
     
-    if (!messages[i].read) {
-      console.log("Updating read status");
+    if (!messages[i].read && !message[i].senybyUser) { //HERE ERROR
       await messages[i].update({read: true});
     }
   }
@@ -214,8 +213,6 @@ router.post('/:user/poll-for-all-messages', tools.asyncHandler(async (req, res) 
 //Get more sidebar messages for user
 router.post('/:user/get-sidebar-messages', tools.asyncHandler(async (req, res) => {
 
-  console.log("Getting sidebar messages");
-
   const { username } = req.session;
   if (username == null) {
     res.redirect("/users/login");
@@ -267,8 +264,6 @@ router.post('/:user/get-sidebar-messages', tools.asyncHandler(async (req, res) =
 
 //Get more conversation messages for user
 router.post('/:user/get-conversation-messages', tools.asyncHandler(async (req, res) => {
-
-  console.log("Getting conversation messages");
 
   const { username } = req.session;
   if (username == null) {
@@ -323,11 +318,6 @@ router.post('/:user/get-conversation-messages', tools.asyncHandler(async (req, r
   for (let i = 0; i < messages.length; i++) {
     messages[i].formattedTimeSince = tools.formatTimeSince(messages[i].createdAt);
     messages[i].sentByUser = (username == messages[i].sender);
-    
-    if (!messages[i].read && !message[i].senybyUser) { //HERE ERROR
-      console.log("Updating read status");
-      await messages[i].update({read: true});
-    }
   }
 
   res.send(messages);

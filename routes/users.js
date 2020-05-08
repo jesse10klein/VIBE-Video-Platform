@@ -377,7 +377,6 @@ router.post('/password-recovery/:username', tools.asyncHandler(async (req, res) 
   }
 
   const match = await passwordVerify.findOne({where: {username: req.params.username}});
-  console.log(req.params.verifyID);
   if (match == null) {
     res.redirect('/');
     return;
@@ -425,7 +424,6 @@ router.post('/fetch-notifications', tools.asyncHandler(async (req, res) => {
     const user = await UserInfo.findOne({where: {username: userNotifications[i].user}});
     if (userNotifications[i].notificationType != "Subscribe") {
       const video = await Video.findOne({where: {id: userNotifications[i].contentID}});
-      console.log(video);
       const notif = {
         read: userNotifications[i].read,
         id: userNotifications[i].id,

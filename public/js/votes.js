@@ -53,7 +53,7 @@ function processVideoVote(item) {
 
   //Check if user is logged in
   if (getCookie("username") == "") {
-    loginAlert($(item), "You must login to vote on a video");
+    loginAlert("You must login to vote on a video");
     return;
   }
   votePostRequest(pathname, primary, secondary)
@@ -63,7 +63,7 @@ function processCommentVote(item) {
 
   //Check if user is logged in
   if (getCookie("username") == "") {
-    loginAlert($(item), "You must login to vote on a comment");
+    loginAlert("You must login to vote on a comment");
     return;
   }
 

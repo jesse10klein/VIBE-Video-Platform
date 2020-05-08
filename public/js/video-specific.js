@@ -237,7 +237,7 @@ return html;
 function toggleReplyBox(item) {
 
   if (getCookie("username") == "") {
-    loginAlert($(item), {message: "You must login to reply to comments"});
+    loginAlert("You must login to reply to comments");
     return;
   }
 
@@ -258,7 +258,7 @@ function processSubscribe() {
   const subs = document.getElementById("subCount");
 
   if (getCookie("username") == "") {
-    loginAlert($('#subscribeButton'), "Please login to subscribe");
+    loginAlert("Please login to subscribe");
     return;
   }
 
@@ -394,7 +394,7 @@ function deleteComment(element) {
 function processBookmark() {
   
   if (getCookie("username") == "") {
-    loginAlert($('#bookmark'), "Please log in to bookmark this video");
+    loginAlert("Please log in to bookmark this video");
     return;
   }
   const path = window.location.pathname + '/bookmark-video';
