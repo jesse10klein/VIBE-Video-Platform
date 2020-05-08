@@ -13,6 +13,7 @@ if recentMessages
           .flexDiv
             img.pp(src=`/images/user-thumbs/${message.imageURL}`, alt="Image couldn't be found")
             .messageInfo
+              p.sidebarMessageID= message.id
               h1= message.toUser
               h3= message.message
               if message.sentByUser
@@ -23,6 +24,7 @@ if recentMessages
           .flexDiv.unopened
             img.pp(src=`/images/user-thumbs/${message.imageURL}`, alt="Image couldn't be found")
             .messageInfo
+              p.sidebarMessageID= message.id
               h1= message.toUser
               h3= message.message
               if message.sentByUser

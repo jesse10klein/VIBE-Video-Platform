@@ -623,7 +623,6 @@ async function getRecentMessages(username) {
     }
   });
 
-  const usersToFill = 100;
   let usersFilled = [];
   let recentMessages = [];
 
@@ -634,9 +633,6 @@ async function getRecentMessages(username) {
     }
     usersFilled.push(user);
     recentMessages.push(messages[i]);
-    if (usersFilled.length >= usersToFill) {
-      break;
-    }
   }
 
   //Time to format messages

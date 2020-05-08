@@ -8,11 +8,20 @@ body {
     justify-content: left;
 }
 
+.sidebarMessageID {
+    display: none;
+}
+
 #sidebar {
+    position: fixed;
     height: 90vh;
     width: 250px;
     text-align: center;
     border-right: 3px solid black;
+}
+
+#content {
+    margin-left: 300px;
 }
 
 #searchTitle {

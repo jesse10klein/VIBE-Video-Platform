@@ -1,5 +1,7 @@
 console.log("universal.js")
 
+//pollForUpdates();
+
 /*
     This file is to be run in the background of all routes!
     Contains polling functions to fetch notifications and new messages
@@ -69,8 +71,6 @@ function pollForUpdates() {
     }
   });
 }
-
-pollForUpdates();
 
 function fetchNotifications() {
 

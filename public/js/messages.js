@@ -1,5 +1,10 @@
 console.log("messages.js");
 
+//Don't poll for specific messages if we're on the home page
+// if (window.location.pathname != "/messages/home") {
+//   pollForMessages();
+// }
+// pollAllMessages();
 
 window.onresize = resizeContent;
 window.onload = resizeContent; 
@@ -30,21 +35,22 @@ function resizeContent() {
    content.style.width = width + "px";
 };
 
-function formatMessageHTML(messageText, sentByUser) {
+function formatMessageHTML(message, sentByUser) {
 
   let HTML = "";
   if (sentByUser) {
     HTML = `
       <div class="convoMessage">
-        <p class="sentByUser"> ${messageText} </p>
+        <p class="sentByUser"> ${message.message} </p>
+        <p class="messageID">${message.id}</p>
       </div>
     
     `;
   } else {
     HTML = `
     <div class="convoMessage">
-      <p class="sentByOther"> ${messageText.message} </p>
-      <p class="messageID"> ${messageText.id} </p>
+      <p class="sentByOther"> ${message.message} </p>
+      <p class="messageID"> ${message.id} </p>
     </div>
   
     `;
@@ -77,7 +83,7 @@ function sendMessage() {
         updateSidebarMessageUtility(message, "opened");
 
         //Add to conversation
-        const node = $($.parseHTML(formatMessageHTML(message.message, true)));
+        const node = $($.parseHTML(formatMessageHTML(message, true)));
         (node).insertAfter(form);
         //Empty comment box
         $('#message').val("");
@@ -91,12 +97,21 @@ function formatSidebarMessage(message, type) {
       <div class="flexDiv ${type}">
         <img class="pp" src="${message.imageURL}"> </img>
         <div class="messageInfo">
+          <p class="sidebarMessageID">${message.id}</p>
           <h1>${message.toUser}</h1>
           <h3>${message.message}</h3>`
           if (message.sentByUser) {
-            HTML += `<p> Sent Just now </p>`
+            if (message.formattedTimeSince) {
+              HTML += `<p> Sent ${message.formattedTimeSince}</p>`
+            } else {
+              HTML += `<p> Sent Just now </p>`
+            }
           } else {
-            HTML += `<p> Recieved Just now </p>`
+            if (message.formattedTimeSince) {
+              HTML += `<p> Recieved ${message.formattedTimeSince}</p>`
+            } else {
+              HTML += `<p> Recieved Just now </p>`
+            }
           }
         HTML += `</div>
       </div>
@@ -190,13 +205,6 @@ function pollAllMessages() {
   });
 }
 
-
-//Don't poll for specific messages if we're on the home page
-if (window.location.pathname != "/messages/home") {
-  pollForMessages();
-}
-pollAllMessages();
-
 $("#search-users").on('keyup', function () {
 
   const searchTerm = $("#search-term").val();
@@ -247,3 +255,89 @@ function updateAutoComplete(response) {
     dd.css("display", "none");
   }, 10000);
 }
+
+/****DYNAMIC LOADING ON SCROLL****/
+//Start with 5 recent messages and 10 convo messages, then load 5 and 10 respectively on scroll
+
+//Makes sure the server doesn't get bombarded with scroll requests
+let windowScrollAlert = false;
+let sidebarScrollAlert = false;
+
+//Handle dynamically loading of sidebar messages
+$("#messages").scroll(function(){
+
+  if (sidebarScrollAlert) return;
+  sidebarScrollAlert = true;
+
+  const lastSidebarMessage = $("#messages .message").last();
+  var sidebarMessageID = lastSidebarMessage.find(".sidebarMessageID").text();
+  console.log(sidebarMessageID);
+  if (lastSidebarMessage.length != 0) {
+    var messageBottom = lastSidebarMessage.get(0).getBoundingClientRect().bottom;
+    if (window.innerHeight > (messageBottom - 100)) {
+
+      console.log("Fetching new sidebar messages");
+
+      const url = window.location.pathname + "/get-sidebar-messages";
+      const data = { sidebarMessageID };
+
+      $.ajax({
+        url, type: "POST", data,
+        success: function(response) {
+
+          const username = getCookie("username");
+
+          for (let i = 0; i < response.length; i++) {
+            const sidebarMessage = response[i];
+
+            const read = (sidebarMessage.read || sidebarMessage.sender == username);
+            let HTML = "";
+            if (read) {
+              HTML = formatSidebarMessage(sidebarMessage, "opened");
+            } else {
+              HTML = formatSidebarMessage(sidebarMessage, "unopened");
+            }
+            const sidebarNode = $($.parseHTML(HTML));
+            $("#messages").append(sidebarNode);
+          }
+        }
+      })
+    }
+  }
+  setTimeout(function () {sidebarScrollAlert = false}, 100);
+});
+
+//Handle dynamic loading of conversation messages
+window.addEventListener('scroll', () => {
+
+  if (windowScrollAlert) return;
+
+  const lastMessage = $(".convoMessage").last();
+  var messageID = lastMessage.find(".messageID").text();
+
+  if (!(lastMessage.length == 0)) {
+    if (($(document).height() - $(window).scrollTop() - $(window).height()) < 100) {
+
+      console.log("Loading more conversation messages");
+      windowScrollAlert = true;
+
+      const url = window.location.pathname + "/get-conversation-messages";
+      const data = { messageID };
+
+      $.ajax({
+        url, type: "POST", data,
+        success: function(response) {
+
+          for (let i = 0; i < response.length; i++) {
+            const form = $("#message-form");
+            const sentByUser = getCookie("username" == response[i].sender);
+            $('#content').append(formatMessageHTML(response[i], sentByUser));
+            
+          }
+          setTimeout(() => windowScrollAlert = false, 100);
+        }
+      })
+    }
+  }
+  
+})

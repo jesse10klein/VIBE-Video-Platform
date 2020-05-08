@@ -32,7 +32,11 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   const { user } = req.params;
 
   if (user == "home") {
-    const recentMessages = await tools.getRecentMessages(username);
+    let recentMessages = await tools.getRecentMessages(username);
+    //Only load first 5 messages
+    if (recentMessages.length > 5) {
+      recentMessages = recentMessages.slice(0, 5);
+    }
     res.render("messageViews/messages", {recentMessages, username});
     return;
   }
@@ -68,6 +72,11 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   messages = messages.concat(messages2);
   messages.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
 
+  //Only load first 10 messages
+  if (messages.length > 10) {
+    messages = messages.slice(0, 10);
+  }
+
 
   //Format messages
   for (let i = 0; i < messages.length; i++) {
@@ -80,7 +89,11 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
     }
   }
 
-  const recentMessages = await tools.getRecentMessages(username);
+  let recentMessages = await tools.getRecentMessages(username);
+  //Only load first 5 messages
+  if (recentMessages.length > 5) {
+    recentMessages = recentMessages.slice(0, 5);
+  }
 
   res.render("messageViews/messages", {username, recentMessages, messages, findUser});
 }));
@@ -197,5 +210,129 @@ router.post('/:user/poll-for-all-messages', tools.asyncHandler(async (req, res) 
 
   res.send({messages: filteredMessages});
 }));
+
+//Get more sidebar messages for user
+router.post('/:user/get-sidebar-messages', tools.asyncHandler(async (req, res) => {
+
+  console.log("Getting sidebar messages");
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  const { sidebarMessageID } = req.body;
+    
+  let nextMessages = await tools.getRecentMessages(username);
+  //Only get next messages after ID 
+  for (let i = 0; i < nextMessages.length; i++) {
+    if (nextMessages[i].id == sidebarMessageID) {
+      nextMessages = nextMessages.splice(i + 1);
+      break;
+    } else {
+      if (i == nextMessages.length - 1) {
+        nextMessages = [];
+      }
+    }
+  }
+
+  //Only load next 5 messages
+  if (nextMessages.length > 5) {
+    nextMessages = nextMessages.slice(0, 5);
+  }
+
+  //Format messages
+  let formattedMessages = [];
+  for (let i = 0; i < nextMessages.length; i++) {
+    const sent = username == nextMessages[i].sender;
+    const toUser = sent ? nextMessages[i].recipient : nextMessages[i].sender;
+    const messageUser = await UserInfo.findOne({where: {username: toUser}});
+    const imageURL = `/images/user-thumbs/${messageUser.imageURL}`;
+    formattedMessage = {
+      toUser, imageURL, id: nextMessages[i].id,
+      message: nextMessages[i].message,
+      recipient: nextMessages[i].recipient,
+      sender: nextMessages[i].sender,
+      formattedTimeSince: tools.formatTimeSince(nextMessages[i].createdAt),
+      sentByUser: username == nextMessages[i].sender
+    }
+    formattedMessages.push(formattedMessage);
+  }
+
+
+  res.send(formattedMessages);
+
+}));
+
+//Get more conversation messages for user
+router.post('/:user/get-conversation-messages', tools.asyncHandler(async (req, res) => {
+
+  console.log("Getting conversation messages");
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  const { messageID } = req.body;
+  const { user } = req.params;
+     
+  const findUser = await UserInfo.findOne({where: {username: user}});
+  if (findUser == null) {
+    res.redirect('/');
+    return;
+  }
+
+  //Get messages to and from user
+  let messages = await Message.findAll({
+    order: [["createdAt", "DESC"]],
+    where: {
+      [Op.and]: {
+        sender: username, 
+        recipient: user
+      }
+    }
+  });
+
+  let messages2  = await Message.findAll({
+    order: [["createdAt", "DESC"]],
+    where: {
+      [Op.and]: {
+        sender: user, 
+        recipient: username
+      }
+    }
+  });
+  messages = messages.concat(messages2);
+  messages.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
+
+  for (let i = 0; i < messages.length; i++) {
+    if (messages[i].id == messageID) {
+      messages = messages.splice(i + 1);
+      break;
+    } else {
+      if (i == messages.length - 1) {
+        messages = [];
+      }
+    }
+  }
+
+  //Format messages
+  for (let i = 0; i < messages.length; i++) {
+    messages[i].formattedTimeSince = tools.formatTimeSince(messages[i].createdAt);
+    messages[i].sentByUser = (username == messages[i].sender);
+    
+    if (!messages[i].read && !message[i].senybyUser) { //HERE ERROR
+      console.log("Updating read status");
+      await messages[i].update({read: true});
+    }
+  }
+
+  res.send(messages);
+
+}));
+
 
 module.exports = router;
