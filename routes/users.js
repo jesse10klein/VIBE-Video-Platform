@@ -57,6 +57,8 @@ router.post('/reset-password', tools.asyncHandler(async (req, res) => {
 
   const user = await UserInfo.findOne({where: {email}});
   
+  var URL = req.protocol + '://' + req.get('host');
+
   if (user == null) {
     res.render("userViews/password-recovery", {error: "The email entered is not in the system", username});
     return;
@@ -64,7 +66,7 @@ router.post('/reset-password', tools.asyncHandler(async (req, res) => {
 
   const generatedID = await tools.generateRandomString();
 
-  const mailOptions = tools.getMailOptions(user, `http://localhost:3000/users/password-recovery/${generatedID}`);
+  const mailOptions = tools.getMailOptions(user, `${URL}/users/password-recovery/${generatedID}`);
   transporter.sendMail(mailOptions, async (error, info) => {
     if (error) {
       res.render("userViews/password-recovery", {error: `An error occurred. Please try again later \n Error: ${error}`, username});
@@ -329,11 +331,13 @@ router.get('/:user/bookmarked-videos', tools.asyncHandler(async (req, res) => {
   let videos = [];
   for (let i = 0; i < bookmarks.length; i++) {
       //Find video corresponding to each bookmark
-      const video = await Video.findOne({where: {
+      let video = await Video.findOne({where: {
           id: bookmarks[i].videoID
       }});
+      video = await tools.formatVideo(video);
       videos.push(video);
   }
+  console.log(videos);
 
   if (videos.length == 0) {
       videos = null;

@@ -24,7 +24,7 @@ const users = [
     email: 'spaceyjane@gmail.com',
     imageURL: 'spaceyjane.jpg',
     bannerURL: 'spaceyjane.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '2',
@@ -33,7 +33,7 @@ const users = [
     email: 'clairo@gmail.com',
     imageURL: 'clairo.jpg',
     bannerURL: 'clairo.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '3',
@@ -42,7 +42,7 @@ const users = [
     email: 'catfish@gmail.com',
     imageURL: 'catfish.jpg',
     bannerURL: 'catfish.png',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   }, 
   {
     id: '4',
@@ -51,7 +51,7 @@ const users = [
     email: 'middlekids@gmail.com',
     imageURL: 'middlekids.jpg',
     bannerURL: 'middlekids.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '5',
@@ -60,7 +60,7 @@ const users = [
     email: 'twodoor@gmail.com',
     imageURL: 'twodoor.jpg',
     bannerURL: 'twodoor.png',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '6',
@@ -69,7 +69,7 @@ const users = [
     email: 'muramasa@gmail.com',
     imageURL: 'muramasa.jpg',
     bannerURL: 'muramasa.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '7',
@@ -78,7 +78,7 @@ const users = [
     email: 'sancisco@gmail.com',
     imageURL: 'sancisco.jpg',
     bannerURL: 'sancisco.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '8',
@@ -87,7 +87,7 @@ const users = [
     email: 'stella@gmail.com',
     imageURL: 'stella.jpg',
     bannerURL: 'stella.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '9',
@@ -96,7 +96,7 @@ const users = [
     email: 'jesse@gmail.com',
     imageURL: 'default.png',
     bannerURL: 'default.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '10',
@@ -105,7 +105,7 @@ const users = [
     email: 'jesse1@gmail.com',
     imageURL: 'default.png',
     bannerURL: 'default.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '11',
@@ -114,7 +114,7 @@ const users = [
     email: 'jesse2@gmail.com',
     imageURL: 'default.png',
     bannerURL: 'default.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '12',
@@ -123,7 +123,7 @@ const users = [
     email: 'jesse3@gmail.com',
     imageURL: 'default.png',
     bannerURL: 'default.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '13',
@@ -132,7 +132,7 @@ const users = [
     email: 'channel@gmail.com',
     imageURL: 'channel.jpg',
     bannerURL: 'channel.png',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '14',
@@ -141,7 +141,7 @@ const users = [
     email: 'joji@gmail.com',
     imageURL: 'joji.jpg',
     bannerURL: 'joji.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '15',
@@ -150,7 +150,7 @@ const users = [
     email: 'oliver@gmail.com',
     imageURL: 'oliver.jpg',
     bannerURL: 'oliver.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '16',
@@ -159,7 +159,7 @@ const users = [
     email: 'rexorange@gmail.com',
     imageURL: 'rex.jpg',
     bannerURL: 'rex.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '17',
@@ -168,7 +168,7 @@ const users = [
     email: 'rumjungle@gmail.com',
     imageURL: 'rumjungle.jpg',
     bannerURL: 'rumjungle.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   },
   {
     id: '18',
@@ -177,7 +177,7 @@ const users = [
     email: 'tameimpala@gmail.com',
     imageURL: 'tame.jpg',
     bannerURL: 'tame.jpg',
-    subscriberCount: "696969"
+    subscriberCount: "0"
   }
 ]
 
@@ -190,9 +190,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'goodforyou.mp4',
     tags: "video`live`laneway`music`indie`australian`spacey jane",
-    views: "7526",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '2',
@@ -202,9 +202,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'goodgrief.mp4',
     tags: "video`live`laneway`music`indie`australian`spacey jane",
-    views: "11645",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '3',
@@ -214,9 +214,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'headcold.mp4',
     tags: "video`music`indie`spacey jane`australian",
-    views: "506",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '5',
@@ -226,9 +226,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'seasonsgreetings.mp4',
     tags: "video`live`music`indie`stella donnelly`australian",
-    views: "971",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '6',
@@ -238,9 +238,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Catfish and the Bottlemen - 7 (Live From Manchester Arena)_s1n5R-FmHYw_240p.mp4',
     tags: "video`music`live`manchester`arena`english`catfish and the bottlemen",
-    views: "572681",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '7',
@@ -250,9 +250,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Catfish and the Bottlemen - Pacifier (Live From Manchester Arena)_EAO3OjF7eW8_240p.mp4',
     tags: "video`music`live`manchester`arena`english`catfish and the bottlemen",
-    views: "157953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '8',
@@ -262,9 +262,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Clairo - 4EVER_tlGUom_AV4o_240p.mp4',
     tags: "video`music`clairo",
-    views: "2458605",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '9',
@@ -274,9 +274,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - CUCO x CLAIRO - DROWN (Official Audio)__1VyGyWpQpU_360p.mp4',
     tags: "video`music`clairo",
-    views: "468245",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '10',
@@ -286,9 +286,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Encore_ZV_5mWg_RhI_360p.mp4',
     tags: "video`music`encore`catfish and the bottlemen",
-    views: "8052458",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '11',
@@ -298,9 +298,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Middle Kids -  Edge of Town_cFWqLLaMOFs_360p.mp4',
     tags: "`video`music`indie`middle kids`",
-    views: "57682",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '12',
@@ -310,9 +310,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Mura Masa - Deal Wiv It with slowthai (Official Video)_F0uvt97Xn20_360p.mp4',
     tags: "video`music`english`mura masa",
-    views: "13572953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '13',
@@ -322,9 +322,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - San Cisco - Awkward_ukNOaKeUEQY_360p.mp4',
     tags: "video`music`indie`australian`san cisco",
-    views: "15762",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '14',
@@ -334,9 +334,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: "y2mate.com - San Cisco 'Skin' (Official Music Video)_FHwFEE8od7M_360p.mp4",
     tags: "video`music`indie`australian`san cisco",
-    views: "65785",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '15',
@@ -346,9 +346,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - TWO DOOR CINEMA CLUB _ UNDERCOVER MARTYN_LLK4oaXUuLg_360p.mp4',
     tags: "video`music`english`two door cinema club",
-    views: "23759862",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '16',
@@ -358,9 +358,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Two Door Cinema Club- What You Know (Live) Reading Festival 2011_nIL36WfxVx0_240p.mp4',
     tags: "video`music`english`two door cinema club",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '17',
@@ -370,9 +370,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Channel Tres - Controller_EtNIMvyEIQA_360p.mp4',
     tags: "video`music`american`channel tres",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '18',
@@ -382,9 +382,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Channel Tres - Topdown (Official Video)_8pReEUxHxJM_240p.mp4',
     tags: "video`music`american`channel tres",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '19',
@@ -394,9 +394,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Joji - Gimme Love (Official Video)_jPan651rVMs_240p.mp4',
     tags: "video`music`american`joji",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '20',
@@ -406,9 +406,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Joji - Run (Official Video)_K09_5IsgGe8_240p.mp4',
     tags: "video`music`american`joji",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '21',
@@ -418,9 +418,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Joji - Sanctuary (Official Video)_YWN81V7ojOE_240p.mp4',
     tags: "video`music`american`joji",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '22',
@@ -430,9 +430,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Oliver Tree - Let Me Down [Official Music Video]_FxG-7AsbjeI_240p.mp4',
     tags: "video`music`american`oliver tree",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '23',
@@ -442,9 +442,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Oliver Tree - Miracle Man [Official Music Video]_EBLF26-Irdc_240p.mp4',
     tags: "video`music`american`oliver tree",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '24',
@@ -454,9 +454,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Rex Orange County - Loving is Easy (feat. Benny Sings) [Official Video]_39IU7ADaXmQ_240p.mp4',
     tags: "video`music`english`rex orange county",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '25',
@@ -466,9 +466,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Rex Orange County - Sunflower_Z9e7K6Hx_rY_240p.mp4',
     tags: "video`music`english`rex orange county",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '26',
@@ -478,9 +478,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Rum Jungle - Keep_XGyJEPU5Rmw_240p.mp4',
     tags: "video`music`australia`rum jungle",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '27',
@@ -490,9 +490,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Tame Impala - It Might Be Time (Official Audio)_4hZ_wTx_kWg_240p.mp4',
     tags: "video`music`australian`tame impala",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   },
   {
     id: '28',
@@ -502,9 +502,9 @@ const videos = [
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy`,
     videoURL: 'y2mate.com - Tame Impala - Lost in Yesterday (Official Video)_utCjuKDXQsE_240p.mp4',
     tags: "video`music`australian`tame impala",
-    views: "12578953",
-    upvotes: "45693",
-    downvotes: "462"
+    views: "0",
+    upvotes: "0",
+    downvotes: "0"
   }
 ]
 

@@ -601,7 +601,6 @@ function scoreVideo(searchTerm, video) {
     }
   }
 
-
   const viewRating = (video.viewCount / 1000000);
   const likeRating = (video.upvotes / 100000); 
 
@@ -654,8 +653,60 @@ async function getRecentMessages(username) {
 
 }
 
+//This function provides a rating for a video purely based on its interactivity
+async function videoStandardScore(video) {
+
+  const viewScore = (video.viewCount / 10);
+  const likeScore = (video.upvotes / 2);
+  const comments = await Comments.findAll({where: {videoID: video.id}});
+  const commentScore = (comments.length / 10);
+  return viewScore + likeScore + commentScore;
+}
+
+async function getSidebarVideos(username) {
+
+  
+
+  //Get videos for sidebar: for now just any videos
+  let videos = await Video.findAll({order: [["createdAt", "DESC"]]});
+
+  if (username == null) {
+    //FORMAT THESE VIDEOS (TITLE, VIEWS, UPLOAD)
+    for (let i = 0; i < videos.length; i++) {
+      videos[i].formattedTitle = formatTitle(videos[i].title);
+      videos[i].formattedViews = formatViews(videos[i].viewCount);
+      videos[i].formattedUploadDate = formatTimeSince(videos[i].createdAt);
+    }
+    return videos;
+  }
+
+  for (let i = 0; i < videos.length; i++) {
+    const sub = await Subscriptions.findOne({where: {user: videos[i].uploader, subscriber: username}});
+   
+    videos[i].score = await (videoStandardScore(videos[i]));
+    if (sub != null) {
+      videos[i].score *= 1.5;
+    }
+  }
+
+  
+  videos.sort((a, b) => (a.score < b.score) ? 1 : -1);
+  for (let i = 0; i < videos.length; i++) {
+    //console.log(videos[i].title + ", Score: " + videos[i].score);
+  }
+
+  //FORMAT THESE VIDEOS (TITLE, VIEWS, UPLOAD)
+  for (let i = 0; i < videos.length; i++) {
+    videos[i].formattedTitle = formatTitle(videos[i].title);
+    videos[i].formattedViews = formatViews(videos[i].viewCount);
+    videos[i].formattedUploadDate = formatTimeSince(videos[i].createdAt);
+  }
+
+  return videos;
+}
+
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
   convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo, getMailOptions,
-  generateRandomString, parseTags, scoreVideo, getRecentMessages};
+  generateRandomString, parseTags, scoreVideo, getRecentMessages, getSidebarVideos};

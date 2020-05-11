@@ -51,6 +51,7 @@ function getSidebarVideos(data) {
   $.ajax({
     url, type: "POST", data, dataType: 'json',
     success: function(response) {
+      console.log(response);
       if (response.videos.length > 0) {
         addVideos(response);
       }
@@ -142,6 +143,11 @@ function loadReplies(element) {
   const commentID = element.classList[0];
   const url = window.location.pathname + '/reply-payload/' + sortingType;
   const data = {commentID};
+
+  //Delete replies made on the page before clicking button
+  while($(element).next().hasClass('reply')) {
+    $(element).next().remove();
+  }
 
   $.ajax({
     url, type: "POST", data, dataType: 'json',

@@ -37,5 +37,5 @@
       button.post-reply(onClick="postReply(this)")= "Reply"
 
     if comment.numReplies
-      button(class=`${comment.id}` onclick="loadReplies(this)")= `Load ${comment.numReplies} replies`
+      button(class=`${comment.id} repliesButton` onclick="loadReplies(this)")= `Load ${comment.numReplies} replies`
       

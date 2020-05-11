@@ -94,11 +94,13 @@ router.post('/:id/add-comment', tools.asyncHandler(async (req, res) => {
 
 //Sorting comments under video
 router.get('/:id', tools.asyncHandler(async (req, res) => {
-    
+
   let video = await Video.findByPk(req.params.id);
   if (video == null) {
     res.render("404", {message: "The video you have requested does not exist"});
   }
+
+  const {username} = req.session;
 
   video.formattedTags = tools.parseTags(video.tags);
 
@@ -116,19 +118,9 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   //Make uploader sub count readable
   uploader.formattedSubscriberCount = tools.formatViews(uploader.subscriberCount);
 
-  //Get videos for sidebar: for now just any videos
-  let videos = await Video.findAll({order: [["createdAt", "DESC"]]});
-  //Only select first 10 videos
+  let videos = await tools.getSidebarVideos(username);
   if (videos.length > 10) {
-    videos = videos.splice(0, 10);
-  }
-
-
-  //FORMAT THESE VIDEOS (TITLE, VIEWS, UPLOAD)
-  for (let i = 0; i < videos.length; i++) {
-    videos[i].formattedTitle = tools.formatTitle(videos[i].title);
-    videos[i].formattedViews = tools.formatViews(videos[i].viewCount);
-    videos[i].formattedUploadDate = tools.formatTimeSince(videos[i].createdAt);
+    videos = videos.slice(0, 10);
   }
 
   //Format date for video
@@ -137,7 +129,6 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   video.formattedUpvotes = tools.formatViews(video.upvotes);
   video.formattedDownvotes = tools.formatViews(video.downvotes);
 
-  const {username} = req.session;
 
   //Get comments
   let comments = await tools.getCommentsForVideo(req.params.id, username, "new");
@@ -153,8 +144,6 @@ router.get('/:id', tools.asyncHandler(async (req, res) => {
   if (comments.length > 1) {
     comments = comments.splice(0, 1);
   }
-
-
 
   //Check if user is subscribed to the uploader
   let subscribed = false;
@@ -512,11 +501,16 @@ router.post('/:videoID/edit-comment/', tools.asyncHandler(async (req, res) => {
 //Deliver more sidebar videos
 router.post('/:id/video-payload/', tools.asyncHandler(async (req, res) => {
 
+  const { username } = req.session;
+
   //Get videos for sidebar: for now just any videos
-  let videos = await Video.findAll({order: [["createdAt", "DESC"]]});
+  let videos = await tools.getSidebarVideos(username);
+  console.log(req.body.lastVideoID);
+  console.log(videos.length);
 
   //Loop through until find id
   for (let i = 0; i < videos.length; i++) {
+    console.log(videos[i].id);
     if (videos[i].id == req.body.lastVideoID) {
       videos = videos.splice(i + 1);
       break;
@@ -528,6 +522,7 @@ router.post('/:id/video-payload/', tools.asyncHandler(async (req, res) => {
   }
 
   videosToSend = tools.convertVideosAjax(videos);
+  console.log(videosToSend);
 
   res.send({videos: videosToSend})
 }));

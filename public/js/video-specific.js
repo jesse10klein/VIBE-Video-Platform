@@ -137,7 +137,10 @@ function postReply(item) {
         console.log(response);
         const replyFormatted = formatReplyHTML(response.comment, response.imageURL);
         const node = $($.parseHTML(replyFormatted))
-        const comment = $(replyComment.nextElementSibling);
+        let comment = $(replyComment.nextElementSibling);
+        if (comment.next().hasClass('repliesButton')) {
+          comment = comment.next();
+        }
         (node).insertAfter(comment);
       }
   })
