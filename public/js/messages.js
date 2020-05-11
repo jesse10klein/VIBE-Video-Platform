@@ -1,10 +1,10 @@
 console.log("messages.js");
 
 //Don't poll for specific messages if we're on the home page
-// if (window.location.pathname != "/messages/home") {
-//   pollForMessages();
-// }
-// pollAllMessages();
+if (window.location.pathname != "/messages/home") {
+  pollForMessages();
+}
+pollAllMessages();
 
 window.onresize = resizeContent;
 window.onload = resizeContent; 

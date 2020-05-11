@@ -1,6 +1,6 @@
 console.log("universal.js")
 
-//pollForUpdates();
+pollForUpdates();
 
 /*
     This file is to be run in the background of all routes!

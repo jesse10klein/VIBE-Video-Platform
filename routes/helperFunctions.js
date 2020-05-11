@@ -647,6 +647,13 @@ async function getRecentMessages(username) {
     recentMessages[i].sentByUser = (username == recentMessages[i].sender);
     recentMessages[i].toUser = user;
     recentMessages[i].displayRead = recentMessages[i].sentByUser || recentMessages[i].read;
+    if (recentMessages[i].message.length > 37) {
+      recentMessages[i].message = recentMessages[i].message.slice(0, 34) + "...";
+    }
+    if (recentMessages[i].toUser.length > 16) {
+      recentMessages[i].toUser = recentMessages[i].toUser.slice(0, 13) + "...";
+    }
+    
   }
 
   //Only return 5 most recent messages

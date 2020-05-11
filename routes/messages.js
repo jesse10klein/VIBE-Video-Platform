@@ -25,7 +25,7 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
 
   const { username } = req.session;
   if (username == null) {
-    res.redirect("/");
+    res.redirect("/users/login");
     return;
   }
 

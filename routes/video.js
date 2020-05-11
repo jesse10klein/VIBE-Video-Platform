@@ -29,6 +29,7 @@ router.get('/hot', tools.asyncHandler(async (req, res) => {
   let videos = await Video.findAll({ 
     order: [["viewCount", "DESC"]]
   });
+
   if (videos.length == 0) {
     videos = null;
   } else {
@@ -36,7 +37,7 @@ router.get('/hot', tools.asyncHandler(async (req, res) => {
       video = await tools.formatVideo(video);
     }
   }
-  if (videos.length > 8) {
+  if (videos != null && videos.length > 8) {
     videos = videos.slice(0, 8);
   }
 
