@@ -7,5 +7,7 @@
                 img.uploaderPhoto(src=`/images/user-thumbs/${video.imageURL}`)
               .formatDiv
                 h2= video.uploader
-                h3= `${video.formattedViewCount} Views`
+                .flexDiv
+                  h3= `${video.formattedViewCount} Views`
+                  h3.percentage= `${video.likePercentage}% 👍`
                 h3= `Uploaded ${video.timeSince}`

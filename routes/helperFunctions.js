@@ -59,6 +59,10 @@ async function formatVideo(video) {
   video.imageURL = user.imageURL;
   video.formattedViewCount = formatViews(video.viewCount);
   video.timeSince = formatTimeSince(video.createdAt);
+  video.likePercentage = Math.ceil(video.upvotes / (video.upvotes + video.downvotes)) * 100;
+  if (video.upvotes == 0 && video.downvotes == 0) {
+    video.likePercentage = 100;
+  }
   return video;
 }
 

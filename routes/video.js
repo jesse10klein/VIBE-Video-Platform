@@ -22,6 +22,28 @@ router.use(cookieParser());
 
 
 
+router.get('/hot', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+
+  let videos = await Video.findAll({ 
+    order: [["viewCount", "DESC"]]
+  });
+  if (videos.length == 0) {
+    videos = null;
+  } else {
+    for (video of videos) {
+      video = await tools.formatVideo(video);
+    }
+  }
+  if (videos.length > 8) {
+    videos = videos.slice(0, 8);
+  }
+
+  res.render("videoViews/video", {videos, username, message: "No hot videos right now", title: "The hottest videos today"});
+
+}));
+
 //Home VIDEO route
 router.get('/', tools.asyncHandler(async (req, res) => {
 
@@ -37,7 +59,7 @@ router.get('/', tools.asyncHandler(async (req, res) => {
       video = await tools.formatVideo(video);
     }
   }
-  res.render("videoViews/video", {videos, username});
+  res.render("videoViews/video", {videos, username, message: "No videos have been uploaded yet", title: "Recommended for today"});
 }));
 
 //Send user the subs

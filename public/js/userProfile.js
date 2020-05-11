@@ -27,14 +27,17 @@ function resizeContent() {
 
 function processSubscribe() {
 
-  const subs = document.getElementById("subCount");
+  const subs = document.getElementById("subcount");
   const subButton = document.getElementById('subscribeButton');
 
   if (getCookie("username") == "") {
     window.location = "/users/login";
   }
 
-  fetch( window.location.pathname + '/handle-sub', {method: 'POST'})
+  const parts = window.location.pathname.split("/");
+  const URL = "/" + parts[1] + "/" + parts[2] + "/handle-sub"; 
+
+  fetch(URL, {method: 'POST'})
     .then( response =>  {
       if(response.ok) {
         return response.json();

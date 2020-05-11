@@ -8,6 +8,18 @@ block style
 
 block content
 
+  #videoFiltering
+    p= "Filter by: "
+    select#filterOptions
+      option(value="popular")= "Popular"
+      option(value="new")= "New"
+      option(value="controversial")= "Controversial"
+
+    p= "Sort by: "
+    select#filterType
+      option(value="desc")= "Descending"
+      option(value="asc")= "Ascending"
+
   if videos
     h1#welcome= `Search Results: `
     #video-container

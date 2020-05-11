@@ -337,7 +337,6 @@ router.get('/:user/bookmarked-videos', tools.asyncHandler(async (req, res) => {
       video = await tools.formatVideo(video);
       videos.push(video);
   }
-  console.log(videos);
 
   if (videos.length == 0) {
       videos = null;

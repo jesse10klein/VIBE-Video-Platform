@@ -47,3 +47,8 @@
 #pageTitle {
     text-align: center;
 }
+
+#post-video {
+    width: 150px;
+    margin: auto;
+}

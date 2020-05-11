@@ -2,13 +2,13 @@ extends ../layout
 
 block content
   if videos
-    h1#welcome= `Recommended for today:`
+    h1#welcome= title
     #video-container
       each video in videos  
         include ../templates/video-template
 
   else
-    h1#welcome= "No videos uploaded yet"
+    h1#welcome= message
 
 block style
   link(href='/style/videos.css' rel='stylesheet')
