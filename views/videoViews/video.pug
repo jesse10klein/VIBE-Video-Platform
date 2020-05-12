@@ -5,12 +5,14 @@ block content
     h1#welcome= title
     #video-container
       each video in videos  
-        include ../templates/video-template
+        include ../templates/advanced-video-template
 
   else
     h1#welcome= message
 
 block style
+
+  link(href='/style/templates/advanced-video-template.css' rel="stylesheet")
   link(href='/style/videos.css' rel='stylesheet')
   link(href='/style/templates/video-template.css' rel='stylesheet')
   link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")

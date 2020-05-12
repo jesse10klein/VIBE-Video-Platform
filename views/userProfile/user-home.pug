@@ -3,6 +3,7 @@ extends layout
 block style
   link(href="/style/userProfile/userprofilevideos.css" rel="stylesheet")
   link(href="/style/templates/video-template.css" rel="stylesheet")
+  link(href="/style/templates/advanced-video-template.css" rel="stylesheet")
 
 block content
   h1#title= message
@@ -11,7 +12,7 @@ block content
     if videos
       each video in videos
         .video-preview
-          include ../templates/video-template
+          include ../templates/advanced-video-template
 
     else
       h1= emptyMessage

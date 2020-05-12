@@ -9,13 +9,14 @@ block content
         h1.filterTitle= filter.title
         .videoContainer
           each video in filter.videos
-            include ../templates/video-template
+            include ../templates/advanced-video-template
 
 
   else
     h1#novidMessage= "Videos from your subscriptions will show up here!"
 
 block style
+  link(href='/style/templates/advanced-video-template.css' rel='stylesheet')
   link(href='/style/subscriptions.css' rel='stylesheet')
   link(href='/style/templates/video-template.css' rel='stylesheet')
   link(href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet")

@@ -1,0 +1,21 @@
+
+
+.video-preview
+  a(href=`/video/${video.id}`)
+    video.sidebar-video(src=`/videos/${video.videoURL}#t=2` muted)
+  .header
+    h1.videoTitle= video.title
+    button.videoDD(onclick="handleVideoDropdown(this)")
+    
+  .userInfo
+    a(href=`/users/${video.uploader}`)
+      img.uploaderPhoto(src=`/images/user-thumbs/${video.imageURL}`)
+    .formatDiv
+      h2= video.uploader
+      .flexDiv
+        h3= `${video.formattedViewCount} Views`
+        h3.percentage= `${video.likePercentage}% 👍`
+      h3= `Uploaded ${video.timeSince}`
+  .videoDropDown
+    a= "Add to Bookmarks"
+    a= "Start a watch party"

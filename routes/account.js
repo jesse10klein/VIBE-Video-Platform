@@ -330,6 +330,32 @@ router.get('/verify-email/:verifyID', tools.asyncHandler(async (req, res) => {
 }));
 
 //Edit a certain video
+router.get('/video-manager', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+    if (username == null) {
+        res.redirect('/');
+        return;
+    }
+
+    const user = username;
+
+    const video = null;
+
+    const sidebarVideos = await Video.findAll({where: {uploader: username}});
+    for (let i = 0; i < sidebarVideos.length; i++) {
+        sidebarVideos[i] = await tools.formatVideo(sidebarVideos[i]);
+    }
+    if (sidebarVideos.length == 0) {
+        sidebarVideos = null;
+    }
+    
+    res.render('videoManager/videomanager-specific', { username, user, video, sidebarVideos });
+
+  
+}));
+
+//Edit a certain video
 router.get('/video-manager/:id', tools.asyncHandler(async (req, res) => {
 
     const { username } = req.session;
@@ -347,8 +373,16 @@ router.get('/video-manager/:id', tools.asyncHandler(async (req, res) => {
         tags.pop(tags.length - 1);
     }
 
+    const sidebarVideos = await Video.findAll({where: {uploader: username}});
+    for (let i = 0; i < sidebarVideos.length; i++) {
+        sidebarVideos[i] = await tools.formatVideo(sidebarVideos[i]);
+    }
+    if (sidebarVideos.length == 0) {
+        sidebarVideos = null;
+    }
 
-    res.render('accountViews/videomanager-specific', { username, user, video, tags });
+
+    res.render('videoManager/videomanager-specific', { username, user, video, tags, sidebarVideos });
 
 }));
 

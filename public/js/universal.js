@@ -7,6 +7,15 @@ pollForUpdates();
     Contains polling functions to fetch notifications and new messages
 */
 
+function handleVideoDropdown(element) {
+  const elem = $(element).parent().parent().find(".videoDropDown");
+  if (elem.css("display") == "flex") {
+    elem.css("display", "none");
+  } else {
+    elem.css("display", "flex");
+  }
+}
+
 function parseTags() {
   const tags = $("#myTags").children();
 

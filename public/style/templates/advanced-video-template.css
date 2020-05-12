@@ -1,0 +1,44 @@
+.videoDD:after {
+    content: '\2807';
+    font-size: 30px;
+}
+
+.videoDD:hover {
+    cursor: pointer;
+}
+
+.videoDD {
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    background-color: white;
+}
+
+.videoDropDown {
+    position: relative;
+    top: -60px;
+    left: 230px;
+    display: none;
+    flex-direction: column;
+    background-color: white;
+    z-index: 10;
+    width: 100px;
+}
+
+.videoDropDown a {
+    text-decoration: none;
+    color: black;
+    font-size: 12px;
+    width: 100px;
+    border: 1px solid black;
+}
+
+.videoTitle {
+    width: 250px !important;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

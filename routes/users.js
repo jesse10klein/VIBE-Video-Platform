@@ -181,13 +181,8 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   if (videos.length == 0) {
       videos = null;
   }
-  if (videos != null) {
-    for (video of videos) {
-      const user = await UserInfo.findOne({where: { username: video.uploader }});
-      video.imageURL = user.imageURL;
-      video.formattedViewCount = tools.formatViews(video.viewCount);
-      video.timeSince = tools.formatTimeSince(video.createdAt);
-    }
+  for (let i = 0; i < videos.length; i++) {
+    videos[i] = await tools.formatVideo(videos[i]);
   }
 
   let subscribed = false;
@@ -212,14 +207,10 @@ router.get('/:user/liked-videos', tools.asyncHandler(async (req, res) => {
 
   //GET UPVOTES
   let videos = await userHelp.getVotes(user.username, 1);
-  if (videos != null) {
-    for (video of videos) {
-      const user = await UserInfo.findOne({where: { username: video.uploader }});
-      video.imageURL = user.imageURL;
-      video.formattedViewCount = tools.formatViews(video.viewCount);
-      video.timeSince = tools.formatTimeSince(video.createdAt);
-    }
+  for (let i = 0; i < videos.length; i++) {
+    videos[i] = await tools.formatVideo(videos[i]);
   }
+
   if (videos.length == 0) {
       videos = null;
   }
@@ -246,14 +237,11 @@ router.get('/:user/disliked-videos', tools.asyncHandler(async (req, res) => {
 
   //GET DOWNVOTES
   let videos = await userHelp.getVotes(user.username, 2);
-  if (videos != null) {
-    for (video of videos) {
-      const user = await UserInfo.findOne({where: { username: video.uploader }});
-      video.imageURL = user.imageURL;
-      video.formattedViewCount = tools.formatViews(video.viewCount);
-      video.timeSince = tools.formatTimeSince(video.createdAt);
-    }
+
+  for (let i = 0; i < videos.length; i++) {
+    videos[i] = await tools.formatVideo(videos[i]);
   }
+
 
   if (videos.length == 0) {
       videos = null;

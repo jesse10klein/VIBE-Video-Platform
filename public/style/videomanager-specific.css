@@ -1,9 +1,115 @@
 
-#upload-form {
-    width: 60%;
+
+body {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+
+#sidebar {
+    height: 90vh;
+    width: 200px;
+    text-align: center;
+    border-right: 3px solid black;
+    overflow-y: auto;
+}
+
+
+.video-preview {
+    margin-top: 30px;
+    width: 170px;
+    height: 170px;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 0.5em;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 50px;
+}
+
+.video-preview video {
+    width: 170px;
+    height: 96.2px;
+    border: 2px solid black;
+    background-color: black;
+}
+
+.video-preview a {
+    text-decoration: none;
+    color: black;
+}
+
+.formatDiv h3 {
+    font-size: 10px;
+    margin-top: -12px;
+    text-align: left;
+}
+
+.formatDiv {
+    margin-left: 10px;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: row;
+}
+
+.formatDiv h2 {
+    margin-top: -10px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: left;
+}
+
+
+.videoTitle {
+    font-size: 15px;
+    width: 170px;
+    text-align: left;
+    display: block;
+    overflow: hidden;
+}
+
+.svidinfo {
+    margin-top: -20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: 1.2em;
+}
+
+.uploaderPhoto {
+    margin-top: -10px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 0.5px solid black;
+    object-fit: cover;
+}
+
+.flexDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+.percentage {
+    margin-left: 20px;
+}
+
+
+
+/*******/
+
+#welcome {
+    margin-left: 15%;
+}
+
+#edit-form {
+    width: 70%;
     height: 80%;
     margin-top: 20px;
-    margin-left: 20%;
+    margin-left: 15%;
     text-align: center;
 }
 
@@ -20,14 +126,6 @@
     height: 150px;
 }
 
-#video-upload {
-}
-
-#video-upload input {
-    height: 50px;
-    font-size: 1.5em;
-}
-
 .error {
     margin-left: 10px;
     color: red;
@@ -37,10 +135,6 @@
 .perror {
     display: flex;
     flex-direction: row;
-}
-
-#post-video {
-    display: none;
 }
 
 #pageTitle {

@@ -38,7 +38,9 @@ block content
               button#subscribeButton(onClick="processSubscribe()")= `Subscribe`
           
           button#bookmark(onClick="processBookmark()")= "Bookmark Video"
-          button#share(onClick="processShare()")= "Share"
+          .fb-share-button(data-href="https://infs3202-417cb723.uqcloud.net" data-layout="button" data-size="large")
+            a(target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A8081%2Fvideo&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore")= Share
+
           #voting
             p#upvoteCount= `${video.formattedUpvotes}`
             button#upVote(onclick="processVideoVote(this)")= '👍'
