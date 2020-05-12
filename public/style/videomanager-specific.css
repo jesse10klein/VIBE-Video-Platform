@@ -1,0 +1,53 @@
+
+#upload-form {
+    width: 60%;
+    height: 80%;
+    margin-top: 20px;
+    margin-left: 20%;
+    text-align: center;
+}
+
+.form-element input, .form-element textarea{
+    width: 100%;
+    font-size: 20px;
+}
+
+#title {
+    height: 40px;
+}
+
+#description {
+    height: 150px;
+}
+
+#video-upload {
+}
+
+#video-upload input {
+    height: 50px;
+    font-size: 1.5em;
+}
+
+.error {
+    margin-left: 10px;
+    color: red;
+    font-weight: bolder;
+}
+
+.perror {
+    display: flex;
+    flex-direction: row;
+}
+
+#post-video {
+    display: none;
+}
+
+#pageTitle {
+    text-align: center;
+}
+
+#post-video {
+    width: 150px;
+    margin: auto;
+}

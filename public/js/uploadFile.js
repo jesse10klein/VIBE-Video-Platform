@@ -138,27 +138,6 @@ function updateTime(amountLoaded, percentComplete) {
   return remaining;
 }
 
-function parseTags() {
-  const tags = $("#myTags").children();
-
-  let tagsString = "";
-
-  tags.each(function (index) {
-    let tag = $(this).text();
-    tag = tag.substring(0, tag.length - 1);
-    
-    if (index == 0) {
-      tagsString += tag;
-      return;
-    } 
-    tagsString += '`';
-    tagsString += tag;
-  })
-  tagsString += '`';
-  tagsString += getCookie("username");
-  return tagsString;
-}
-
 function parseFormData() {
 
   //Get form data and send to route... already set up
@@ -171,13 +150,10 @@ function parseFormData() {
 
   let data = {};
 
-
   data.description = $('#description').val();
   data.tags = parseTags();
   data.title = $('#title').val();
   data.videoURL = $("#file1").get(0).files[0].name;
-  console.log($("#file1").get(0).files[0]);
-  return;
   
   const url = window.location.pathname + "/post-upload";
 

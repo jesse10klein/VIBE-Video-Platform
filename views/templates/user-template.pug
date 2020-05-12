@@ -1,0 +1,7 @@
+.userHeader
+  a(href=`/users/${video.username}`)
+    img.userPhoto(src=`/images/user-thumbs/${video.imageURL}`)
+    img.userBanner(src=`/images/user-banners/${video.bannerURL}`)
+  .subdiv
+    a.username(href=`/users/${video.username}`)= `${video.username}`
+    p.subcount= `${video.subscriberCount} Subscribers`

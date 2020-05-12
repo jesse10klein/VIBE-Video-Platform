@@ -10,21 +10,45 @@ block content
 
   #videoFiltering
     p= "Filter by: "
+
     select#filterOptions
-      option(value="popular")= "Popular"
-      option(value="new")= "New"
-      option(value="controversial")= "Controversial"
+      if defaults.popular
+        option(value="popular" selected)= "Popular"
+      else
+        option(value="popular")= "Popular"
+      if defaults.new
+        option(value="new" selected)= "New"
+      else
+        option(value="new")= "New"
+      if defaults.controversial
+        option(value="controversial" selected)= "Controversial"
+      else
+        option(value="controversial")= "Controversial"
+
 
     p= "Sort by: "
     select#filterType
-      option(value="desc")= "Descending"
-      option(value="asc")= "Ascending"
+      if defaults.desc
+        option(value="desc" selected)= "Descending"
+      else
+        option(value="desc")= "Descending"
+      if defaults.asc
+        option(value="asc" selected)= "Ascending"
+      else
+        option(value="asc")= "Ascending"
 
-  if videos
+
+  if searchResults
     h1#welcome= `Search Results: `
     #video-container
-      each video in videos  
-        include templates/video-template
+      each video in searchResults
+        if video.video  
+          include templates/video-template
+        else
+          include templates/user-template
 
   else
     h1#welcome= "Nothing matched your search"
+
+block script
+  script(src="/js/search.js")

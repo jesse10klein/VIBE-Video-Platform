@@ -300,7 +300,6 @@ router.post('/change-password', tools.asyncHandler(async (req, res) => {
    
 }));
 
-
 //Handle verifying a user's email
 router.get('/verify-email/:verifyID', tools.asyncHandler(async (req, res) => {
 
@@ -329,5 +328,60 @@ router.get('/verify-email/:verifyID', tools.asyncHandler(async (req, res) => {
     res.redirect("/account");
 
 }));
+
+//Edit a certain video
+router.get('/video-manager/:id', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+    if (username == null) {
+        res.redirect('/');
+        return;
+    }
+
+    const user = username;
+
+    const video = await Video.findOne({where: {id: req.params.id}});
+
+    const tags = video.tags.split("`");
+    if (tags[tags.length - 1] == "") {
+        tags.pop(tags.length - 1);
+    }
+
+
+    res.render('accountViews/videomanager-specific', { username, user, video, tags });
+
+}));
+
+//Process form data for editing a specific video
+router.post('/video-manager/:id', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect('/');
+    return;
+  }
+
+  const video = await Video.findOne({where: {id: req.params.id}});
+  if (video == null) {
+    res.redirect('/');
+    return;
+  }
+
+  const { title, description, tags } = req.body;
+
+  //CHECK ALL IS VALID
+  const dataCheck = tools.checkUploadData(title, description, tags);
+  if ((dataCheck.length != 0)) {
+    const error = tools.checkForErrors(dataCheck);
+    res.send(error);
+    return;
+  }
+
+  await video.update({title, description, tags});  
+
+  res.sendStatus(200);
+
+}));
+
 
 module.exports = router;

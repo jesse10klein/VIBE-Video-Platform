@@ -84,7 +84,7 @@ input {
 }
 
 .messageInfo {
-    width: 180px;
+    width: 150px;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -104,7 +104,7 @@ input {
     margin: 0;
     margin-top: 5px;
     padding: 0;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .messageInfo h3 {

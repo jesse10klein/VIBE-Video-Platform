@@ -16,33 +16,75 @@ router.use(cookieParser());
 
 var tools = require(path.join(__dirname, 'helperFunctions'));
 
-
 //GET ALL VIDEOS MADE BY THE USER
 router.post('/', tools.asyncHandler( async (req, res) => {
 
-    const { username } = req.session;
-    const { searchTerm } = req.body;
+  const { username } = req.session;
+  const { searchTerm } = req.body;
 
-    let videos = await Video.findAll();
-    for (let i = 0; i < videos.length; i++) {
-        videos[i].rating = tools.scoreVideo(searchTerm, videos[i]);
+  const searchResults = await tools.getSearchResults(searchTerm);
+
+  if (searchResults == null) {
+    res.render("search", {searchResults, username, searchTerm});
+    return;
+  }
+
+  res.render("search", {searchResults, username, searchTerm, defaults: {}});
+}));
+
+
+//GET ALL VIDEOS MADE BY THE USER
+router.get('/:searchTerm/:searchFilter/:searchSort', tools.asyncHandler( async (req, res) => {
+
+  const { username } = req.session;
+  const { searchTerm, searchFilter, searchSort } = req.params;
+
+  const searchResults = await tools.getSearchResults(searchTerm);
+
+  if (searchResults == null) {
+    res.render("search", {searchResults, username, searchTerm});
+    return;
+  }
+
+  const defaults = {};
+
+  if (searchFilter) {
+    if (searchFilter == "popular") {
+      defaults.popular = true;
+      if (searchSort == "asc") {
+        searchResults.sort((a, b) => (a.rating <= b.rating) ? 1 : -1);
+      } else {
+        searchResults.sort((a, b) => (a.rating > b.rating) ? 1 : -1);
+      }
     }
-
-    
-    videos.sort((a, b) => (a.rating < b.rating) ? 1 : -1);
-    for (let i = 0; i < videos.length; i++) {
-        videos[i] = await tools.formatVideo(videos[i]);
-        if (videos[i].rating < 100) {
-            videos = videos.slice(0, i);
-            break;
-        }
+    else if (searchFilter == "controversial") {
+      defaults.controversial = true;
+      if (searchSort == "asc") {
+        searchResults.sort((a, b) => (a.likePercentage >= b.likePercentage) ? 1 : -1);
+      } else {
+        searchResults.sort((a, b) => (a.likePercentage <= b.likePercentage) ? 1 : -1);
+      }
     }
-
-    if (videos.length == 0) {
-        videos = null;
+    else if (searchFilter == "new") {
+      defaults.new = true;
+      if (searchSort == "asc") {
+        searchResults.sort((a, b) => (a.createdAt <= b.createdAt) ? 1 : -1);
+      } else {
+        searchResults.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1);
+      }
     }
+  } else {
+    res.redirect("404", {message: "Not found"});
+    return;
+  }
 
-    res.render("search", {videos, username, searchTerm});
+  if (searchSort == "asc") {
+    defaults.asc = true;
+  } else {
+    defaults.desc = true;
+  }
+
+  res.render("search", {searchResults, username, searchTerm, defaults});
 }));
 
 module.exports = router;

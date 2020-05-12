@@ -13,15 +13,16 @@ block content
         textarea#message(name='comment')
         button#post-message(onClick="sendMessage()")= "Send Message"
 
-    each message in messages
-      if message.sentByUser
-        .convoMessage
-          p.sentByUser= message.message
-          p.messageID= message.id
-      else 
-        .convoMessage
-          p.sentByOther= message.message
-          p.messageID= message.id
+    #message-container
+      each message in messages
+        if message.sentByUser
+          .convoMessage
+            p.sentByUser= message.message
+            p.messageID= message.id
+        else 
+          .convoMessage
+            p.sentByOther= message.message
+            p.messageID= message.id
           
   else
     h1= "Click on a sidebar message to view the conversation or search for a conversation"

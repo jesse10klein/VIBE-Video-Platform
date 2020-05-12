@@ -31,8 +31,8 @@ function resizeContent() {
 
   const sidebar_width = 270;
 
-   const width = window.innerWidth - sidebar_width;
-   content.style.width = width + "px";
+  const width = window.innerWidth - sidebar_width;
+  content.style.width = width + "px";
 };
 
 function formatMessageHTML(message, sentByUser) {
@@ -92,6 +92,9 @@ function sendMessage() {
 }
 
 function formatSidebarMessage(message, type) {
+  if (message.message.length > 37) {
+    message.message = message.message.length.splice(0, 34) + "...";
+  }
   let HTML = `
     <a class="message" href="/messages/${message.toUser}"> 
       <div class="flexDiv ${type}">

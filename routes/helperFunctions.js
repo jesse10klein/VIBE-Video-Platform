@@ -154,7 +154,7 @@ function checkUploadData(title, description, tags) {
     errors.push(2);
   }
 
-  if (tags.length < 5) {
+  if (tags.length < 20) {
     errors.push(3);
   }
 
@@ -170,7 +170,7 @@ function checkForErrors(potentialErrors) {
     error.description = "Description must be at least 5 characters long";
   } 
   if (potentialErrors.includes(3)) {
-    error.tags = "Tags must be at least 5 characters long";
+    error.tags = "You need to add more tags";
   }
   return error;
 }
@@ -565,6 +565,111 @@ function getMailOptions(user, link) {
   return mailOptions;
 }
 
+async function getSearchResults(searchTerm) {
+  
+  let videos = await Video.findAll();
+  for (let i = 0; i < videos.length; i++) {
+    videos[i].rating = scoreVideo(searchTerm, videos[i]);
+    videos[i].video = true;
+  }
+
+  let users = await UserInfo.findAll();
+  for (let i = 0; i < users.length; i++) {
+    users[i].rating = scoreUser(searchTerm, users[i]);
+  }
+
+  //Add videos and users together
+  let searchResults = [];
+
+  users = users.filter( (user) => {return user.rating > 100});
+  videos = videos.filter( (video) => {return video.rating > 100});
+
+  //Format users and videos and add to search terms
+  for (let i = 0; i < users.length; i++) {
+    const object = {
+      id: users[i].id,
+      username: users[i].username,
+      subscriberCount: users[i].subscriberCount,
+      imageURL: users[i].imageURL,
+      rating: users[i].rating,
+      bannerURL: users[i].bannerURL,
+      createdAt: users[i].createdAt
+    }
+    searchResults.push(object);
+  }
+
+  for (let i = 0; i < videos.length; i++) {
+    const user = await UserInfo.findOne({where: {username: videos[i].uploader}});
+    let likePercentage = Math.ceil(videos[i].upvotes / (videos[i].upvotes + videos[i].downvotes)) * 100;
+    if (videos[i].upvotes == 0 && videos[i].downvotes == 0) {
+      likePercentage = 100;
+    }
+    const object = {
+      id: videos[i].id,
+      uploader: videos[i].uploader,
+      title: videos[i].title,
+      videoURL: videos[i].videoURL,
+      formattedViewCount: formatViews(videos[i].viewCount),
+      rating: videos[i].rating,
+      video: videos[i].video,
+      imageURL: user.imageURL,
+      likePercentage,
+      timeSince: formatTimeSince(videos[i].createdAt),
+      createdAt: videos[i].createdAt
+    }
+    searchResults.push(object);
+  }
+  if (searchResults.length == 0) {
+    return null;
+  }
+
+  return searchResults;
+}
+
+function scoreUser(searchTerm, user) {
+
+  let tags = video.tags.toLowerCase().split("`");
+  if (tags[tags.length - 1] == "") {
+    tags.pop(tags.length - 1);
+  }
+
+  let tagMatch = 0;
+  let additionalMatches = 0;
+
+  let terms = searchTerm.toLowerCase().split(" ");
+  let titleTerms = user.username.toLowerCase().split(" ");
+  for (word of terms) {
+    for (tag of tags) {
+      if (word.length < 3 || tag.length < 3) {
+        continue;
+      }
+      if (word == tag || word.includes(tag) || tag.includes(word)) {
+        if (tagMatch) {
+          additionalMatches += 100;
+        } else {
+          tagMatch = 1000;
+        }
+      }
+    }
+    for (term of titleTerms) {
+      if (word.length < 3 || term.length < 3) {
+        continue;
+      }
+      if (word == term || word.includes(term) || term.includes(word)) {
+        if (tagMatch) {
+          additionalMatches += 100;
+        } else {
+          tagMatch = 1000;
+        }
+      }
+    }
+  }
+  const subscriberRating = (user.subscriberCount / 100);
+
+  const rating = tagMatch + additionalMatches + subscriberRating;
+  return rating;
+}
+
 function scoreVideo(searchTerm, video) {
 
   //Score using tags, uploader name, slight subscriber and view weight
@@ -650,10 +755,6 @@ async function getRecentMessages(username) {
     if (recentMessages[i].message.length > 37) {
       recentMessages[i].message = recentMessages[i].message.slice(0, 34) + "...";
     }
-    if (recentMessages[i].toUser.length > 16) {
-      recentMessages[i].toUser = recentMessages[i].toUser.slice(0, 13) + "...";
-    }
-    
   }
 
   //Only return 5 most recent messages
@@ -675,8 +776,6 @@ async function videoStandardScore(video) {
 }
 
 async function getSidebarVideos(username) {
-
-  
 
   //Get videos for sidebar: for now just any videos
   let videos = await Video.findAll({order: [["createdAt", "DESC"]]});
@@ -700,11 +799,7 @@ async function getSidebarVideos(username) {
     }
   }
 
-  
   videos.sort((a, b) => (a.score < b.score) ? 1 : -1);
-  for (let i = 0; i < videos.length; i++) {
-    //console.log(videos[i].title + ", Score: " + videos[i].score);
-  }
 
   //FORMAT THESE VIDEOS (TITLE, VIEWS, UPLOAD)
   for (let i = 0; i < videos.length; i++) {
@@ -720,4 +815,4 @@ module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTi
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
   convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo, getMailOptions,
-  generateRandomString, parseTags, scoreVideo, getRecentMessages, getSidebarVideos};
+  generateRandomString, parseTags, scoreVideo, getRecentMessages, getSidebarVideos, getSearchResults};

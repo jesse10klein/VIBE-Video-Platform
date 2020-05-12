@@ -7,6 +7,27 @@ pollForUpdates();
     Contains polling functions to fetch notifications and new messages
 */
 
+function parseTags() {
+  const tags = $("#myTags").children();
+
+  let tagsString = "";
+
+  tags.each(function (index) {
+    let tag = $(this).text();
+    tag = tag.substring(0, tag.length - 1);
+    
+    if (index == 0) {
+      tagsString += tag;
+      return;
+    } 
+    tagsString += '`';
+    tagsString += tag;
+  })
+  //tagsString += '`';
+  tagsString += getCookie("username");
+  return tagsString;
+}
+
 function formatNumber(number) {
   if (number < 1000) {
     return number;

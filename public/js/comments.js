@@ -21,7 +21,7 @@ window.addEventListener('scroll', () => {
   const scrolled = window.scrollY + window.innerHeight;
 
   scrollAlert = true;
-  setTimeout(function () { scrollAlert = false; }, 500);
+  setTimeout(function () { scrollAlert = false; }, 200);
 
 
   const lastComment = $("#comments .comment").last();

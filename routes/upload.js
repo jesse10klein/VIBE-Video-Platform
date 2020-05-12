@@ -72,8 +72,6 @@ router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
 
 router.post('/post-upload', tools.asyncHandler( async (req, res) => {
 
-  console.log(req.get("content-length"));
-
   const username = req.session.username;
   if (username == null) {
     res.redirect("/users/login");

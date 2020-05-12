@@ -42,3 +42,59 @@
     margin-top: 18px;
     height: 23px;
 }
+
+/****Subscriber stuff****/
+
+.userPhoto {
+    height: 80px;
+    width: 80px;
+    margin-left: 85px;
+    margin-top: 45px;
+    border: 2px solid black;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.userPhoto:hover {
+    height: 77px;
+    width: 77px;
+    border: 3px solid black;
+}
+
+.username {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.subcount {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.userHeader {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 250px;
+    margin-top: 30px;
+}
+
+.userBanner {
+    position: relative;
+    top: -135px;
+    z-index: -10;
+    width: 250px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.subdiv {
+    text-align: center;
+    margin-top: -100px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+}

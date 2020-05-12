@@ -42,6 +42,7 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   }
   
   const findUser = await UserInfo.findOne({where: {username: user}});
+  console.log(user);
   if (findUser == null) {
     res.redirect('/');
     return;
@@ -83,7 +84,7 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
     messages[i].formattedTimeSince = tools.formatTimeSince(messages[i].createdAt);
     messages[i].sentByUser = (username == messages[i].sender);
     
-    if (!messages[i].read && !message[i].senybyUser) { //HERE ERROR
+    if (!messages[i].read && !messages[i].sentbyUser) { //HERE ERROR
       await messages[i].update({read: true});
     }
   }
@@ -93,7 +94,6 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   if (recentMessages.length > 5) {
     recentMessages = recentMessages.slice(0, 5);
   }
-
   res.render("messageViews/messages", {username, recentMessages, messages, findUser});
 }));
 
