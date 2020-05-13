@@ -11,6 +11,7 @@ const { Bookmarks } = db.models;
 const { Subscriptions} = db.models;
 const { passwordVerify } = db.models;
 const { Message } = db.models;
+const { WatchParty} = db.models;
 
 const Op = require('sequelize').Op;
 
@@ -534,6 +535,23 @@ async function getSubVideos(username) {
 
 }
 
+async function generatePartyJoinString() {
+  let randomString = "";
+  const acceptable = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+
+  for (let i = 0; i < 20; i++) {
+    randomString += acceptable.charAt(Math.random() * (acceptable.length - 1));
+  }
+
+  //Make sure its not already used
+  const match = await WatchParty.findOne({where: {joinLink: randomString}});
+  if (match) {
+    generateRandomString();
+  } else {
+    return randomString;
+  }
+}
+
 async function generateRandomString() {
 
   let randomString = "";
@@ -561,6 +579,18 @@ function getMailOptions(user, link) {
     text: `Dear ${user.username}. \n\n
             You are recieving this email as you have recently requested that your password be reset. If you did not send this request please disregard this email and change your password on our website \n\n
             If you did send this request, please click the following link to reset your password: ${link}`
+  }
+  return mailOptions;
+}
+
+function getMailOptionsVerify(user, link) {
+  const mailOptions = {
+    from: 'vibevideoservice@gmail.com',
+    to: user.email,
+    subject: `Account Verification Request`,
+    text: `Dear ${user.username}. \n\n
+            You are recieving this email as you have recently requested to verify your account. If you did not send this request please disregard this email and change your password on our website \n\n
+            If you wish to verify your account on Vibe Videos please click the following link: ${link}`
   }
   return mailOptions;
 }
@@ -815,4 +845,5 @@ module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTi
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
   convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo, getMailOptions,
-  generateRandomString, parseTags, scoreVideo, getRecentMessages, getSidebarVideos, getSearchResults};
+  generateRandomString, parseTags, scoreVideo, getRecentMessages, getSidebarVideos, getSearchResults,
+  getMailOptionsVerify, generatePartyJoinString};

@@ -18,4 +18,4 @@
       h3= `Uploaded ${video.timeSince}`
   .videoDropDown
     a= "Add to Bookmarks"
-    a= "Start a watch party"
+    a(href=`/watch-party/${video.id}`)= "Start a watch party"

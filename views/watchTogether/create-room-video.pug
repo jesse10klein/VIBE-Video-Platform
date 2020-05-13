@@ -1,0 +1,31 @@
+
+
+
+
+extends layout
+
+block style
+  link(href="/style/create-room.css" rel="stylesheet")
+
+block content
+  #content
+    h1= "Selected video"
+    button(onclick="chooseAnotherVideo()")= "Select a different video"
+    #partyVideo
+      .video-preview
+        video.sidebar-video(src=`/videos/${video.videoURL}#t=4` muted)
+        .videoTitle= video.title
+        .userInfo
+          img.uploaderPhoto(src=`/images/user-thumbs/${video.imageURL}`)
+          .formatDiv
+            h2= video.uploader
+            .flexDiv
+              h3= `${video.formattedViewCount} Views`
+              h3.percentage= `${video.likePercentage}% 👍`
+            h3= `Uploaded ${video.timeSince}`
+
+    button(onclick="startWatchParty()")= "Start the Watch Party!"
+
+  
+  #sidebar
+    include create-party-sidebar

@@ -1,5 +1,5 @@
 
-
+/*
 function deleteComment(element) {
 
     const commentID = element.id;
@@ -46,3 +46,4 @@ function deleteVideo(element) {
     console.log(error);
   });
 }
+*/

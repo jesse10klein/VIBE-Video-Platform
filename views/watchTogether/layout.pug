@@ -11,15 +11,10 @@ head
 body
   include ../menubar
 
-
-  #sidebar
-    include videomanager-sidebar
-
-  #content
-    block content
+  block content
 
   
   block script
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js") 
     script(src="/js/universal.js")
-    script(src='/js/userProfile.js')
+    script(src='/js/create-party.js')

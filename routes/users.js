@@ -73,12 +73,12 @@ router.post('/reset-password', tools.asyncHandler(async (req, res) => {
       return;
     } else {
       //If there are any requests sitting there, delete them
-      const existingRequests = passwordVerify.findAll({where: {username: user.username}});
+      const existingRequests = passwordVerify.findAll({where: {username: user.username, type: "password"}});
       for (let i = 0; i < existingRequests.length; i++) {
         await existingRequests[i].destroy();
       }
       //Add new request
-      await passwordVerify.create({username: user.username, verifyID: generatedID});
+      await passwordVerify.create({username: user.username, verifyID: generatedID, type: "password"});
       res.render("userViews/recovery-sent", {email: user.email, username});
       return;
     }

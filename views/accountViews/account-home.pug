@@ -7,6 +7,15 @@ block content
 
   h1#title= `Welcome to your account ${user.username}`
 
+  .accountStatus
+    if user.emailVerified
+      p= "Account status: "
+      p.verified= " VERIFIED"
+    else
+      p= "Account status: "
+      p.notVerified= " NOT VERIFIED"
+      a(href="account/verify-account")= "Verify account"
+
   ul#accountOptions
     li
       a(href="/account/profile-picture")= "Change Profile Picture"
@@ -22,6 +31,8 @@ block content
       a(href=`/account/video-manager`)= `Video Manager`
     li
       a(href=`/account/analytics`)= `Analytics`
+    li
+      a(href=`/watch-party`)= `Create Watch Party`
 
 
 block script

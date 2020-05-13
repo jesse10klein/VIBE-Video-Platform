@@ -819,6 +819,8 @@ const searchRoutes = require(path.join(__dirname, 'routes/search'));
 app.use('/search', searchRoutes);
 const messageRoutes = require(path.join(__dirname, 'routes/messages'));
 app.use('/messages', messageRoutes);
+const watchTogetherRoutes = require(path.join(__dirname, 'routes/watchTogether'));
+app.use('/watch-party', watchTogetherRoutes);
 
 //Set view engine and tell express where to look for views
 app.use(express.static(path.join(__dirname, "public")));

@@ -8,6 +8,16 @@ const { Comments } = db.models;
 const { UserInfo } = db.models;
 const { passwordVerify } = db.models;
 
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'vibevideoservice@gmail.com',    
+    pass: 'Ernas123'
+  }
+})
+
 const bcrypt = require("bcrypt");
 const validator = require("email-validator");
 
@@ -300,35 +310,6 @@ router.post('/change-password', tools.asyncHandler(async (req, res) => {
    
 }));
 
-//Handle verifying a user's email
-router.get('/verify-email/:verifyID', tools.asyncHandler(async (req, res) => {
-
-    const { username } = req.session;
-    if (username == null) {
-        res.send('Please login to the website and then click on your validation link again');
-        return;
-    }
-
-    //Get user
-    const user = await UserInfo.findOne({where: {username}});
-
-    //Check the validation
-    const valid = await passwordVerify.findOne({where: {
-        username,
-        varifyID: req.params.verifyID
-    }})
-
-    if (valid == null) {
-        res.render("404", {message: "Couldn't find what you're looking for"});
-    }
-
-    //If we get here there is a valid verify request
-    await user.update({emailVerified: true});
-    await valid.destroy();
-    res.redirect("/account");
-
-}));
-
 //Edit a certain video
 router.get('/video-manager', tools.asyncHandler(async (req, res) => {
 
@@ -416,6 +397,60 @@ router.post('/video-manager/:id', tools.asyncHandler(async (req, res) => {
   res.sendStatus(200);
 
 }));
+
+//Process form data for editing a specific video
+router.get('/verify-account', tools.asyncHandler(async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect('/');
+    return;
+  }
+
+  const user = await UserInfo.findOne({where: {username}});
+
+  var url = req.protocol + '://' + req.get('host');
+
+  const generatedID = await tools.generateRandomString();
+
+  const mailOptions = tools.getMailOptionsVerify(user, `${url}/account/verify-email/${generatedID}`);
+  transporter.sendMail(mailOptions, async (error, info) => {
+    if (error) {
+      res.render("accountViews/verification-sent", {username, message: "We were unable to send an email to your account at this time. Please try again later."});
+      return;
+    } else {
+      //If there are any requests sitting there, delete them
+      const existingRequests = passwordVerify.findAll({where: {username, type: "verify"}});
+      for (let i = 0; i < existingRequests.length; i++) {
+        await existingRequests[i].destroy();
+      }
+      //Add new request
+      await passwordVerify.create({username: user.username, verifyID: generatedID, type: "verify"});
+      res.render("accountViews/verification-sent", {username, message: "A verification email has been sent to your email. Please check this and click on the link to verify your account"});
+      return;
+    }
+  })
+
+}));
+
+//Process form data for editing a specific video
+router.get('/verify-email/:id', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+
+    const verification = await passwordVerify.findOne({where: {verifyID: req.params.id}});
+    if (verification == null) {
+        res.render("accountViews/verification-sent", {username, message: "If you are trying to verify your email, the link you have provided is not valid. Please try again later"});
+        return;
+    }
+
+    const user = await UserInfo.findOne({where: {username: verification.username}});
+    await verification.destroy();
+    await user.update({emailVerified: 1});
+    res.render("accountViews/verification-sent", {username, message: "Your account has been successfully verified!"});
+  
+}));
+
 
 
 module.exports = router;

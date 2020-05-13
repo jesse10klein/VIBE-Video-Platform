@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
-  class passwordVerify extends Sequelize.Model {}
-  passwordVerify.init({
-    username: {
-      type: Sequelize.STRING,
+  class partyNotifications extends Sequelize.Model {}
+  partyNotifications.init({
+    partyID: {
+      type: Sequelize.INTEGER,
       allowNull: false
     },
-    verifyID: {
+    user: {
       type: Sequelize.STRING,
       allowNull: false
     },
@@ -17,5 +17,5 @@ module.exports = (sequelize) => {
     }
   }, { sequelize });
 
-  return passwordVerify;
+  return partyNotifications;
 };

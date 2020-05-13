@@ -1,0 +1,27 @@
+ 
+
+
+h3#searchTitle= "Add users to your watch party!"
+p= "(up to 10 max)"
+form#search-users(action="/search" method="POST")
+  input#search-term(type='text' name='searchTerm' autocomplete="off")
+#search-dropdown
+
+#users
+  .partyUser
+    img(src=`/images/user-thumbs/${user.imageURL}`)
+    p= `${user.username} (Host)`
+  if partyUsers
+    each partyUser in partyUsers
+      .partyUser
+        img(src=`/images/user-thumbs/${partyUser.imageURL}`)
+        p= `${partyUser.username}`
+
+
+
+
+
+
+
+
+        

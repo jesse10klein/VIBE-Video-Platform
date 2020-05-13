@@ -121,13 +121,19 @@ router.post('/:user/process-autocomplete', tools.asyncHandler(async (req, res) =
     return;
   }
 
-  const { searchTerm } = req.body;
+  const { searchTerm, filled } = req.body;
 
-  const matches = await UserInfo.findAll({
+  let matches = await UserInfo.findAll({
     where: {
       username: {[Op.startsWith]: searchTerm}
     }
   });
+
+  if (filled) {
+    matches = matches.filter((match) => {
+      return !(filled.includes(match.username))
+    });
+  }
 
   res.send({matches});
 
