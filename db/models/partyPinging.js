@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
-  class partyNotifications extends Sequelize.Model {}
-  partyNotifications.init({
+  class partyPinging extends Sequelize.Model {}
+  partyPinging.init({
     partyID: {
       type: Sequelize.INTEGER,
       allowNull: false
@@ -11,15 +11,11 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
-    type: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    content: {
-      type: Sequelize.STRING,
+    lastPing: {
+      type: Sequelize.DATE,
       allowNull: false
     }
   }, { sequelize });
 
-  return partyNotifications;
+  return partyPinging;
 };

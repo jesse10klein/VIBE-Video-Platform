@@ -1,14 +1,18 @@
 
 
+let warning = true;
 
 window.onload = function() {
   window.addEventListener("beforeunload", function (e) {
-
+    if (warning) {
       var confirmationMessage = 'It looks like you have been editing something. '
                               + 'If you leave before saving, your changes will be lost.';
 
       (e || window.event).returnValue = confirmationMessage;
       return confirmationMessage;
+    } else {
+      return null;
+    }
   });
 };
 
@@ -27,6 +31,7 @@ function chooseAnotherVideo() {
   userList.shift();
 
   const queryString = userList.join('`');
+  warning = false;
   window.location.pathname = `/watch-party/select-video/${queryString}`;
 }
 
@@ -45,8 +50,10 @@ function startWatchParty() {
   }
   const userString = userList.join("`");
 
+  const videoID = window.location.pathname.split('/')[2];
+
   const url = "/watch-party/create-session";
-  data = { userString };
+  data = { userString, videoID };
 
   //Send post request to create the session in the database
   //On success, redirect to the created watchparty session
@@ -56,6 +63,18 @@ function startWatchParty() {
     url, type: "POST", data,
     success: function(response) {
       console.log(response);
+      if (response.error) {
+        $("#error").text(response.error);
+        if (response.joinLink) {
+          $("#redirectlink").text("View existing watch-party");
+          $("#redirectlink").attr("href", `/watch-party/session/${response.joinLink}`);
+          $("#deleteLink").text("Delete the watch party");
+          $("#deleteLink").attr("href", `/watch-party/session/${response.joinLink}/end-session`);
+        }
+      } else if (response.joinLink) {
+        warning = false;
+        window.location.pathname = `/watch-party/session/${response.joinLink}`;
+      }
     }
   })
 }

@@ -10,7 +10,10 @@ block style
 block content
   #content
     h1= "Selected video"
-    button(onclick="chooseAnotherVideo()")= "Select a different video"
+    p#error= ""
+    #redirectlinks
+      a#redirectlink= ""
+      a#deleteLink= ""
     #partyVideo
       .video-preview
         video.sidebar-video(src=`/videos/${video.videoURL}#t=4` muted)

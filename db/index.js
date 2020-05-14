@@ -30,5 +30,6 @@ db.models.Message = require(path.join(__dirname, 'models/message.js'))(sequelize
 db.models.Notifications = require(path.join(__dirname, 'models/notifications.js'))(sequelize);
 db.models.WatchParty = require(path.join(__dirname, 'models/watchParty.js'))(sequelize);
 db.models.PartyNotifications = require(path.join(__dirname, 'models/partyNotifications.js'))(sequelize);
+db.models.PartyPing = require(path.join(__dirname, 'models/partyPinging.js'))(sequelize);
 
 module.exports = db;

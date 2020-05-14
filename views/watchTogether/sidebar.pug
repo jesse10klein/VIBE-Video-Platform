@@ -1,19 +1,19 @@
 
-if sidebarVideos
-  h3= "Select a video to edit"
-  each video in sidebarVideos  
-    .video-preview
-      a(href=`/account/video-manager/${video.id}`)
-        video.sidebar-video(src=`/videos/${video.videoURL}#t=2` muted)
-        h1.videoTitle= video.title
-        .userInfo
-          a(href=`/users/${video.uploader}`)
-            img.uploaderPhoto(src=`/images/user-thumbs/${video.imageURL}`)
-          .formatDiv
-            h2= video.uploader
-            .flexDiv
-              h3= `${video.formattedViewCount} Views`
-              h3.percentage= `${video.likePercentage}% 👍`
-            h3= `Uploaded ${video.timeSince}`
-else
-  h1= "No videos yet"
+
+
+ 
+
+#messageHeader
+  p= "Party chat"
+  if host
+    a(href=`/watch-party/session/${sessionID}/end-session`)= "End Watch Party"
+
+#messages
+
+#messageBox
+  input(type='text' name='searchTerm' autocomplete="off")
+  button(onclick="sendMessage(this)")= "Send"
+
+
+
+

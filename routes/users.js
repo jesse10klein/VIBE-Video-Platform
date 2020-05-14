@@ -413,7 +413,18 @@ router.post('/fetch-notifications', tools.asyncHandler(async (req, res) => {
   //Need to reformat cause stupid sequelize
   for (let i = 0; i < userNotifications.length; i++) {
     const user = await UserInfo.findOne({where: {username: userNotifications[i].user}});
-    if (userNotifications[i].notificationType != "Subscribe") {
+    if (userNotifications[i].notificationType == "watchParty") {
+      const notif = {
+        read: userNotifications[i].read,
+        id: userNotifications[i].id,
+        recipient: userNotifications[i].recipient,
+        notificationType: userNotifications[i].notificationType,
+        user: userNotifications[i].user,
+        contentID: userNotifications[i].contentID,
+        imageURL: user.imageURL
+      }
+      notifications.push(notif);
+    } else if (userNotifications[i].notificationType != "Subscribe") {
       const video = await Video.findOne({where: {id: userNotifications[i].contentID}});
       const notif = {
         read: userNotifications[i].read,
@@ -463,6 +474,9 @@ router.get('/notifications/:notificationID', tools.asyncHandler(async (req, res)
   await notification.update({read: true});
   if (type == "Subscribe") {
     res.redirect(`/users/${notification.user}`);
+    return;
+  } else if (type == "watchParty") {
+    res.redirect(`/watch-party/session/${notification.contentID}`);
     return;
   } else {
     res.redirect(`/video/${notification.contentID}`);

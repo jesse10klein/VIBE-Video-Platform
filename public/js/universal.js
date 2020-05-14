@@ -158,6 +158,13 @@ function formatNotificationHTML(notification) {
       <p>`;
       if (notification.notificationType == "Subscribe") {
         HTML += `${notification.user} has subscribed to you</p>`;
+      } else if (notification.notificationType == "watchParty") {
+        if (notification.user == getCookie('username')) {
+          HTML += `You have an active watch party </p>`;
+        } else {
+          HTML += `${notification.user} has invited you to join their watch party </p>`;
+        }
+        
       } else if (notification.notificationType == "Reply") {
         HTML += `${notification.user} Has replied to your comment on ${notification.uploader}'s video</p>
         <video class="notification-video" src="/videos/${notification.videoURL}#t=2" muted></video>`;

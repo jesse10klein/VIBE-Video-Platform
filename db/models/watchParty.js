@@ -14,6 +14,14 @@ module.exports = (sequelize) => {
     users: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+    videoID: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    videoStatus: {
+      type: Sequelize.STRING,
+      defaultValue: "0,true"
     }
   }, { sequelize });
 

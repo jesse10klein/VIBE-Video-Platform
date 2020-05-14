@@ -1,9 +1,18 @@
 
+extends layout
 
-
+block style
+  link(href="/style/watch-party.css" rel="stylesheet")
 
 block content
   #content
-  
+    if host
+      video#partyVideo(src=`/videos/${video.videoURL}` controls)
+    else
+      video#partyVideo(src=`/videos/${video.videoURL}`)
+
   #sidebar
     include sidebar
+
+block script
+  script(src="/js/watch-party.js")

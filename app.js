@@ -848,8 +848,8 @@ app.use((req, res, next) => {
 
 app.get('/', async (req, res) => {
   if (!req.session.username) {
-    req.session.username = "Spacey Jane";
-    res.cookie("username", "Spacey Jane");
+    req.session.username = "Joji";
+    res.cookie("username", "Joji");
     req.session.save();
   }
   res.redirect('video');

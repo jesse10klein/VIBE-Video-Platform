@@ -841,9 +841,46 @@ async function getSidebarVideos(username) {
   return videos;
 }
 
+function formatPartyMessageTime(time) {
+  
+  const date = new Date(time);
+  let dateString = date.toString().slice(16, 21);
+  let hours = parseInt(dateString.slice(0,2));
+  let type = null;
+  let hoursString = null;
+  if (hours > 12) {
+    hours -= 12;
+    if (hours < 10) {
+      hoursString = "0" +  hours;
+      type = "pm";
+    }
+  } else {
+    hoursString = "" + hours;
+    type = "am";
+  }
+  dateString = hoursString + dateString.slice(2) + type;
+  return dateString;
+}
+
+//Get the notification in a form that can be parsed on the client side
+async function formatPartyMessage(notification) {
+  const user = await UserInfo.findOne({where: {username: notification.user}});
+  const notif = {
+    id: notification.id,
+    partyID: notification.partyID,
+    user: notification.user,
+    type: notification.type,
+    formattedTimeSince: formatPartyMessageTime(notification.createdAt),
+    imageURL: user.imageURL,
+    content: notification.content
+  }
+  return notif;
+}
+
 module.exports = {asyncHandler, formatDay, formatDate, formatTimeSince, formatTitle, 
   formatViews, checkUploadData, checkForErrors, signupErrors, getCommentsForVideo, 
   deleteComments, deleteVideo, deleteAccount, convertCommentsAjax,
   convertVideosAjax, getRepliesForComment, getSubVideos, formatVideo, getMailOptions,
   generateRandomString, parseTags, scoreVideo, getRecentMessages, getSidebarVideos, getSearchResults,
-  getMailOptionsVerify, generatePartyJoinString};
+  getMailOptionsVerify, generatePartyJoinString,
+  formatPartyMessage};
