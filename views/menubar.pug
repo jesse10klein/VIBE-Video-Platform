@@ -10,9 +10,9 @@
 
   form#search-bar(action="/search" method="POST")
     if searchTerm
-      input#search-query(type='text' name='searchTerm' value=`${searchTerm}`)
+      input#search-query(type='text' name='searchTerm' value=`${searchTerm}` onKeyPress="return checkSubmit(event)")
     else
-      input#search-query(type='text' name='searchTerm')
+      input#search-query(type='text' name='searchTerm' onKeyPress="return checkSubmit(event)")
     input#submit(type='submit' value='Search')
 
   #icons-right

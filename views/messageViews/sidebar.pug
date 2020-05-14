@@ -1,8 +1,6 @@
  
 h3#searchTitle= "Search for conversations"
-form#search-users(action="/search" method="POST")
-  input#search-term(type='text' name='searchTerm' autocomplete="off")
-  input#search-submit(type='submit' value='Search')
+input#search-term(type='text' name='searchTerm' autocomplete="off" onKeyPress="return checkUserAdd(event)")
 #search-dropdown
 
 if recentMessages

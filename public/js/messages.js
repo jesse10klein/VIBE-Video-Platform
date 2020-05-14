@@ -35,6 +35,13 @@ function resizeContent() {
   content.style.width = width + "px";
 };
 
+function checkUserAdd(e) {
+  if(e && e.keyCode == 13) {
+     const item = $(".autocomplete-tag").get(0);
+     if (item != null) window.location = item.href;
+  }
+}
+
 function formatMessageHTML(message, sentByUser) {
 
   let HTML = "";
@@ -208,7 +215,7 @@ function pollAllMessages() {
   });
 }
 
-$("#search-users").on('keyup', function () {
+$("#search-term").on('keyup', function () {
 
   const searchTerm = $("#search-term").val();
   const data = { searchTerm }

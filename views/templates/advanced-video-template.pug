@@ -17,5 +17,5 @@
         h3.percentage= `${video.likePercentage}% 👍`
       h3= `Uploaded ${video.timeSince}`
   .videoDropDown
-    a= "Add to Bookmarks"
+    a(href=`/messages/${video.uploader}`)= "Send message"
     a(href=`/watch-party/${video.id}`)= "Start a watch party"

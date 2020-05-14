@@ -35,6 +35,16 @@ function chooseAnotherVideo() {
   window.location.pathname = `/watch-party/select-video/${queryString}`;
 }
 
+function checkUserAdd(e) {
+  if(e && e.keyCode == 13) {
+     const item = $(".autocomplete-tag").get(0);
+     if (item != null) {
+       addUser(item);
+     }
+  }
+}
+
+
 function startWatchParty() {
 
   const userList = [];
@@ -79,7 +89,7 @@ function startWatchParty() {
   })
 }
 
-$("#search-users").on('keyup', function () {
+$("#search-term").on('keyup', function () {
 
   console.log("Here");
 

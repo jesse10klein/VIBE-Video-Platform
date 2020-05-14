@@ -45,16 +45,16 @@ block content
           p  Username: 
           if error
             p.error= error.username
-          input(type='text' name='username')
+          input(type='text' name='username' autocomplete="off")
         .form-element
           p  Email: 
           if error
             p.error= error.email
-          input(type='text' name='email')
+          input(type='text' name='email' autocomplete="off")
         .form-element
           p  Password: 
-          input(name='password')
+          input(type='password' name='password' autocomplete="off")
         .form-element
           p  Verify Password: 
-          input(name='verifyPassword')
+          input(type='password' name='verifyPassword' autocomplete="off")
         input#createAccount(type='submit' value="Create Account")

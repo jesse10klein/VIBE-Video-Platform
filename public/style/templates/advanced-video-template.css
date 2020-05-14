@@ -23,6 +23,8 @@
     background-color: white;
     z-index: 10;
     width: 100px;
+    border: 1px solid black;
+    border-top: none;
 }
 
 .videoDropDown a {
@@ -30,7 +32,7 @@
     color: black;
     font-size: 12px;
     width: 100px;
-    border: 1px solid black;
+    border-top: 1px solid black;
 }
 
 .videoTitle {

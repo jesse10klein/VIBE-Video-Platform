@@ -63,6 +63,12 @@ function getCookie(cname) {
   return "";
 }
 
+function checkSubmit(e) {
+  if(e && e.keyCode == 13) {
+    document.getElementById("search-query").submit();
+  }
+}
+
 //Polls for updates to the notification and message read numbers
 function pollForUpdates() {
 

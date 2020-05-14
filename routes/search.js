@@ -25,7 +25,7 @@ router.post('/', tools.asyncHandler( async (req, res) => {
   const searchResults = await tools.getSearchResults(searchTerm);
 
   if (searchResults == null) {
-    res.render("search", {searchResults, username, searchTerm});
+    res.render("search", {searchResults, username, searchTerm, defaults: {}});
     return;
   }
 
@@ -42,7 +42,7 @@ router.get('/:searchTerm/:searchFilter/:searchSort', tools.asyncHandler( async (
   const searchResults = await tools.getSearchResults(searchTerm);
 
   if (searchResults == null) {
-    res.render("search", {searchResults, username, searchTerm});
+    res.render("search", {searchResults, username, searchTerm, defaults: {}});
     return;
   }
 

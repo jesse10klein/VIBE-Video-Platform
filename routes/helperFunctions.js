@@ -658,29 +658,12 @@ async function getSearchResults(searchTerm) {
 
 function scoreUser(searchTerm, user) {
 
-  let tags = video.tags.toLowerCase().split("`");
-  if (tags[tags.length - 1] == "") {
-    tags.pop(tags.length - 1);
-  }
-
   let tagMatch = 0;
   let additionalMatches = 0;
 
   let terms = searchTerm.toLowerCase().split(" ");
   let titleTerms = user.username.toLowerCase().split(" ");
   for (word of terms) {
-    for (tag of tags) {
-      if (word.length < 3 || tag.length < 3) {
-        continue;
-      }
-      if (word == tag || word.includes(tag) || tag.includes(word)) {
-        if (tagMatch) {
-          additionalMatches += 100;
-        } else {
-          tagMatch = 1000;
-        }
-      }
-    }
     for (term of titleTerms) {
       if (word.length < 3 || term.length < 3) {
         continue;

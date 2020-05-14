@@ -17,6 +17,14 @@ function resizeContent() {
 
 };
 
+function checkAddMessage(e) {
+  console.log("press");
+  if(e && e.keyCode == 13) {
+     const item = $("#messageBox button");
+     sendMessage(item);
+  }
+}
+
 window.onload = function() {
   window.addEventListener("beforeunload", function (e) {
     var confirmationMessage = 'It looks like you have been editing something. '
@@ -28,7 +36,8 @@ window.onload = function() {
 };
 
 function sendMessage(elem) {
-  sendAction('message', $(elem).prev().val());
+  const message = $(elem).prev().val();
+  if (message != "") sendAction('message', message);
   $("#messageBox input").val("");
 }
 
