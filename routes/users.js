@@ -14,12 +14,9 @@ const { Message } = db.models;
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'vibevideoservice@gmail.com',    
-    pass: 'Ernas123'
-  }
-})
+  host: 'mailhub.eait.eq.edu.au',
+  port: 25
+});
 
 const bcrypt = require("bcrypt");
 
