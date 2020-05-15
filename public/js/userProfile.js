@@ -4,25 +4,45 @@ console.log("userProfile.js");
 window.onresize = resizeContent;
 window.onload = resizeContent; 
 
+let sidebar = $("#sidebar").attr("display") == 'none';
+
+function toggleSidebar() {
+  console.log("Toggling");
+  const hamburger = $("#hamburger");
+  const sidebar = $("#sidebar");
+  console.log(hamburger.css('display'));
+  console.log(sidebar.css('display'));
+  if ((sidebar).css('display') == 'none') {
+    sidebar.css('display', 'block');
+    hamburger.css('display', 'none');
+  } else {
+    sidebar.css('display', 'none');
+    hamburger.css('display', 'block');
+  }
+  resizeContent();
+}
 
 function resizeContent() {
 
-  console.log("resizing content");
+  if ($("#sidebar").css('display') != 'none') {
+    const content = document.getElementById("content");
 
-  //Get video and change dimensions
-  const content = document.getElementById("content");
+    const sidebar_width = 200 + 0.1;
 
-  const sidebar_width = 200 + 20; // padding
+    const width = document.body.clientWidth - sidebar_width;
+    content.style.width = width + "px";
+    content.style.marginLeft = "200px";
 
-   const width = window.innerWidth - sidebar_width;
-   content.style.width = width + "px";
+    const bannerImage = document.getElementById("banner-image");
+    bannerImage.style.width = width + "px";
+  } else {
+    const content = document.getElementById("content");
+    content.style.width = document.body.clientWidth - 0.1 + "px";
+    content.style.marginLeft = "0px";
 
-   const bannerDiv = document.getElementById("banner");
-   //bannerDiv.style.width = width + "px";
-
-   const bannerImage = document.getElementById("banner-image");
-   bannerImage.style.width = width + "px";
-
+    const bannerImage = document.getElementById("banner-image");
+    bannerImage.style.width = document.body.clientWidth - 0.1 + "px";
+  }
 };
 
 function processSubscribe() {

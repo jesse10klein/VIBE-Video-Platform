@@ -81,6 +81,35 @@
     flex-direction: column;
 }
 
+#accountStatus {
+    display: flex;
+    flex-direction: column;
+}
+
+#accountStatus a {
+    width: 130px;
+    margin: auto;
+    margin-top: -10px;
+    color: black;
+    text-decoration: none;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(204, 235, 235);
+}
+
+#statusDiv {
+    margin-top: -10px;
+}
+
+#statusDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+#statusDiv p {
+    margin-right: 5px;
+}
+
 #accountRedirect {
     position: absolute;
     top: 75px;

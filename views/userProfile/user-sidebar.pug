@@ -2,6 +2,8 @@
 
 ul
   li
+    button#exitMenu(onclick="toggleSidebar()")= "X"
+  li
     a(href=`/users/${user.username}`)= `Videos`
   li
     a(href=`/users/${user.username}/subscribers`)= `Subscribers`

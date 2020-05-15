@@ -22,7 +22,7 @@
     flex-direction: column;
     background-color: white;
     z-index: 10;
-    width: 100px;
+    width: 130px;
     border: 1px solid black;
     border-top: none;
 }
@@ -31,8 +31,15 @@
     text-decoration: none;
     color: black;
     font-size: 12px;
-    width: 100px;
+    width: 120px;
+    padding: 5px;
     border-top: 1px solid black;
+    transition: 0.4s;
+}
+
+.videoDropDown a:hover {
+    font-size: 13px;
+    font-weight: bold;
 }
 
 .videoTitle {

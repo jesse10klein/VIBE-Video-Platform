@@ -9,9 +9,17 @@
     text-align: center;
 }
 
+#customLabel {
+    font-size: 20px;
+}
+
+#customLabel:hover {
+    cursor: pointer;
+}
+
 #picture {
-    height: 250px;
-    width: 250px;
+    height: 220px;
+    width: 220px;
     border: 2px solid black;
     object-fit: cover;
     border-radius: 50%;
@@ -29,13 +37,18 @@
     font-weight: 500;
 }
 
-#submit {
+#changePP {
     font-size: 1.3em;
     font-family: 'Oxanium', cursive;
+    font-weight: bold;
     padding: 0;
     margin: 0;
     border: 0;
     background-color: white;
+}
+
+#changePP:hover {
+    cursor: pointer;
 }
 
 .error {

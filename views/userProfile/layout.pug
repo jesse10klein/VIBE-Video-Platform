@@ -13,7 +13,8 @@ head
 body
   include ../menubar
 
-
+  button#sidebarAnimate(onclick="toggleSidebar()")
+    img#hamburger(src='/images/hamburger.svg')
   #sidebar
     include user-sidebar
 

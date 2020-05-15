@@ -8,6 +8,16 @@
     #subdiv
         a#userName(href=`/users/${user.username}`)= `${user.username}`
         p#subcount= `${user.formattedSubCount} Subscribers`
+        #accountStatus
+            if user.emailVerified
+                #statusDiv
+                    p= "Account status: "
+                    p.verified= " VERIFIED"
+            else
+                #statusDiv
+                    p= "Account status: "
+                    p.notVerified= " NOT VERIFIED"
+                a(href="account/verify-account")= "Verify account"
 
 
 a#accountRedirect(href=`/users/${user.username}`)= `View as user`
