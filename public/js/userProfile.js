@@ -1,23 +1,43 @@
-console.log("userProfile.js");
-
-
 window.onresize = resizeContent;
 window.onload = resizeContent; 
 
 let sidebar = $("#sidebar").attr("display") == 'none';
 
 function toggleSidebar() {
-  console.log("Toggling");
   const hamburger = $("#hamburger");
   const sidebar = $("#sidebar");
-  console.log(hamburger.css('display'));
-  console.log(sidebar.css('display'));
+  const content = $("#content");
+  const banner = $("#banner-image");
+
+  const sidebar_width = 200 + 0.1;
+  const width = document.body.clientWidth - sidebar_width;
+
   if ((sidebar).css('display') == 'none') {
     sidebar.css('display', 'block');
     hamburger.css('display', 'none');
+    sidebar.animate({
+      left: '0px'
+    });
+    content.animate({
+      marginLeft: '200px',
+      width: width + 'px'
+    });
+    banner.animate({
+      width: width + 'px'
+    });
   } else {
+    sidebar.animate({
+      left: '-200px'
+    });
+    content.animate({
+      marginLeft: '0px',
+      width: '100vw'
+    });
+    banner.animate({
+      width: '100vw'
+    });
     sidebar.css('display', 'none');
-    hamburger.css('display', 'block');
+    setTimeout(() => (hamburger.css('display', 'block')), 400);
   }
   resizeContent();
 }
@@ -28,7 +48,6 @@ function resizeContent() {
     const content = document.getElementById("content");
 
     const sidebar_width = 200 + 0.1;
-
     const width = document.body.clientWidth - sidebar_width;
     content.style.width = width + "px";
     content.style.marginLeft = "200px";

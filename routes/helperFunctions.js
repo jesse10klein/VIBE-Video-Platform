@@ -831,7 +831,7 @@ function formatPartyMessageTime(time) {
   let hours = parseInt(dateString.slice(0,2));
   let type = null;
   let hoursString = null;
-  if (hours > 12) {
+  if (hours > 13) {
     hours -= 12;
     if (hours < 10) {
       hoursString = "0" +  hours;

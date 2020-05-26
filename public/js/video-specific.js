@@ -1,6 +1,3 @@
-console.log('Client-side code running');
-console.log(decodeURIComponent(document.cookie));
-
 const div = document.getElementById("description-info");
 const descButton = document.getElementById("descButton");
 const subButton = document.getElementById('subscribeButton');
@@ -36,8 +33,6 @@ function resizeVideo() {
   const descButton = document.getElementById("descButton");
   const description = document.getElementById("description-info");
 
-  console.log(window.innerWidth);
-
   //Only resize if window width is greater than 1220
   if (window.innerWidth < 900) {
     const room = window.innerWidth - 100
@@ -68,7 +63,6 @@ function resizeVideo() {
     last1.style.marginLeft = (window.innerWidth - 1220 - 350) / 2 + 350 + "px";
     return;
   } else if (window.innerWidth > 1340) {
-    console.log("HERE");
     const room = 1340 - 450;
     video.style.width = room + "px";
     video.style.minHeight = room / 1.77 + "px";
@@ -83,7 +77,6 @@ function resizeVideo() {
     last1.style.marginLeft = (window.innerWidth - 1340 - 450) / 2 + 250 + "px";
     return;
   } 
-  console.log("Here");
   //Width - width of sidebar - 40px padding (20 each side)
   const roomForVideo = window.innerWidth - 400 - 40;
   video.style.width = roomForVideo + "px";
@@ -133,8 +126,7 @@ function postReply(item) {
         //Now close reply box
         const toggleReplyButton = $(replyComment).find(".replyButton");
         toggleReplyBox(toggleReplyButton.get(0));
-
-        console.log(response);
+        
         const replyFormatted = formatReplyHTML(response.comment, response.imageURL);
         const node = $($.parseHTML(replyFormatted))
         let comment = $(replyComment.nextElementSibling);
@@ -336,7 +328,7 @@ function editComment(element) {
 
   //Get text from p and set in textbox
   const html = `
-    <textarea class="editComment"> ${text}  </textarea>
+    <textarea class="editComment">${text}</textarea>
     <button class="applyEdit" onclick=applyEdit(this)> Apply Edit </button>
   `;
 

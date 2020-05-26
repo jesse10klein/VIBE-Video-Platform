@@ -1,5 +1,3 @@
-console.log("messages.js");
-
 //Don't poll for specific messages if we're on the home page
 if (window.location.pathname != "/messages/home") {
   pollForMessages();
@@ -100,7 +98,7 @@ function sendMessage() {
 
 function formatSidebarMessage(message, type) {
   if (message.message.length > 37) {
-    message.message = message.message.length.splice(0, 34) + "...";
+    message.message = message.message.slice(0, 34) + "...";
   }
   let HTML = `
     <a class="message" href="/messages/${message.toUser}"> 
@@ -131,8 +129,6 @@ function formatSidebarMessage(message, type) {
 }
 
 function pollForMessages() {
-  console.log("Polling for new messages");
-
   //Get ID of last recieved message
   const messagesRecieved = $(".convoMessage .sentByOther");
   let lastRecievedID = null;
@@ -192,7 +188,6 @@ function updateSidebarMessageUtility(message, option) {
 }
 
 function pollAllMessages() {
-  console.log("Polling all messages");
   //Don't need any data, just refreshing messages every 20 seconds
   const data = {};
   const url = window.location.pathname + "/poll-for-all-messages"
@@ -223,7 +218,6 @@ $("#search-term").on('keyup', function () {
 
   if (searchTerm.length < 4) {
     updateAutoComplete({matches: []})
-    console.log("Search isn't specific enough");
     return;
   } 
 
@@ -281,12 +275,9 @@ $("#messages").scroll(function(){
 
   const lastSidebarMessage = $("#messages .message").last();
   var sidebarMessageID = lastSidebarMessage.find(".sidebarMessageID").text();
-  console.log(sidebarMessageID);
   if (lastSidebarMessage.length != 0) {
     var messageBottom = lastSidebarMessage.get(0).getBoundingClientRect().bottom;
     if (window.innerHeight > (messageBottom - 100)) {
-
-      console.log("Fetching new sidebar messages");
 
       const url = window.location.pathname + "/get-sidebar-messages";
       const data = { sidebarMessageID };
@@ -327,8 +318,6 @@ window.addEventListener('scroll', () => {
 
   if (!(lastMessage.length == 0)) {
     if (($(document).height() - $(window).scrollTop() - $(window).height()) < 100) {
-
-      console.log("Loading more conversation messages");
       windowScrollAlert = true;
 
       const url = window.location.pathname + "/get-conversation-messages";

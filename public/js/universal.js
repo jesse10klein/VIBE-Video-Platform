@@ -1,5 +1,3 @@
-console.log("universal.js")
-
 pollForUpdates();
 
 /*
@@ -72,8 +70,6 @@ function checkSubmit(e) {
 //Polls for updates to the notification and message read numbers
 function pollForUpdates() {
 
-  console.log("Polling for updates");
-
   //Make sure user is logged way
   if (getCookie("username") == "") {
     return;
@@ -128,7 +124,6 @@ function fetchNotifications() {
   $.ajax({
     url, type: "POST", data,
     success: function(response) {
-      console.log(response);
       displayNotifications(response);
     }
   });
@@ -179,7 +174,7 @@ function formatNotificationHTML(notification) {
         <video class="notification-video" src="/videos/${notification.videoURL}#t=2" muted></video>`;
       } else { //Someone has uploaded a new video
         HTML += `${notification.user} Has uploaded a new video: ${notification.videoTitle}</p>
-        <video class="notification-video" src="/videos/${notification.videoURL}#t=2" muted></video><`;
+        <video class="notification-video" src="/videos/${notification.videoURL}#t=2" muted></video>`;
       }
       
     HTML += `  

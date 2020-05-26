@@ -6,19 +6,85 @@ window.onload = resizeContent;
 const video = document.getElementById("partyVideo");
 let host = $(video).attr('controls') == 'controls';
 
+//Don't want to mess around with timezones so just convert
+//To AEST (need to add 10 hours)
+function adjustTimestamp(timeStamp) {
+  console.log(timeStamp);
+  const components = timeStamp.split(':');
+  let hours = parseInt(components[0]) + 10;
+  if (hours > 12) {
+    hours -= 12;
+    if (hours < 10) {
+      hours = '0' + hours;
+    }
+    if (components[1].endsWith('am')) {
+      return '' + hours + ':' + components[1].slice(0, 2) + 'pm';
+    }
+    return '' + hours + ':' + components[1].slice(0, 2) + 'am';
+  }
+  return '' + hours + ':' +  components[1];
+}
+
+function toggleSidebar() {
+  const hamburger = $("#sidebarAnimate");
+  const sidebar = $("#sidebar");
+  const content = $("#content");
+
+  const sidebar_width = 200 + 0.1;
+  const width = document.body.clientWidth - sidebar_width;
+
+  
+  const videoWidth = width > 1000 ? 1000 : width;
+  const videoMargin = width > 1000 ? (width - 1000) / 2 : 0;
+
+  if ((sidebar).css('display') == 'none') {
+    sidebar.css('display', 'block');
+    hamburger.css('display', 'none');
+    sidebar.animate({
+      right: '0px'
+    });
+    content.animate({
+      width: width + 'px'
+    });
+  } else {
+    sidebar.animate({
+      right: '-200px'
+    });
+    content.animate({
+      width: '100vw'
+    });
+    sidebar.css('display', 'none');
+    hamburger.css('display', 'block');
+  }
+  resizeContent();
+}
+
 function resizeContent() {
-
-  console.log("resizing content");
-  //Get video and change dimensions
-  const sidebar_width = 300 + 20; // padding
-  const width = window.innerWidth - sidebar_width;
-  video.style.width = width + "px";
-  video.style.height = (width / 1.766) + "px"
-
+  if ($("#sidebar").css('display') != 'none') {
+    const content = document.getElementById("content");
+    const sidebar_width = 300 + 0.1;
+    const width = document.body.clientWidth - sidebar_width;
+    content.style.width = width + "px";
+    const videoWidth = width > 1000 ? 1000 : width;
+    const videoMargin = width > 1000 ? (width - 1000) / 2 : 0;
+    console.log(videoWidth);
+    video.style.width = (videoWidth - 10) + "px";
+    video.style.height = ((videoWidth - 10) / 1.766) + "px"
+    video.style.marginLeft = videoMargin + "px";
+  } else {
+    const content = document.getElementById("content");
+    const sidebar_width = 0.1;
+    const width = document.body.clientWidth - sidebar_width;
+    content.style.width = width + "px";
+    const videoWidth = width > 1000 ? 1000 : width;
+    const videoMargin = width > 1000 ? (width - 1000) / 2 : 0;
+    video.style.width = (videoWidth - 10) + "px";
+    video.style.height = ((videoWidth - 10) / 1.766) + "px"
+    video.style.marginLeft = videoMargin + 10 + "px";
+  }
 };
 
 function checkAddMessage(e) {
-  console.log("press");
   if(e && e.keyCode == 13) {
      const item = $("#messageBox button");
      sendMessage(item);
@@ -44,7 +110,11 @@ function sendMessage(elem) {
 let adjustScrollPoint = true;
 
 function adjustScroll() {
-  if (adjustScrollPoint) {
+  const messageDiv = document.getElementById("messages");
+  const scrolled = messageDiv.scrollTop + messageDiv.clientHeight
+  const scrollable = messageDiv.scrollHeight
+  //Don't animate if at the bottom obviously
+  if (adjustScrollPoint && !((Math.abs(scrolled - scrollable)) < 20)) {
     scrollSmoothToBottom("messages");
   }
 }
@@ -57,6 +127,7 @@ function scrollSmoothToBottom (id) {
 }
 
 $("#messages").scroll(function() {
+  console.log("Scrolling");
   const messageDiv = document.getElementById("messages");
   const scrolled = messageDiv.scrollTop + messageDiv.clientHeight
   const scrollable = messageDiv.scrollHeight
@@ -84,7 +155,6 @@ function sendAction(type, info) {
   $.ajax({
     url, type: "POST", data,
     success: function(response) {
-      console.log(response);
     }
   });
 }
@@ -126,8 +196,6 @@ video.onseeked = () => {
 
 //Gets seconds, converts to minuetes:seconds
 function formatTimeStamp(time) {
-  
-  console.log(time);
 
   time = Math.ceil(time);
 
@@ -165,15 +233,14 @@ function addNotification(notification) {
     message = `${notification.user} has left the watch party`;
   } else if (notification.type == 'host') {
     message = `${notification.user} has become the new host`;
-  } else {
-    console.log("What in the frikkity frik???!!!");
   }
 
   const html = `
+    <p class="notifUsername">${notification.user}</p>
     <div class="message">
       <img src="/images/user-thumbs/${notification.imageURL}">
       <p class="messageContent">${message}</p>
-      <p class="timeStamp">${notification.formattedTimeSince}</p>
+      <p class="timeStamp">${adjustTimestamp(notification.formattedTimeSince)}</p>
       <p class="messageID">${notification.id}</p>
     </div>
   `
@@ -182,14 +249,9 @@ function addNotification(notification) {
 
 function pollForPartyUpdates() {
 
-  console.log("Polling for party updates");
-
-  adjustScroll();
-
   const url = window.location.pathname + "/poll-for-updates";
 
   const lastNotificationID =  $("#messages .message").last().find(".messageID").text();
-  console.log(lastNotificationID);
 
   let data = null;
   if (host) {
@@ -238,6 +300,7 @@ function pollForPartyUpdates() {
     }
   })
   setTimeout(pollForPartyUpdates, 500);
+  adjustScroll();
 }
 
 pollForPartyUpdates();

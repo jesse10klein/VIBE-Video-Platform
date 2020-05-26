@@ -10,10 +10,6 @@ block style
 block content
   #content
     h1= "Selected video"
-    p#error= ""
-    #redirectlinks
-      a#redirectlink= ""
-      a#deleteLink= ""
     #partyVideo
       .video-preview
         video.sidebar-video(src=`/videos/${video.videoURL}#t=4` muted)
@@ -27,8 +23,14 @@ block content
               h3.percentage= `${video.likePercentage}% 👍`
             h3= `Uploaded ${video.timeSince}`
 
-    button(onclick="startWatchParty()")= "Start the Watch Party!"
+    button#startParty(onclick="startWatchParty()")= "Start the Watch Party!"
+    
+    p#error= ""
+    #redirectlinks
+      a#redirectlink= ""
+      a#deleteLink= ""
 
   
   #sidebar
     include create-party-sidebar
+

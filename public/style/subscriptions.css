@@ -1,7 +1,11 @@
+body {
+    margin-top: 70px;
+}
+
 .videoContainer {
     width: 80%;
     margin-left: 10%;
-    margin-top: -50px;
+    margin-top: -40px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -9,7 +13,7 @@
 }
 
 .filterTitle {
-    margin-top: 80px;
+    margin-top: 0px;
     margin-left: 10%;
 }
 

@@ -44,7 +44,6 @@ function checkUserAdd(e) {
   }
 }
 
-
 function startWatchParty() {
 
   const userList = [];
@@ -91,14 +90,11 @@ function startWatchParty() {
 
 $("#search-term").on('keyup', function () {
 
-  console.log("Here");
-
   const searchTerm = $("#search-term").val();
   const url = "/messages/home/process-autocomplete";
 
   if (searchTerm.length < 4) {
     updateAutoComplete({matches: []})
-    console.log("Search isn't specific enough");
     return;
   } 
 
@@ -115,8 +111,7 @@ $("#search-term").on('keyup', function () {
     });
   }
 
-  if (userList.length == 5) {
-    console.log("Max 10 people per watch party");
+  if (userList.length == 10) {
     return;
   }
 
@@ -133,7 +128,6 @@ $("#search-term").on('keyup', function () {
 function resizeContent() {
   //Get video and change dimensions
   const content = document.getElementById("content");
-  console.log(content);
 
   const sidebar_width = 320;
   
@@ -142,9 +136,15 @@ function resizeContent() {
 
 };
 
+function removeUser(elem) {
+  $(elem).parent().remove();
+}
+
 function addUser(elem) {
-  console.log("Attempting to add user");
-  const HTML = `<div class="partyUser"> ${$(elem).html()} </div>`
+  const HTML = `<div class="partyUser">
+                  ${$(elem).html()}
+                  <button class="removeUser" onclick="removeUser(this)">X</button>
+                </div>`
   $("#users").append(HTML);
   const dd = $("#search-dropdown");
   dd.css("display", "none");

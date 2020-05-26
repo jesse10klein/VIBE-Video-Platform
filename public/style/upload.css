@@ -21,9 +21,6 @@
     height: 150px;
 }
 
-#video-upload {
-}
-
 #video-upload input {
     height: 50px;
     font-size: 1.5em;
@@ -45,10 +42,28 @@
 }
 
 #pageTitle {
+    margin-top: 70px;
+    margin-bottom: -15px;
     text-align: center;
 }
 
-#post-video {
+#post-video, #start-upload {
     width: 150px;
     margin: auto;
+    font-family: 'Oxanium', cursive;
+    text-decoration: none;
+    color: black;
+    font-size: 0.9em;
+    padding: 0;
+    background-color: rgb(204, 235, 235);
+    border-radius: 5px;
+    border: 3px solid black;
+    margin-top: 10px;
+    height: 30px;
+    transition: 0.4s;
 }
+
+#post-video:hover, #start-upload:hover {
+    font-size: 0.95em;
+}
+

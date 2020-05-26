@@ -18,9 +18,6 @@ window.onresize = resizeContent;
 window.onload = resizeContent; 
 
 function resizeContent() {
-
-  console.log("resizing content");
-
   //Get video and change dimensions
   const content = document.getElementById("content");
 
@@ -53,7 +50,6 @@ function checkFormData() {
     success: function(response) {
 
       //Either going to get back video or errors
-      console.log(response );
       if (response == "OK") {
         $("#titleError").text("The video information has been updated!");
         return;

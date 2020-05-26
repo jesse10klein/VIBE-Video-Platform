@@ -51,7 +51,6 @@ function getSidebarVideos(data) {
   $.ajax({
     url, type: "POST", data, dataType: 'json',
     success: function(response) {
-      console.log(response);
       if (response.videos.length > 0) {
         addVideos(response);
       }

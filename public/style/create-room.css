@@ -32,10 +32,6 @@ input {
     width: 170px;
 }
 
-#search-submit {
-
-}
-
 #search-dropdown {
   display: none;
   position: absolute;
@@ -74,8 +70,29 @@ input {
 }
 
 .partyUser {
+    width: 260px;
+    margin-left: 20px;
     display: flex;
     flex-direction: row;
+}
+
+.partyUser p {
+    width: 200px;
+}
+
+.removeUser {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    border: none;
+    transition: 0.3s;
+    margin-right: 3px;
+}
+
+.removeUser:hover {
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 0px;
 }
 
 .autocomplete-tag p {
@@ -85,16 +102,22 @@ input {
 
 
 
+
+
+
+
+
+
+
+
+/*****VIDEO*****/
+
 .video-preview {
-    margin-top: 30px;
     width: 250px;
     height: 250px;
     text-align: center;
     border-radius: 10px;
     font-size: 0.5em;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-bottom: 25px;
 }
 
 .video-preview video {
@@ -116,10 +139,12 @@ input {
 }
 
 .formatDiv {
-    margin-left: 10px;
+    width: 160px;
+    margin-left: 30px;
 }
 
 .userInfo {
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
 }
@@ -130,7 +155,6 @@ input {
     font-size: 15px;
     text-align: left;
 }
-
 
 .videoTitle {
     font-size: 18px;
@@ -164,4 +188,33 @@ input {
 
 .percentage {
     margin-left: 20px;
+}
+
+#error {
+    color: red;
+    font-weight: bold;
+}
+
+#startParty {
+    font-family: 'Oxanium', cursive;
+    width: 170px;
+    text-decoration: none;
+    color: black;
+    font-size: 0.9em;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(204, 235, 235);
+    border-radius: 5px;
+    border: 3px solid black;
+    margin-top: 10px;
+    height: 30px;
+    transition: 0.4s;
+}
+
+#startParty:hover {
+    font-size: 0.95em;
+}
+
+#dd {
+    margin-top: 15px !important;
 }

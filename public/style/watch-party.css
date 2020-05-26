@@ -8,21 +8,18 @@ body {
 #sidebar {
     position: fixed;
     right: 0;
-    height: 95vh;
+    top: 50px;
+    height: 96vh;
     width: 300px;
     text-align: center;
-    border-left: 3px solid black;
+    border-left: 2px solid black;
 }
-
-#content {
-}
-
 
 /****VIDEO****/
 
 #partyVideo {
-    margin-top: 10px;
-    margin-left: 10px;
+    margin-top: -5px;
+    margin-left: 5px;
 }
 
 #messages {
@@ -54,6 +51,7 @@ body {
     justify-content: space-between;
     margin-left: 10px;
     margin-right: 10px;
+    margin-bottom: -22px;
 }
 
 .message img {
@@ -69,6 +67,8 @@ body {
     font-size: 15px;
     width: 180px;
     text-align: left;
+    white-space: pre-wrap;
+    overflow: hidden;
 }
 
 .timeStamp {
@@ -96,4 +96,46 @@ body {
     height: 20px;
     width: 150px;
     border-radius: 5px;
+}
+
+.notifUsername {
+    margin-bottom: -10px;
+    font-size: 12px;
+}
+
+#sidebarAnimate {
+    border: none;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 20px;
+    top: 70px;
+    display: none;
+}
+
+#hamburger {
+    width: 50px;
+    margin-right: 3px;
+    margin-top: 3px;
+    transition: 0.3s;
+}
+
+#hamburger:hover {
+    margin-top: 0px;
+    margin-right: 0px;
+    width: 55px;
+}
+
+#messageHeader button {
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+#messageHeader button:hover {
+    font-size: 20px;
 }

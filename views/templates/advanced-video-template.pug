@@ -6,7 +6,6 @@
   .header
     h1.videoTitle= video.title
     button.videoDD(onclick="handleVideoDropdown(this)")
-    
   .userInfo
     a(href=`/users/${video.uploader}`)
       img.uploaderPhoto(src=`/images/user-thumbs/${video.imageURL}`)

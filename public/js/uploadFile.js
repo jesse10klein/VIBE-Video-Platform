@@ -51,8 +51,6 @@ function uploadVideo() {
         processData: false,
         contentType: false,
         success: function(res){
-            console.log('upload successful!');
-            console.log(res);
             fileSize = 0;
             lastLoaded = 0;
             lastTime = 0;
@@ -70,7 +68,6 @@ function uploadVideo() {
               // calculate the percentage of upload completed
               var percentComplete = evt.loaded / evt.total;
               percentComplete = parseInt(percentComplete * 100);
-              console.log(percentComplete);
               fileSize = evt.total;
               handleUploadInformation(evt.loaded, percentComplete);
               $('#uploading').css("display", "block");
@@ -162,7 +159,6 @@ function parseFormData() {
     success: function(response) {
 
       //Either going to get back video or errors
-      console.log(response);
 
       //If video, redirect to the video
       if (response.id) {
@@ -172,15 +168,12 @@ function parseFormData() {
       //Otherwise, handle the errors
 
       if (response.title) {
-        console.log("Setting1")
         $('#titleError').text(response.title);
       }
       if (response.description) {
-        console.log("Setting2")
         $('#descriptionError').text(response.description);
       } 
       if (response.tags) {
-        console.log("Setting3")
         $('#tagsError').text(response.tags);
       }
 

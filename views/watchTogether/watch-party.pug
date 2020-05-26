@@ -5,6 +5,10 @@ block style
   link(href="/style/watch-party.css" rel="stylesheet")
 
 block content
+
+  button#sidebarAnimate(onclick="toggleSidebar()")
+    img#hamburger(src='/images/hamburger.svg')
+
   #content
     if host
       video#partyVideo(src=`/videos/${video.videoURL}` controls)
