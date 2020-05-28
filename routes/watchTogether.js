@@ -64,6 +64,23 @@ router.post('/create-session', tools.asyncHandler( async (req, res) => {
 
 }));
 
+//Select a specific video for the watch party
+router.get('/:id', tools.asyncHandler( async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  const user = await UserInfo.findOne({where: {username}});
+  let video = await Video.findOne({where: {id: req.params.id}});
+  video = await tools.formatVideo(video);
+
+	res.render('watchTogether/create-room-video', { username, user, video });
+
+}));
+
 //Load a session
 router.get('/session/:sessionID', tools.asyncHandler( async (req, res) => {
 
@@ -143,12 +160,12 @@ router.post('/session/:sessionID/poll-for-updates', tools.asyncHandler(async (re
     await party.update({videoStatus: req.body.sync});
   }
 
-  let sync = null;
+  const sync = party.videoStatus;
+
   //Update the users ping
   const ping = await PartyPing.findOne({where: {user: username, partyID: party.id}});
   if (ping == null) {
     await PartyPing.create({partyID: party.id, user: username, lastPing: new Date()});
-    sync = party.videoStatus;
     await PartyNotifications.create({partyID: party.id, user: username, type: 'joined', content: ""});
   } else {
     await ping.update({lastPing: new Date()});

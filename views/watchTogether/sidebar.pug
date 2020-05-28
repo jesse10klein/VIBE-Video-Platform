@@ -7,7 +7,7 @@
   button#hideSidebar(onclick="toggleSidebar()")= "X"
   p= "Party chat"
   if host
-    a(href=`/watch-party/session/${sessionID}/end-session`)= "End Watch Party"
+    a#host(href=`/watch-party/session/${sessionID}/end-session`)= "End Watch Party"
 
 #messages
 

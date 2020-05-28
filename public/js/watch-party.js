@@ -4,12 +4,14 @@ window.onresize = resizeContent;
 window.onload = resizeContent; 
 
 const video = document.getElementById("partyVideo");
-let host = $(video).attr('controls') == 'controls';
+
+
+
+let host = $('body').find("#host").length == 1;
 
 //Don't want to mess around with timezones so just convert
 //To AEST (need to add 10 hours)
 function adjustTimestamp(timeStamp) {
-  console.log(timeStamp);
   const components = timeStamp.split(':');
   let hours = parseInt(components[0]) + 10;
   if (hours > 12) {
@@ -263,6 +265,7 @@ function pollForPartyUpdates() {
   $.ajax({
     url, type: "POST", data, dataType: 'json',
     success: function(response) {
+      console.log(response);
       if (response.end) {
         window.location.pathname = "/watch-party/session-ended";
       }
@@ -271,10 +274,14 @@ function pollForPartyUpdates() {
         video.controls = true;
         $("#messageHeader").append(`<a href=${window.location.pathname}/end-session>End Watch Party</a>`);
       } else if (!response.host && host) {
-        video.controls = false;
         $("#messageHeader").children()[1].remove();
       }
       host = response.host;
+
+      if (!host) {
+        check_sync(response.sync);
+      }
+
       for (let i = 0; i < notifications.length; i++) {
         addNotification(notifications[i]);
         if (!response.admin) {
@@ -288,20 +295,23 @@ function pollForPartyUpdates() {
           }
         }
       }
-      if (response.sync) {
-        const actions = response.sync.split(",");
-        video.currentTime = parseInt(actions[0]);
-        if (actions[1] == "true") {
-          video.pause();
-        } else {
-          video.play();
-        }
-      }
     }
   })
   setTimeout(pollForPartyUpdates, 500);
   adjustScroll();
 }
+
+function check_sync(sync) {
+  console.log("**********************************");
+  const params = sync.split(',');
+  const time = parseInt(params[0]);
+  const playing = params[1] == 'true';
+  console.log(time, playing);
+  if (Math.abs(video.currentTime - time) > 2) {
+    video.currentTime = time;
+  }
+}
+
 
 pollForPartyUpdates();
 resizeContent()

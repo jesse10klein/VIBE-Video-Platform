@@ -10,10 +10,8 @@ block content
     img#hamburger(src='/images/hamburger.svg')
 
   #content
-    if host
-      video#partyVideo(src=`/videos/${video.videoURL}` controls)
-    else
-      video#partyVideo(src=`/videos/${video.videoURL}`)
+    video#partyVideo(src=`/videos/${video.videoURL}` controls)
+
 
   #sidebar
     include sidebar
