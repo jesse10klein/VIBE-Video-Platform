@@ -125,7 +125,7 @@ router.post('/login', tools.asyncHandler(async (req, res) => {
   }
 
   const error = "Incorrect username or password";
-  res.render("userViews/login", {error});
+  res.render("userViews/login", {fill: username, error});
 
 }));
 

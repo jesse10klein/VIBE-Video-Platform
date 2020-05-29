@@ -227,6 +227,44 @@ router.post('/session/:sessionID/poll-for-updates', tools.asyncHandler(async (re
   
 }));
 
+
+//Finish a session
+router.post('/session/:sessionID/end-session', tools.asyncHandler( async (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect("/users/login");
+    return;
+  }
+
+  const { sessionID } = req.params;
+
+  const session = await WatchParty.findOne({where: {joinLink: sessionID}});
+
+  if (session == null) {
+    res.render("404", {message: "That session has already ended or never existed"});
+    return;
+  }
+
+  //Get everything and delete it
+  const sessionMessages = await PartyNotifications.findAll({where: {partyID: session.id}});
+  const sessionNotifications = await Notifications.findAll({where: {contentID: sessionID}});
+  const pings = await PartyPing.findAll({where: {partyID: session.id}});
+  for (let i = 0; i < sessionMessages.length; i++) {
+    await sessionMessages[i].destroy();
+  }
+  for (let i = 0; i < sessionNotifications.length; i++) {
+    await sessionNotifications[i].destroy();
+  }
+  for (let i = 0; i < pings.length; i++) {
+    await pings[i].destroy();
+  }
+  await session.destroy();
+
+  res.sendStatus(200);
+
+}));
+
 //Finish a session
 router.get('/session/:sessionID/end-session', tools.asyncHandler( async (req, res) => {
 

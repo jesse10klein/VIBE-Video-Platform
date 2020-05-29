@@ -218,3 +218,35 @@ input {
 #dd {
     margin-top: 15px !important;
 }
+
+#redirectLink {
+    text-decoration: none;
+    color: black;
+    margin-right: 20px;
+    transition: 0.3s;
+}
+
+#redirectlinks button {
+    font-family: 'Oxanium', cursive;
+    text-decoration: none;
+    color: black;
+    margin-right: 20px;
+    transition: 0.3s;
+    border: none;
+    margin: none;
+    padding: none;
+    background-color: white;
+    font-size: 16px;
+}
+
+#redirectLink:hover {
+    font-size: 16.5px;
+    margin-right: 14px;
+    font-weight: bold;
+}
+
+#redirectlinks button:hover {
+    font-size: 16.5px;
+    margin-right: 14px;
+    font-weight: bold;
+}

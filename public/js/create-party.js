@@ -75,10 +75,10 @@ function startWatchParty() {
       if (response.error) {
         $("#error").text(response.error);
         if (response.joinLink) {
-          $("#redirectlink").text("View existing watch-party");
-          $("#redirectlink").attr("href", `/watch-party/session/${response.joinLink}`);
-          $("#deleteLink").text("Delete the watch party");
-          $("#deleteLink").attr("href", `/watch-party/session/${response.joinLink}/end-session`);
+          $("#redirectLink").text("View existing watch-party");
+          $("#redirectLink").attr("href", `/watch-party/session/${response.joinLink}`);
+          $("#redirectlinks button").text("Delete the watch party");
+          $("#redirectlinks button").attr("id", `${response.joinLink}`);
         }
       } else if (response.joinLink) {
         warning = false;
@@ -176,4 +176,21 @@ function updateAutoComplete(response) {
   dropdown.css("display", "flex");
   dropdown.css("flex-direction", "column");
   
+}
+
+function deleteParty(elem) {
+
+  const url = `/watch-party/session/${elem.id}/end-session`;
+  const data = {};
+
+  $.ajax({
+    url, type: "POST", data,
+    success: function(response) {
+      console.log(response);
+      $("#redirectlinks button").text("");
+      $("#redirectLink").text("");
+      $("#error").text("");
+    }
+  })
+
 }

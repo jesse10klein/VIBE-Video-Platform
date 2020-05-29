@@ -63,13 +63,20 @@ function toggleSidebar() {
 
 function resizeContent() {
   if ($("#sidebar").css('display') != 'none') {
+
+
+    const messageHeight = window.innerHeight - 150;
+    console.log($("#messages").css("height"));
+    $("#messages").css("height", messageHeight + "px");
+
+
+
     const content = document.getElementById("content");
     const sidebar_width = 300 + 0.1;
     const width = document.body.clientWidth - sidebar_width;
     content.style.width = width + "px";
     const videoWidth = width > 1000 ? 1000 : width;
     const videoMargin = width > 1000 ? (width - 1000) / 2 : 0;
-    console.log(videoWidth);
     video.style.width = (videoWidth - 10) + "px";
     video.style.height = ((videoWidth - 10) / 1.766) + "px"
     video.style.marginLeft = videoMargin + "px";

@@ -14,7 +14,10 @@ block content
     form(action="/users/login" method="POST")
       .form-element
         p  Username: 
-        input#username(type='text' name='username' autocomplete="off")
+        if fill
+          input#username(type='text' name='username' autocomplete="off" value=`${fill}`)
+        else
+          input#username(type='text' name='username' autocomplete="off")
       .form-element
         p  Password: 
         input#password(type='password' name='password' autocomplete="off")  
