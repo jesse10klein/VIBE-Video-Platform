@@ -4,7 +4,7 @@ block style
   link(href="/style/userProfile/userprofilesubs.css" rel="stylesheet")
 
 block content
-    h1#title= message
+    h1#title= `${message}:`
 
     #subs-container
       if subs

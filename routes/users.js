@@ -14,7 +14,7 @@ const { Message } = db.models;
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  host: 'mailhub.eait.eq.edu.au',
+  host: 'mailhub.eait.uq.edu.au',
   port: 25
 });
 
@@ -175,9 +175,6 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   user.formattedSubCount = tools.formatViews(user.subscriberCount);
 
   let videos = await Video.findAll({ where: { uploader: user.username } });
-  if (videos.length == 0) {
-      videos = null;
-  }
   for (let i = 0; i < videos.length; i++) {
     videos[i] = await tools.formatVideo(videos[i]);
   }
@@ -218,7 +215,7 @@ router.get('/:user/liked-videos', tools.asyncHandler(async (req, res) => {
     subscribed = !(subscription == null);
   }
 
-  res.render("userProfile/user-home", {subscribed, message: "Liked Videos", videos, emptyMessage: "No liked videos yet", user, username: req.session.username});
+  res.render("userProfile/user-home", {subscribed, message: "Liked Videos:", videos, emptyMessage: "No liked videos yet", user, username: req.session.username});
 }));
 
 //GET ALL VIDEOS DOWNVOTED BY THE USER
@@ -250,7 +247,7 @@ router.get('/:user/disliked-videos', tools.asyncHandler(async (req, res) => {
     subscribed = !(subscription == null);
   }
 
-  res.render("userProfile/user-home", {subscribed, message: "Disliked Videos", videos, emptyMessage: "No disliked videos yet", user, username: req.session.username});
+  res.render("userProfile/user-home", {subscribed, message: "Disliked Videos:", videos, emptyMessage: "No disliked videos yet", user, username: req.session.username});
 }));
 
 //GET ALL SUBSCRIBERS
@@ -333,7 +330,7 @@ router.get('/:user/bookmarked-videos', tools.asyncHandler(async (req, res) => {
     subscribed = !(subscription == null);
   }
 
-  res.render("userProfile/user-home", {subscribed, message: "Bookmarked Videos", videos, emptyMessage: "No Bookmarked Videos Yet", user, username: req.session.username});
+  res.render("userProfile/user-home", {subscribed, message: "Bookmarked Videos:", videos, emptyMessage: "No Bookmarked Videos Yet", user, username: req.session.username});
 }));
 
 //GET Requested password reset

@@ -11,7 +11,7 @@ const { passwordVerify } = db.models;
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: 'mailhub.eait.eq.edu.au',
+    host: 'mailhub.eait.uq.edu.au',
     port: 25
 });
 

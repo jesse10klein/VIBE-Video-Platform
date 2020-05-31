@@ -186,6 +186,23 @@ async function signupErrors(username, email, password, verifyPassword) {
   if (username == null || username.length <= 5) {
     error.username = "Username must be longer than 5 characters";
   } 
+  //Check for a number or special character
+  let number = false;
+  let specialCharacter = false;
+  let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  let specials = ["!", "@", "#", "$", "%", "^", "&", "*"];
+  for (let i = 0; i < password.length; i++) {
+    if (numbers.includes(password[i])) {
+      number = true;
+    }
+    if (specials.includes(password[i])) {
+      specialCharacter = true;
+    }
+  }
+  if (!specialCharacter || !number) {
+    error.password = "Include a number and a special character"
+  }
+
   if (password == null || password.length <= 5) {
     error.password = "Password must be longer than 5 characters";
   } 

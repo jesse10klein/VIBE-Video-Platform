@@ -63,10 +63,14 @@ body {
     display: flex;
     flex-direction: row;
     text-align: center;
+    justify-content: center;
+    margin-left: -95px;
+    margin-bottom: 15px;
 }
 
+
 #signup {
-    margin-left: 10px;
+    margin-left: 20px;
     line-height: 70px;
     height: 20px;
     color: blue;
@@ -79,11 +83,12 @@ body {
 .errors {
     display: flex;
     flex-direction: row;
+    justify-content: left;
 }
 
 .error {
     color: red;
-    margin-left: 20px;
+    margin-left: 10px !important;
 }
 
 #createAccount, #loginButton {
@@ -103,4 +108,20 @@ body {
 
 #title {
     font-size: 2em;
+}
+
+#passwordReset {
+    color: purple;
+    text-decoration: none;
+    text-align: center;
+}
+
+
+#resetPassword {
+    width: 60%;
+    height: 30px;
+    background-color: rgb(238, 236, 236);
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 3px;
 }
