@@ -93,7 +93,8 @@ router.get('/delete-account', tools.asyncHandler(async (req, res) => {
     }
     await tools.deleteAccount(user);
     res.clearCookie("username");
-    res.redirect('/');
+    res.clearCookie('sid');
+    res.redirect('/users/login');
 }));
 
 router.get('/profile-picture', tools.asyncHandler(async (req, res) => {
@@ -320,7 +321,7 @@ router.get('/video-manager', tools.asyncHandler(async (req, res) => {
 
     const video = null;
 
-    const sidebarVideos = await Video.findAll({where: {uploader: username}});
+    let sidebarVideos = await Video.findAll({where: {uploader: username}});
     for (let i = 0; i < sidebarVideos.length; i++) {
         sidebarVideos[i] = await tools.formatVideo(sidebarVideos[i]);
     }
@@ -344,7 +345,11 @@ router.get('/video-manager/:id', tools.asyncHandler(async (req, res) => {
 
     const user = username;
 
-    const video = await Video.findOne({where: {id: req.params.id}});
+    const video = await Video.findOne({where: {id: req.params.id, uploader: username}});
+    if (video == null) {
+        res.render('404', {message: "That video does not exist", username});
+        return;
+    }
 
     const tags = video.tags.split("`");
     if (tags[tags.length - 1] == "") {

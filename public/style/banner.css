@@ -1,0 +1,56 @@
+
+
+#picture-div {
+    height: 450px;
+    width: 600px;
+    margin: auto;
+    border: 2px solid rgba(0, 0, 0, 1);
+    margin-top: 100px;
+    text-align: center;
+}
+
+#customLabel {
+    font-size: 20px;
+}
+
+#customLabel:hover {
+    cursor: pointer;
+}
+
+#picture {
+    height: 220px;
+    width: 500px;
+    border: 2px solid black;
+    object-fit: cover;
+    transition: 0.2s;
+}
+
+#fileSelector {
+    display: none;
+}
+
+#photo-upload {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+    font-weight: 500;
+}
+
+#changeBanner {
+    font-size: 1.3em;
+    font-family: 'Oxanium', cursive;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background-color: white;
+}
+
+#changeBanner:hover {
+    cursor: pointer;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}

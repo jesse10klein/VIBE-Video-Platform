@@ -14,9 +14,9 @@ block content
 
     form(enctype="multipart/form-data" action="/account/upload-banner" method="POST")
       #photo-upload
-        label(for="fileSelector" id="customLabel") Choose Photo to Upload
+        label(for="fileSelector" id="customLabel") Choose Banner to Upload
         input(id="fileSelector" type='file' name='fileName')
-      input#submit(type='submit' value='Upload Photo')
+      input#changeBanner(type='submit' value='Upload Photo')
       if error
         p.error= error
 

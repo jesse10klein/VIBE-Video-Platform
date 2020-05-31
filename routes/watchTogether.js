@@ -20,6 +20,19 @@ const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
 
+
+//Display session ended message
+router.get('/session-ended', (req, res) => {
+
+  const { username } = req.session;
+  if (username == null) {
+    res.redirect('/');
+    return;
+  }
+
+  res.render("accountViews/verification-sent", {message: 'Your watch party has ended! Thanks for watching :)', username});
+});
+
 //Create a new watch party session
 router.post('/create-session', tools.asyncHandler( async (req, res) => {
 
@@ -301,6 +314,7 @@ router.get('/session/:sessionID/end-session', tools.asyncHandler( async (req, re
   res.redirect('/watch-party/session-ended');
 
 }));
+
 
 
 module.exports = router;
