@@ -1,4 +1,4 @@
-const div = document.getElementById("description-info");
+const desc = document.getElementById("description-info");
 const descButton = document.getElementById("descButton");
 const subButton = document.getElementById('subscribeButton');
 
@@ -278,13 +278,13 @@ function processSubscribe() {
 
 function toggleDescription() {
 
-  if (div.style.visibility == 'visible') {
-    div.style.visibility = 'hidden';
-    div.style.display = 'none';
+  if (desc.style.visibility == 'visible') {
+    desc.style.visibility = 'hidden';
+    desc.style.display = 'none';
     descButton.textContent = 'Show Description';
   } else {
-    div.style.visibility = 'visible';
-    div.style.display = 'block';
+    desc.style.visibility = 'visible';
+    desc.style.display = 'block';
     descButton.textContent = 'Hide Description';
   }
 }
