@@ -1,7 +1,7 @@
 #.gitignore
 
 node_modules
-public/videos
+public/videos/*
 INFS3202.db
 bored.js
 public/images/user-thumbs
