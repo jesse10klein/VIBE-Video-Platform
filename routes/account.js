@@ -11,14 +11,14 @@ const { passwordVerify } = db.models;
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'vibevideoservice@gmail.com',
-      pass: 'Ernas123'
-    }
+  service: 'gmail',
+  auth: {
+    user: 'vibevideoservice@gmail.com',    
+    pass: 'Ernas123'
+  }
 });
 
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcrypt");
 const validator = require("email-validator");
 
 //Require and use modules
@@ -487,6 +487,7 @@ router.get('/verify-account', tools.asyncHandler(async (req, res) => {
   const mailOptions = tools.getMailOptionsVerify(user, `${url}/account/verify-email/${generatedID}`);
   transporter.sendMail(mailOptions, async (error, info) => {
     if (error) {
+      console.log(error);
       res.render("accountViews/verification-sent", {username, message: "We were unable to send an email to your account at this time. Please try again later."});
       return;
     } else {

@@ -14,11 +14,14 @@ const { Message } = db.models;
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  host: 'mailhub.eait.uq.edu.au',
-  port: 25
+  service: 'gmail',
+  auth: {
+    user: 'vibevideoservice@gmail.com',    
+    pass: 'Ernas123'
+  }
 });
 
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcrypt");
 
 //Require helper functions
 var tools = require(path.join(__dirname, 'helperFunctions'));
@@ -141,6 +144,8 @@ router.get('/logout', (req, res) => {
 //CREATE NEW USER BASED ON SIGN UP DATA
 router.post('/signup', tools.asyncHandler(async (req, res) => {
   
+    console.log("Signup route");
+
     let { username, email, password, verifyPassword } = req.body;
     const fill = { username, email }
     
@@ -148,17 +153,19 @@ router.post('/signup', tools.asyncHandler(async (req, res) => {
     if (!(error.username || error.email || error.password || error.passwordDup)) {
       error = null;
     }
+    console.log("After error checking");
 
     if (!error) {
       //Hash the password before creating
       const hashedPassword = await bcrypt.hash(password, 10);
-
+      console.log("After bcrypt");
       user = await UserInfo.create({ username, password: hashedPassword, email });
       const message = `Welcome to Vibe Videos ${username}!\n\n We hope you enjoy your stay :)`
       await Message.create({message, sender: "CrashingSwine05", recipient: username, read: false});
       res.redirect("/users/login");
       return;
     } 
+    console.log("An error occurred");
  
     res.render('userViews/signup', {error, fill});
 }));
