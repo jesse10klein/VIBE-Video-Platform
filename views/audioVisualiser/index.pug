@@ -1,0 +1,43 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  title Audio Visualiser
+  link(rel='stylesheet' href='/style/audio-visualiser/style.css')
+  link(rel='stylesheet' href='/style/audio-visualiser/searchTerm.css')
+  link(rel='stylesheet' href='/style/audio-visualiser/sliders.css')
+  link(rel="shortcut icon" href="")
+  link(href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet")
+
+#header
+
+  h1#title= 'Audio Visualizer'
+  
+  #songSearch
+    h2#searchTitle= "Search Spotify: "
+    input#search-term(type='text' name='searchTerm' autocomplete="off")
+
+
+  #search-dropdown
+
+  label#fileLabel(for='file')= 'Choose a file'
+  input#file(type='file' accept='audio/*' title=" ")
+
+  h2#dropdown= 'Controls'
+    #dropdownContent
+      p.label= 'Bar Length:'
+      input#barLengthSlider(type="range" min="10" max="60" value="30")
+      p.label= 'Radius:'
+      input#circleRadiusSlider(type="range" min="10" max="60" value="45")
+      p.label= 'Rotation Speed:'
+      input#rotationSlider(type="range" min="0" max="20" value="10")
+      p.label= 'Spread:'
+      input#spreadSlider(type="range" min="0" max="4" value="1")
+      p.label= 'Sample Size: '
+      input#sampleSlider(type="range" min="0" max="4" value="2")
+      button#changeRotation(onclick='invertAngleIncrement()')= 'Toggle Rotation'
+
+canvas#canvas
+audio#audio(controls controlsList="nodownload")
+
+script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+script(src='/js/audio-visualiser/script.js')

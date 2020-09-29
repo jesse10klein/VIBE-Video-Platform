@@ -53,6 +53,8 @@ const messageRoutes = require(path.join(__dirname, 'routes/messages'));
 app.use('/messages', messageRoutes);
 const watchTogetherRoutes = require(path.join(__dirname, 'routes/watchTogether'));
 app.use('/watch-party', watchTogetherRoutes);
+const audioVisualiserRoutes = require(path.join(__dirname, 'routes/audio-visualiser.js'));
+app.use('/audio-visualiser', audioVisualiserRoutes)
 
 //Set view engine and tell express where to look for views
 app.use(express.static(path.join(__dirname, "public")));
