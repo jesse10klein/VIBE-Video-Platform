@@ -11,11 +11,14 @@ const { passwordVerify } = db.models;
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: 'mailhub.eait.uq.edu.au',
-    port: 25
+    service: 'gmail',
+    auth: {
+      user: 'vibevideoservice@gmail.com',
+      pass: 'Ernas123'
+    }
 });
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt-nodejs");
 const validator = require("email-validator");
 
 //Require and use modules

@@ -4,7 +4,7 @@ const path = require('path')
 const db = require(path.join(__dirname, 'db'));
 
 //Need to use bcrypt
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 
 //Try to sync database
 async function setUp() {

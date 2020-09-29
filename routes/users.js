@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
   port: 25
 });
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt-nodejs");
 
 //Require helper functions
 var tools = require(path.join(__dirname, 'helperFunctions'));
