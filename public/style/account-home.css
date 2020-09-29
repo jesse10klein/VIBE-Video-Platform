@@ -43,3 +43,35 @@
 .notVerified {
     color: red;
 }
+
+#yesDelete {
+    width: 200px;
+    height: 30px;
+    background-color: #5CB85C;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 3px;
+    border: 1px solid black;
+}
+
+#noDelete {
+    margin: 20px;
+    width: 200px;
+    height: 30px;
+    background-color: #D9534F;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 3px;
+    border: 1px solid black;
+}
+
+#deleteButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#deleteWelcome {
+    font-size: 25px;
+    text-align: center;
+}

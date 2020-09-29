@@ -528,12 +528,9 @@ router.post('/:id/video-payload/', tools.asyncHandler(async (req, res) => {
 
   //Get videos for sidebar: for now just any videos
   let videos = await tools.getSidebarVideos(username);
-  console.log(req.body.lastVideoID);
-  console.log(videos.length);
 
   //Loop through until find id
   for (let i = 0; i < videos.length; i++) {
-    console.log(videos[i].id);
     if (videos[i].id == req.body.lastVideoID) {
       videos = videos.splice(i + 1);
       break;
@@ -545,7 +542,6 @@ router.post('/:id/video-payload/', tools.asyncHandler(async (req, res) => {
   }
 
   videosToSend = tools.convertVideosAjax(videos);
-  console.log(videosToSend);
 
   res.send({videos: videosToSend})
 }));

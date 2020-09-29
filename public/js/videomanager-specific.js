@@ -1,7 +1,5 @@
 
 
-
-
 $(document).ready(function() {
   $("#myTags").tagit();
 });
@@ -83,9 +81,7 @@ function goBackToEdit() {
   window.location.pathname = splits;
 }
 
-function processVideoDelete() {
-
-  console.log("Hello");  
+async function processVideoDelete() {
 
   let data = {};
 
@@ -99,6 +95,8 @@ function processVideoDelete() {
 
      }
   })
+
+  window.location.pathname = '/account';
 
 
 }

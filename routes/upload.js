@@ -22,10 +22,6 @@ const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
 
-//FOR THING
-var fs = require('fs');
-
-
 //Form to upload a video
 router.get('/', (req, res) => {
 
@@ -42,9 +38,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
-
-  console.log(req.get("content-length"));
-
+  
   if (!req.files) {
     res.sendStatus(500);
     return;
@@ -62,7 +56,6 @@ router.post('/handle-upload', tools.asyncHandler( async (req, res) => {
         return;
     }
     else {
-        console.log("File Uploaded", name);
         res.sendStatus(200);
         return;
     }

@@ -28,13 +28,20 @@ function uploadVideo() {
 
     var file = document.getElementById("file1").files[0];
 
+
     $('#videoError').text("");
 
     if (file == null) {
       $('#videoError').text("You must select a file to upload");
       return;
     }
-    
+
+    if (file.size > 52428800) {
+      $('#videoError').text("Do to space restrictions, videos cannot be larger than 50MB");
+      return;
+    }
+  
+
     if (file.type != "video/mp4") {
       $('#videoError').text("Only mp4 files are acceptable");
       return;

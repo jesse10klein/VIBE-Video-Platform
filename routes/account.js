@@ -76,6 +76,19 @@ router.get('/delete-account', tools.asyncHandler(async (req, res) => {
         res.render("404", {message: "Could not find what you were looking for"});
         return;
     }
+   
+    res.render('accountViews/delete-account-confirm', {user});
+
+}));
+
+//Handle deleting a user
+router.post('/delete-account', tools.asyncHandler(async (req, res) => {
+
+    const user = await UserInfo.findOne({where: {username: req.session.username}});
+    if (user == null) {
+        res.render("404", {message: "Could not find what you were looking for"});
+        return;
+    }
     await tools.deleteAccount(user);
     res.clearCookie("username");
     res.clearCookie('sid');
@@ -148,7 +161,6 @@ router.post('/upload-pic', tools.asyncHandler(async (req, res) => {
           res.redirect("/account/profile-picture");
       }
       else {
-          console.log("File Uploaded", name);
           res.redirect("/account/profile-picture");
       }
   });
@@ -192,7 +204,6 @@ router.post('/upload-banner', tools.asyncHandler(async (req, res) => {
             res.redirect("/account/banner");
         }
         else {
-            console.log("File Uploaded", name);
             res.redirect("/account/banner");
         }
     });
@@ -411,16 +422,43 @@ router.get('/video-manager/:id/delete', tools.asyncHandler(async (req, res) => {
 
     res.render('videoManager/delete', { username, video, sidebarVideos });
   
-  }));
+}));
+
+
+//Process form data for editing a specific video
+router.get('/video-manager/:id/delete/confirmation', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+    if (username == null) {
+      res.redirect('/');
+      return;
+    }
+  
+    const video = await Video.findOne({where: {id: req.params.id}});
+    if (video == null) {
+      res.redirect('/');
+      return;
+    }
+  
+    const sidebarVideos = await Video.findAll({where: {uploader: username}});
+    for (let i = 0; i < sidebarVideos.length; i++) {
+        sidebarVideos[i] = await tools.formatVideo(sidebarVideos[i]);
+    }
+    if (sidebarVideos.length == 0) {
+        sidebarVideos = null;
+    }
+
+    res.render('videoManager/delete-confirmation', { username, video, sidebarVideos });
+  
+}));
+
+
 
 //Handle deleting a video
 router.post('/video-manager/:id/delete', tools.asyncHandler(async (req, res) => {
     //Get all comments assocaited with video and delete, then delete video entry
-
-    console.log("Attempting to delete video with id " + req.params.id);
     
     const video = await Video.findOne({where: {id: req.params.id}});
-    console.log(video);
     await tools.deleteVideo(video);
 
     res.send("Video deleted");

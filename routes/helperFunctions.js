@@ -1,5 +1,6 @@
 const validator = require("email-validator");
 const path = require('path');
+const fs = require('fs')
 
 const db = require(path.join(__dirname, '../db'));
 const { Video } = db.models;
@@ -348,6 +349,17 @@ async function deleteVideo(video) {
     }
   }
 
+  //We need to actually remove the video from the file system to free up space
+
+  const filePath = path.join(__dirname, "../public/videos", video.videoURL);
+
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+  })
+
   await video.destroy();
   return;
 
@@ -356,6 +368,31 @@ async function deleteVideo(video) {
 async function deleteAccount(user) {
 
   const username = user.username;
+
+  //Delete profile picture and banner
+
+
+  if (user.imageURL != 'default.png') {
+    const profilePicturePath = path.join(__dirname, "../public/images/user-thumbs", user.imageURL);
+    fs.unlink(profilePicturePath, (err) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+    })
+  }
+
+  if (user.bannerURL != 'default.jpg') {
+    const bannerPicturePath = path.join(__dirname, "../public/images/user-banners", user.bannerURL);
+    fs.unlink(bannerPicturePath, (err) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+    })
+  }
+
+
 
   const videos = await Video.findAll({where: {uploader: username}});
   //Destroy all of the comments on each video

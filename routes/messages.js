@@ -42,7 +42,6 @@ router.get('/:user', tools.asyncHandler(async (req, res) => {
   }
   
   const findUser = await UserInfo.findOne({where: {username: user}});
-  console.log(user);
   if (findUser == null) {
     res.redirect('/');
     return;

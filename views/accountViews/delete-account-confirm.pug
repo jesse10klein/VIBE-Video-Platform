@@ -1,0 +1,17 @@
+extends layout 
+
+block style
+  link(href="/style/account-home.css" rel="stylesheet")
+
+block content
+
+
+  h1#deleteWelcome= "Are you sure want to delete your account? This action cannot be undone"
+  #deleteButtons
+    button(id='yesDelete' type="button" onClick="processAccountDelete()")= 'Delete Account'
+    button(id='noDelete' type="button" onClick="goBack()")= 'No, go back'
+
+
+block script
+  script(src='/js/account.js')
+  script(src='/js/userProfile.js')

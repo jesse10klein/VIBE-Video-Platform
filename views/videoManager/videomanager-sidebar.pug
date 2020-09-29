@@ -3,7 +3,7 @@
 
 
 if sidebarVideos
-  h3= "Select a video to edit"
+  h3#sidebarH1= "Select a video to edit"
   each video in sidebarVideos  
     .video-preview
       a(href=`/account/video-manager/${video.id}`)

@@ -66,7 +66,6 @@ function resizeContent() {
 
 
     const messageHeight = window.innerHeight - 150;
-    console.log($("#messages").css("height"));
     $("#messages").css("height", messageHeight + "px");
 
 
@@ -136,7 +135,6 @@ function scrollSmoothToBottom (id) {
 }
 
 $("#messages").scroll(function() {
-  console.log("Scrolling");
   const messageDiv = document.getElementById("messages");
   const scrolled = messageDiv.scrollTop + messageDiv.clientHeight
   const scrollable = messageDiv.scrollHeight
@@ -272,7 +270,6 @@ function pollForPartyUpdates() {
   $.ajax({
     url, type: "POST", data, dataType: 'json',
     success: function(response) {
-      console.log(response);
       if (response.end) {
         window.location.pathname = "/watch-party/session-ended";
       }
@@ -309,11 +306,9 @@ function pollForPartyUpdates() {
 }
 
 function check_sync(sync) {
-  console.log("**********************************");
   const params = sync.split(',');
   const time = parseInt(params[0]);
   const playing = params[1] == 'true';
-  console.log(time, playing);
   if (Math.abs(video.currentTime - time) > 2) {
     video.currentTime = time;
   }

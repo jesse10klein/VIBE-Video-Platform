@@ -71,7 +71,6 @@ function startWatchParty() {
   $.ajax({
     url, type: "POST", data,
     success: function(response) {
-      console.log(response);
       if (response.error) {
         $("#error").text(response.error);
         if (response.joinLink) {
@@ -186,7 +185,6 @@ function deleteParty(elem) {
   $.ajax({
     url, type: "POST", data,
     success: function(response) {
-      console.log(response);
       $("#redirectlinks button").text("");
       $("#redirectLink").text("");
       $("#error").text("");

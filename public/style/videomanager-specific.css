@@ -221,3 +221,7 @@ body {
     width: 300px;
     margin: auto;
 }
+
+#sidebarH1 {
+    font-size: 20px;
+}
