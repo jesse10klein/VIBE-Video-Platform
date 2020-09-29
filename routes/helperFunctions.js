@@ -12,6 +12,8 @@ const { Subscriptions} = db.models;
 const { passwordVerify } = db.models;
 const { Message } = db.models;
 const { WatchParty} = db.models;
+const { Notifications } = db.models;
+const { PartyNotifications } = db.models;
 
 const Op = require('sequelize').Op;
 
@@ -337,10 +339,14 @@ async function deleteVideo(video) {
 
   //Get all comments associated with video
   const comments = await Comments.findAll({where: {videoID}});
-  await deleteComments(comments);
+  if (comments != null) await deleteComments(comments);
 
   const bookmarks = Bookmarks.findAll({where: {videoID}});
-  await bookmarks.destory();
+  if (bookmarks != null) {
+    for (let i = 0; i < bookmarks.length; i++) {
+      await bookmarks[i].destroy();
+    }
+  }
 
   await video.destroy();
   return;
@@ -354,10 +360,7 @@ async function deleteAccount(user) {
   const videos = await Video.findAll({where: {uploader: username}});
   //Destroy all of the comments on each video
   for (let i = 0; i < videos.length; i++) {
-      const comments = await Comments.findAll({where: {videoID: videos[i].id}});
-      for (let i = 0; i < comments.length; i++) {
-        await comments[i].destroy();
-      }
+      await deleteVideo(videos[i]);
   }
   //Destroy all videos
   for (let i = 0; i < videos.length; i++) {
@@ -401,6 +404,42 @@ async function deleteAccount(user) {
   for (let i = 0; i < comVotes.length; i++) {
     await comVotes[i].destroy();
   }
+
+  //Delete all notifications
+  const notifications = await Notifications.findAll({
+    where: {
+      [Op.or]: {
+        recipient: username,
+        user: username
+      }
+    }
+  })
+  for (let i = 0; i < notifications.length; i++) {
+    await notifications[i].destroy();
+  }
+
+  const watchParties = await WatchParty.findAll({
+    where: {
+      host: username
+    }
+  });
+  for (let i = 0; i < watchParties.length; i++) {
+    await watchParties[i].destroy();
+  }
+
+  //Lastly, delete any messages
+  const messages = await Message.findAll({
+    where: {
+      [Op.or]: {
+        recipient: username,
+        sender: username
+      }
+    }
+  })
+  for (let i = 0; i < messages.length; i++) {
+    await messages[i].destroy();
+  }
+
   await user.destroy();
 
 }

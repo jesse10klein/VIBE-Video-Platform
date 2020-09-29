@@ -59,14 +59,23 @@ router.post('/create-session', tools.asyncHandler( async (req, res) => {
   //Need to send this join link to everyone invited, excluding host
 
   for (let i = 0; i < users.length; i++) {
-    await Notifications.create({
-      recipient: users[i],
-      notificationType: "watchParty",
-      user: username,
-      contentID: joinLink,
-      read: false 
-    });
-
+    if (i == 0) {
+      await Notifications.create({
+        recipient: users[i],
+        notificationType: "watchParty",
+        user: username,
+        contentID: joinLink,
+        read: true 
+      });
+    } else {
+      await Notifications.create({
+        recipient: users[i],
+        notificationType: "watchParty",
+        user: username,
+        contentID: joinLink,
+        read: false 
+      });
+    }
   }
 
   const createdParty = await WatchParty.create({host: username, joinLink, users: userString, videoID});

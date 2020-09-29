@@ -54,21 +54,6 @@ router.get('/', tools.asyncHandler(async (req, res) => {
 }));
 
 //Handle deleting a video
-router.get('/:id/deletevideo', tools.asyncHandler(async (req, res) => {
-    //Get all comments assocaited with video and delete, then delete video entry
-
-    const video = await Video.findOne({where: {id: req.params.id}});
-
-    const comments = await Comments.findAll({where: {videoID: req.params.id}});
-
-    //Delete these
-    await comments.destroy();
-    await video.destroy();
-    res.send("Video deleted");
-
-}));
-
-//Handle deleting a video
 router.get('/delete-video/:id', tools.asyncHandler(async (req, res) => {
 
     const video = await Video.findOne({where: {id: req.params.id}});
@@ -399,6 +384,49 @@ router.post('/video-manager/:id', tools.asyncHandler(async (req, res) => {
   res.sendStatus(200);
 
 }));
+
+
+//Process form data for editing a specific video
+router.get('/video-manager/:id/delete', tools.asyncHandler(async (req, res) => {
+
+    const { username } = req.session;
+    if (username == null) {
+      res.redirect('/');
+      return;
+    }
+  
+    const video = await Video.findOne({where: {id: req.params.id}});
+    if (video == null) {
+      res.redirect('/');
+      return;
+    }
+  
+    const sidebarVideos = await Video.findAll({where: {uploader: username}});
+    for (let i = 0; i < sidebarVideos.length; i++) {
+        sidebarVideos[i] = await tools.formatVideo(sidebarVideos[i]);
+    }
+    if (sidebarVideos.length == 0) {
+        sidebarVideos = null;
+    }
+
+    res.render('videoManager/delete', { username, video, sidebarVideos });
+  
+  }));
+
+//Handle deleting a video
+router.post('/video-manager/:id/delete', tools.asyncHandler(async (req, res) => {
+    //Get all comments assocaited with video and delete, then delete video entry
+
+    console.log("Attempting to delete video with id " + req.params.id);
+    
+    const video = await Video.findOne({where: {id: req.params.id}});
+    console.log(video);
+    await tools.deleteVideo(video);
+
+    res.send("Video deleted");
+
+}));
+
 
 //Process form data for editing a specific video
 router.get('/verify-account', tools.asyncHandler(async (req, res) => {

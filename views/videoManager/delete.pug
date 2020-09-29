@@ -1,0 +1,26 @@
+
+extends layout
+
+block style
+  link(href="/style/videomanager-specific.css" rel="stylesheet")
+
+block content
+
+  #mainVideoPreview
+    video.sidebar-video(src=`/videos/${video.videoURL}#t=2` muted)
+    h1.deleteVideoTitle= video.title
+
+  h1#deleteWelcome= "Are you sure want to delete this video?"
+  #deleteButtons
+    button(id='yesDelete' type="button" onClick="processVideoDelete()")= 'Delete Video'
+    button(id='noDelete' type="button" onClick="goBackToEdit()")= 'No, go back'
+
+block script
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js")
+  script(src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js")
+  script(src="/js/tag-it.js")
+  script(src="/js/videomanager-specific.js")
+
+
+
+

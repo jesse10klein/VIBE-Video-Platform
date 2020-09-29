@@ -29,6 +29,7 @@ function resizeContent() {
 
 function checkFormData() {
 
+
   //Get form data and send to route... already set up
   //data - title, description, tags, *VIDURL*
 
@@ -68,4 +69,36 @@ function checkFormData() {
 
     }
   })
+}
+
+function redirectToDeletePage() {
+  window.location.pathname = window.location.pathname + "/delete";
+}
+
+function goBackToEdit() {
+  url = window.location.pathname;
+  splits = url.split('/');
+  splits = splits.slice(0, splits.length - 1);
+  splits = splits.join('/');
+  window.location.pathname = splits;
+}
+
+function processVideoDelete() {
+
+  console.log("Hello");  
+
+  let data = {};
+
+   url = window.location.pathname;
+
+  $.ajax({
+     url, type: "POST", data,
+     success: function(response) {
+
+      console.log("Video deleted successfully");
+
+     }
+  })
+
+
 }

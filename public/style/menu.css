@@ -118,6 +118,7 @@ button:focus {outline:0;}
     height: 50px;
 }
 
+
 #notificationDiv {
     display: flex;
     flex-direction: column;
@@ -159,20 +160,34 @@ button:focus {outline:0;}
 
 }
 
+@media screen and (max-width: 530px) {
+    #icons-left {
+        display: none;
+    }
+
+}
+
 .unopened {
-    background-color: blue;
+    background-color: #a5eff1;
+    border: 1px solid black;
+    border-radius: 10px;
 }
 
 #notificationContainer {
     display: none;
     position: relative;
-    width: 340px;
+    width: 350px;
     max-height: 50vh;
     overflow-y: scroll;
     top: -3px;
     left: -290px;
     background-color: white;
     border: 1px solid rgb(100, 100, 100);
+}
+
+.notification {
+    width: 330px;
+    margin-left: 10px;
 }
 
 .notification a {

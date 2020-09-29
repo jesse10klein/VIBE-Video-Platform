@@ -76,7 +76,7 @@ const users = [
     username: 'San Cisco',
     password: 'sancisco',
     email: 'sancisco@gmail.com',
-    imageURL: 'sancisco.jpg',
+    imageURL: 'sancisco.jfif',
     bannerURL: 'sancisco.jpg',
     subscriberCount: "0"
   },
@@ -847,11 +847,11 @@ app.use((req, res, next) => {
 
 
 app.get('/', async (req, res) => {
-  if (!req.session.username) {
-    req.session.username = "Joji";
-    res.cookie("username", "Joji");
-    req.session.save();
-  }
+  // if (!req.session.username) {
+  //   req.session.username = "Joji";
+  //   res.cookie("username", "Joji");
+  //   req.session.save();
+  // }
   res.redirect('video');
 });
 
