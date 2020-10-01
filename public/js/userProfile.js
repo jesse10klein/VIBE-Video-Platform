@@ -9,6 +9,35 @@ function toggleSidebar() {
   const content = $("#content");
   const banner = $("#banner-image");
 
+  //Handle the mobile case separately
+
+  if (document.documentElement.clientWidth < 800) {
+    if ((sidebar).css('display') == 'none') {
+      sidebar.css('display', 'block');
+      hamburger.css('display', 'none');
+      sidebar.animate({
+        left: '0px'
+      });
+      content.animate({
+        marginLeft: document.documentElement.clientWidth + 'px'
+      });
+      content.css('display', 'none');
+    } else {
+      content.css('display', 'block');
+      sidebar.animate({
+        left: '-' + document.documentElement.clientWidth + 'px'
+      });
+      content.animate({
+        marginLeft: '0px'
+      });
+      sidebar.css('display', 'none');
+      setTimeout(() => (hamburger.css('display', 'block')), 400);
+    }
+    return;
+  }
+
+
+
   const sidebar_width = 200 + 0.1;
   const width = document.body.clientWidth - sidebar_width;
 

@@ -250,3 +250,56 @@ input {
     margin-right: 14px;
     font-weight: bold;
 }
+
+@media only screen and (max-width: 600px) {
+
+    #sidebar {
+        width: 150px;
+    }
+
+    #search-term {
+        width: 120px;
+    }
+
+    .partyUser {
+        width: 150px;
+        margin-left: 0px;
+    }
+
+    .partyUser img {
+        width: 30px;
+        height: 30px;
+    }
+
+    #content {
+        margin-left: 160px;
+    }
+
+    #content h1 {
+        font-size: 22px;
+    }
+
+    video {
+        width: 150px !important;
+        height: 90px !important;
+    }
+
+    .video-preview {
+        width: 200px;
+        height: 200px;
+    }
+
+    .videoTitle {
+        margin-left: 20px;
+    }
+
+    .formatDiv {
+        margin-top: 5px;
+        margin-left: 5px !important;
+    }
+
+    .partyUser p {
+        font-size: 12px;
+    }
+
+}

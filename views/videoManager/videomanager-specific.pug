@@ -29,8 +29,8 @@ block content
           each tag in tags
             li= tag
       #footerButtons
-        input(id='updateInfoButton' type='button' value='Edit Video Information' onclick="checkFormData()")
-        button(id='deleteVideo' type="button" onClick="redirectToDeletePage()")= 'Delete Video'
+        input(id='updateInfoButton' type='button' value='Edit' onclick="checkFormData()")
+        button(id='deleteVideo' type="button" onClick="redirectToDeletePage()")= 'Delete'
   else
     h1#welcome= "Select a video to edit from the sidebar"
 

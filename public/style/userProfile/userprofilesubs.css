@@ -49,3 +49,21 @@
     display: flex;
     flex-direction: column;
 }
+
+
+@media only screen and (max-width: 600px) {
+
+    #banner {
+        margin-top: -10px;
+    }
+
+    .userHeader img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .subdiv {
+        font-size: 12px;
+    }
+
+}

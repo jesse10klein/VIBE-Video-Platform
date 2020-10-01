@@ -13,3 +13,15 @@
     margin-left: 10%;
 }
 
+@media only screen and (max-width: 600px) {
+
+    #welcome {
+        font-size: 25px;
+        margin-bottom: 30px;
+    }
+
+    .videoDropDown {
+        left: 180px;
+    }
+
+}

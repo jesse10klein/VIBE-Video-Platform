@@ -6,6 +6,7 @@ body {
 }
 
 #sidebar {
+    display: none;
     position: fixed;
     height: 95vh;
     width: 200px;
@@ -14,7 +15,7 @@ body {
 }
 
 #sidebarAnimate {
-    z-index: 10;
+    z-index: 100;
     position: absolute;
     top: 50px;
     border: none;
@@ -48,7 +49,7 @@ body {
 }
 
 #hamburger {
-    display: none;
+    display: block;
     margin-left: 10px;
     margin-top: 10px;
     height: 50px;
@@ -88,4 +89,41 @@ body {
 
 #video-container {
     margin-top: -65px;
+}
+
+@media only screen and (max-width: 600px) {
+
+    #sidebar {
+        width: 100vw;
+        left: -100vw;
+    }
+
+    #sidebarAnimate {
+        position: absolute;
+        top: 100px;
+        left: 5px;
+        z-index: 2;
+    }
+
+    #exitMenu {
+        left: 120px;
+    }
+
+    #userHeader {
+        width: 96vw;
+    }
+
+    #userHeader img {
+        width: 75px;
+        height: 75px;
+        margin-top: 30px;
+    }
+
+    #accountOptions {
+        margin-left: -30px;
+    }
+  
+    .videoDropDown {
+        left: 160px !important;
+    }
 }

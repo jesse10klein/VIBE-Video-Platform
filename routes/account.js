@@ -79,7 +79,7 @@ router.get('/delete-account', tools.asyncHandler(async (req, res) => {
         res.render("404", {message: "Could not find what you were looking for"});
         return;
     }
-   
+    user.formattedSubCount = tools.formatViews(user.subscriberCount);
     res.render('accountViews/delete-account-confirm', {user});
 
 }));

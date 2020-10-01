@@ -40,6 +40,8 @@ function toggleSidebar() {
   const videoMargin = width > 1000 ? (width - 1000) / 2 : 0;
 
   if ((sidebar).css('display') == 'none') {
+
+    $('#partyVideo').css('width', '150px');
     sidebar.css('display', 'block');
     hamburger.css('display', 'none');
     sidebar.animate({
@@ -49,6 +51,7 @@ function toggleSidebar() {
       width: width + 'px'
     });
   } else {
+    $('#partyVideo').css('width', '600px');
     sidebar.animate({
       right: '-200px'
     });
@@ -62,6 +65,9 @@ function toggleSidebar() {
 }
 
 function resizeContent() {
+
+  if (document.documentElement.clientWidth < 600) return;
+
   if ($("#sidebar").css('display') != 'none') {
 
 

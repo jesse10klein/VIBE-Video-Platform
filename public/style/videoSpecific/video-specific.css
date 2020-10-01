@@ -120,3 +120,140 @@
     }
 }
 
+#otherHeaders {
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+@media only screen and (max-width: 600px) {
+
+    #video {
+        width: 330px !important;    
+        min-height: 187px !important;
+        max-height: 187px !important;
+    }
+
+    #videoinfo {
+        flex-wrap: wrap;
+        margin-left: 5px !important;
+        margin-top: 5px !important;
+    }
+
+    #firstInfo, #videoTitle {
+        margin-left: 5px !important;
+    }
+   
+    #videoinfo img {
+        height: 40px;
+        width: 40px;
+    }
+
+    #videoinfo button {
+        font-size: 0.6em;
+        width: 100px;
+    }
+
+    .fb-share-button {
+        display: none !important;
+    }
+
+    #voting {
+        margin-left: 40px !important;
+    }
+
+    #voting p, #voting button {
+        margin-left: -10px !important;
+        margin-right: -10px !important;
+    }
+
+    #voting p {
+        line-height: 0px;
+    }
+
+    #otherHeaders {
+        margin-top: 10px;
+    }
+
+    #videoTitle {
+        font-size: 25px !important;
+    }
+
+    #views, #date {
+        font-size: 15px;
+    }
+
+    #description-info {
+        margin-left: 5px !important;
+    }
+
+    #description-info h3 {
+        font-size: 18px !important;
+    }
+
+    #description-info p {
+        font-size: 15px;
+    }
+
+    #tags {
+        max-width: 300px !important;
+    }
+
+    #commentFiltering {
+        margin-left: 5px !important;
+        width: 90vw;
+        justify-content: space-between;
+    }
+
+    #commentFiltering h1 {
+        display: none;
+    }
+
+    #comment-form {
+        margin-left: 5px !important;
+    }
+
+    #comment-form textarea {
+        width: 200px;
+    }
+
+    #comments {
+        margin-left: 5px !important;
+    }
+
+    .comment {
+        margin-left: 5px !important;
+    }
+
+    .reply {
+        margin-left: 13px !important;
+    }
+
+    .comment img, .reply img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .comment-footer {
+        font-size: 15px;
+        margin-left: -30px !important;
+    }
+
+    #other-content {
+        overflow-x: hidden !important;
+    }
+
+    .commentUsername {
+        font-size: 14px;
+    }
+
+    .comment-header p {
+        font-size: 13px;
+        line-height: 27px;
+    }
+
+    #bookmark {
+        width: 140px !important;
+    }
+}

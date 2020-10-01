@@ -25,7 +25,7 @@ block content
             p.messageID= message.id
           
   else
-    h1= "Click on a sidebar message to view the conversation or search for a conversation"
+    h1#emptyMessage= "Click on a sidebar message to view the conversation or search for a conversation"
 
 block script
   script(src="/js/messages.js")

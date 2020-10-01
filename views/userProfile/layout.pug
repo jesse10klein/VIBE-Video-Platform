@@ -1,6 +1,7 @@
 doctype html
 head
   meta(charset='utf-8')
+  meta(name="viewport" content="width=device-width, initial-scale=1.0")
   title Vibe Videos
   link(href='/style/menu.css' rel='stylesheet')
   link(href="https://fonts.googleapis.com/css?family=Oxanium|Roboto+Slab&display=swap" rel="stylesheet")
@@ -14,7 +15,7 @@ body
   include ../menubar
 
   button#sidebarAnimate(onclick="toggleSidebar()")
-    img#hamburger(src='/images/hamburger.svg')
+    img#hamburger(src='/images/hamburger.png')
   #sidebar
     include user-sidebar
 

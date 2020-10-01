@@ -55,3 +55,17 @@
     color: red;
     font-weight: bold;
 }
+
+@media only screen and (max-width: 600px) {
+
+    #picture-div {
+        height: 400px;
+        width: 300px;
+    }
+
+    #picture {
+        height: 150px;
+        width: 150px;
+    }
+
+}

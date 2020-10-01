@@ -17,6 +17,15 @@ body {
 
 /****VIDEO****/
 
+@media only screen and (max-width: 600px) {
+
+    #partyVideo {
+        width: 150px;
+    }
+
+}
+
+
 #partyVideo {
     margin-top: -5px;
     margin-left: 5px;
@@ -138,4 +147,43 @@ body {
 
 #messageHeader button:hover {
     font-size: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+
+    #sidebar {
+        width: 200px;
+        top: 100px;
+    }
+
+    #messageHeader p {
+        display: none;
+    }
+
+    #host {
+        width: 120px !important;
+        font-size: 13px;
+    }
+
+    .timeStamp {
+        display: none;
+    }
+
+    #messageBox {
+        right: 0px;
+    }
+
+    #messageBox input {
+        width: 90px;
+    }
+
+    #hamburger {
+        width: 25px;
+        margin-top: 35px;
+        margin-right: -15px;
+    }
+
+    #messages {
+        height: 70vh;
+    }
 }

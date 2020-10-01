@@ -38,7 +38,7 @@ body {
     border-radius: 20px;
     padding: 5px;
     white-space: pre-wrap;
-    word-break: break-all;
+    word-break: break-word;
     max-width: 60%;
 }
 
@@ -142,5 +142,57 @@ body {
 }
 
 
+@media only screen and (max-width: 600px) {
 
-/********/
+    #sidebar {
+        width: 100px;
+    }
+
+    .messageInfo {
+        display: none !important;
+    }
+    
+    #searchTitle {
+        font-size: 12px; 
+    }
+
+    #search-term {
+        width: 90px !important;
+    }
+
+    #content {
+        margin-left: 110px;
+    }
+
+    #userInfo img {
+        width: 50px;
+        height: 50px;
+        margin-left: 0px;
+    }
+
+    #userInfo h1 {
+        font-size: 20px;
+    }
+
+    #message {
+        width: 310px;
+        margin-left: 0px;
+    }
+
+    .autocomplete-tag {
+        width: 200px !important;
+    }
+
+    .convoMessage p {
+        max-width: 190px;
+        margin-top: 8px;
+        margin-bottom: 0px;
+    }
+
+    #emptyMessage {
+        font-size: 15px;
+        width: 250px;
+        text-align: center;
+    }
+
+}

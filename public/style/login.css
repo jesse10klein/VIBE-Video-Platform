@@ -109,6 +109,10 @@ body {
 #title {
     font-size: 2em;
 }
+#verificationMessage {
+    margin-left: 0px !important;
+    text-align: center !important;
+}
 
 #passwordReset {
     color: purple;
@@ -124,4 +128,12 @@ body {
     border-radius: 5px;
     font-size: 20px;
     margin-top: 3px;
+}
+
+@media only screen and (max-width: 600px) {
+
+    #form-div {
+        width: 90vw;
+    }
+  
 }
