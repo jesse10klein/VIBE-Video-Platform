@@ -159,4 +159,8 @@ h2 {
     margin-top: 90px;
     left: 10px;
   }
+
+  #searchTitle {
+    font-size: 11px;
+  }
 }
