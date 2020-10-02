@@ -145,13 +145,19 @@ button:focus {outline:0;}
 }
 
 @media screen and (max-width: 800px) {
-    #search-bar {
-        display: none;
+    #search-query {
+        width: 190px;
+        height: 25px;
+        font-family: 'Oxanium', cursive;
+        font-size: 20px;
+    }
+    
+    #submit {
+        height: 30px;
+        width: 60px;
+        font-family: 'Oxanium', cursive;
     }
 
-    #login, #dd {
-        margin-top: 12px;
-    }
 
 }
 
